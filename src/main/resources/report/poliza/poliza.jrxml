@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.18.1.final using JasperReports Library version 6.18.1-9d75d1969e774d4f179fb3be8401e98a0e6d1611  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="poliza" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" whenResourceMissingType="Error" uuid="5a61ede2-ef4d-4b5b-870a-2d9dcef83b79">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SegSurez"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<style name="Base" isDefault="true" fontName="DejaVu Sans" fontSize="6"/>
+	<parameter name="cdCompania" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[new Long("1")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cdCotizacion" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[new Long("121611")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cdRamoCotizacion" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[new Long("135367")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="vam" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[false]]></defaultValueExpression>
+	</parameter>
+	<parameter name="aseg" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[false]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pdf" class="java.lang.Boolean">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[true]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/opt/public/images/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titular" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(0)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titularu" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(0)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titularF" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(0)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="subtotal" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(0)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="vigencia" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(0)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="total" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(0)]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+  A.CD_COTIZACION,
+  A.CD_CLIENTE,
+  A.CD_MONEDA,
+  A.CD_AGENTE,
+  A.CD_COMPANIA,
+  A.NUM_COTIZACION,
+  A.DIAS_VIGENCIA,
+  A.CD_ASEGURADORA,
+  A.GIRO_NEGOCIO,
+  A.CD_PROSPECTO,
+  A.TIPO,
+  s.NM_ASEGURADORA
+FROM BRK_T_COTIZACIONES A INNER JOIN BRK_T_ASEGURADORAS s ON a.CD_ASEGURADORA = s.CD_ASEGURADORA
+WHERE A.CD_COMPANIA = $P{cdCompania}
+AND A.CD_COTIZACION = $P{cdCotizacion}]]>
+	</queryString>
+	<field name="CD_COTIZACION" class="java.math.BigDecimal"/>
+	<field name="CD_CLIENTE" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CD_MONEDA" class="java.math.BigDecimal"/>
+	<field name="CD_AGENTE" class="java.math.BigDecimal"/>
+	<field name="CD_COMPANIA" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NUM_COTIZACION" class="java.lang.String"/>
+	<field name="DIAS_VIGENCIA" class="java.math.BigDecimal"/>
+	<field name="CD_ASEGURADORA" class="java.math.BigDecimal"/>
+	<field name="GIRO_NEGOCIO" class="java.lang.String"/>
+	<field name="CD_PROSPECTO" class="java.math.BigDecimal"/>
+	<field name="TIPO" class="java.lang.String"/>
+	<field name="NM_ASEGURADORA" class="java.lang.String"/>
+	<title>
+		<band height="40" splitType="Stretch">
+			<textField pattern="HH:mm:ss">
+				<reportElement x="490" y="30" width="60" height="10" uuid="2ce7f971-bc87-4dd1-87d3-8a590695394d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MMM/yyyy">
+				<reportElement x="490" y="20" width="60" height="10" uuid="0896c946-b3ac-4a88-a34f-07822574778b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="460" y="20" width="30" height="10" uuid="a7aaf4ee-e82d-477c-822e-07aab3816e30"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="30" width="30" height="10" uuid="3e846b42-4482-47ee-b6b6-32e473fdd504"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Hora:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="180" y="10" width="220" height="20" uuid="c534ebec-2f52-4e46-9783-ad0feb244f27">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{aseg}?"LISTADO DE ASEGURADOS":"RESUMEN DE SEGUROS"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
+				<reportElement x="0" y="0" width="140" height="40" isRemoveLineWhenBlank="true" uuid="1c1b7503-44b4-4ee4-b1e7-2af26b5842b5">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<printWhenExpression><![CDATA[$P{pdf}]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo}+"efi/logo-email.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement x="460" y="0" width="30" height="10" uuid="af39250d-2994-4465-94bd-e1104da04a08"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Página:]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="">
+				<reportElement x="540" y="0" width="10" height="10" uuid="7d33b1d0-1fe2-46f5-b897-a2f0245de632"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="490" y="0" width="50" height="10" uuid="d4e742f7-371c-4be9-9eea-c03f0b56a214"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}+" de "]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="183" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="550" height="60" uuid="fb519ed6-0765-45df-97c7-0124f9287c90"/>
+				<subreportParameter name="cdCliente">
+					<subreportParameterExpression><![CDATA[$F{CD_CLIENTE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["report/poliza/F_clt.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="0" y="60" width="90" height="10" uuid="69437d64-ef57-4c6a-aa3a-7b63e11e5509"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="DejaVu Sans" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ASEGURADORA:]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="90" y="60" width="460" height="10" uuid="f924ebcc-e55c-49aa-83bc-4ed4465edc98">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NM_ASEGURADORA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="" x="0" y="70" width="90" height="10" isRemoveLineWhenBlank="true" uuid="4fe49151-8d42-4088-ab64-e32ef67c5c26">
+					<printWhenExpression><![CDATA[false]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="DejaVu Sans" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NUM. COTIZACIÓN:]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement key="" x="90" y="70" width="460" height="10" isRemoveLineWhenBlank="true" uuid="20543a6e-de4d-4435-a78c-e9cd3d7b89a5">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[false]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NUM_COTIZACION}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="90" width="550" height="20" isRemoveLineWhenBlank="true" uuid="81ec5aec-9067-4835-816c-c2aeaafb9393">
+					<printWhenExpression><![CDATA[!$P{vam}]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="cdCompania">
+					<subreportParameterExpression><![CDATA[$F{CD_COMPANIA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cdRamoCotizacion">
+					<subreportParameterExpression><![CDATA[$P{cdRamoCotizacion}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tipo">
+					<subreportParameterExpression><![CDATA[$F{TIPO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="numCotizacion">
+					<subreportParameterExpression><![CDATA[$F{NUM_COTIZACION}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["report/poliza/F_ramoCotizacion.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="110" width="550" height="20" isRemoveLineWhenBlank="true" uuid="8f80d0f0-6d2f-4bf6-a3f1-ab39b357c761">
+					<printWhenExpression><![CDATA[$P{vam}&&!$P{aseg}]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="cdCompania">
+					<subreportParameterExpression><![CDATA[$F{CD_COMPANIA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cdRamoCotizacion">
+					<subreportParameterExpression><![CDATA[$P{cdRamoCotizacion}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["report/poliza/vam/F_ramoCotizacion_vam.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="131" width="550" height="20" isRemoveLineWhenBlank="true" uuid="04e6993d-ff96-490f-8a30-1020370371d7">
+					<printWhenExpression><![CDATA[$P{vam}&&$P{aseg}]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="cdCompania">
+					<subreportParameterExpression><![CDATA[$F{CD_COMPANIA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cdRamoCotizacion">
+					<subreportParameterExpression><![CDATA[$P{cdRamoCotizacion}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["report/poliza/vam/F_ramoCotizacion_aseg.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="63" splitType="Stretch"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="50">
+			<textField>
+				<reportElement x="60" y="27" width="30" height="20" uuid="f237a298-2e23-4f7c-af71-543d575fb1b6"/>
+				<textFieldExpression><![CDATA[$P{vam} ?$P{titular}: " "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="27" width="20" height="20" uuid="d2bbb0d8-f5ff-40df-879a-f0e97bb962cf"/>
+				<textFieldExpression><![CDATA[$P{vam}?$P{titularu}:""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="27" width="30" height="20" uuid="bab8266a-a580-426c-92b1-25832911fe9b"/>
+				<textFieldExpression><![CDATA[$P{vam}?$P{titularF}:""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="27" width="30" height="10" uuid="0d3f950c-509a-4fc5-802d-29e1031e5f5f"/>
+				<textFieldExpression><![CDATA[$P{vam}?$P{subtotal}:""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="7" width="50" height="20" uuid="3641d2c9-ba8b-44d0-979b-c7b4fdb56945"/>
+				<textFieldExpression><![CDATA[$P{vam}?$P{vigencia}:""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="7" width="30" height="20" uuid="13b47514-8b56-4425-9ce9-ff2094988bd1"/>
+				<textFieldExpression><![CDATA[$P{vam}?$P{total}:""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="27" width="60" height="20" uuid="43a9c9f2-6ba3-45f5-8f09-d33b9c338148"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{vam} ? "TITULAR SOLO: ": " "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="27" width="80" height="20" uuid="9b6746df-e61b-4972-b5d4-7198cf8a23aa"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{vam} ? "TITULAR MÁS UNO: ": " "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="27" width="90" height="20" uuid="c228a012-8d97-4603-9f24-b77bcfa28e90"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{vam} ? "TITULAR MÁS FAMILIA:": " "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="330" y="27" width="50" height="10" uuid="dbe7938c-2333-4b94-aed5-2a70871fa38a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{vam} ? "SUBTOTAL:": " "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="7" width="60" height="20" uuid="af241b6a-269e-4ea3-93c8-c3aab4ea1965"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{vam} ? "NO. PERSONAS:": " "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="7" width="110" height="20" uuid="abb2058a-4b57-46ee-8fcc-c3b7d145e062"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{vam} ? "NO. PERSONAS VIGENTES:": " "]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

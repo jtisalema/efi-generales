@@ -1,0 +1,83 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /efi
+  error:
+    include-message: always
+
+app:
+  name: efi
+  broker: Efi
+  prod: false
+  url: http://localhost:3000
+  mail: jtisalema@segurossuarez.com
+  images:
+    landing: 5
+    login: 3
+  login.admin:
+    username: efi
+    password: EFIefi.1222
+  data: /opt/public/images/efi
+  minio:
+    url: http://localhost:9000
+    accessKey: minioAccess
+    secretKey: minioSecret
+    bucket: segusuarez
+  whatsapp:
+    siniestro:
+      daysToNotify: 60,80,90
+    receta:
+      daysToNotify: 5
+  computer-vision:
+    url: https://uqai-documents-test.cognitiveservices.azure.com/computervision/imageanalysis:analyze?api-version=2023-02-01-preview&features=read&model-version=latest&language=es
+    subscription:
+      keys: 3ad3243fc6a94274ba46330ce2d04795, c3329931dffd4c54b24725a309a18c80
+  factura-electronica:
+    url: https://factura.stpfdigital.com/api/sri/comprobante
+  sms:
+    url: https://app2.eclipsoft.com:9443/wsSMSEmpresarial/wscSMSEmp.asmx
+    SOAPAction: http://secure.eclipsoft.com/wsSMSEmpresarial/wscSMSEmp/EnviarSMS
+    emServicio: CONTACTOSMS
+    claveMD5: csms@auto
+    emEmisor: SEGUSUAREZ
+    emLogin: portales
+    emPwd: CErMxk2pTo
+    emNombrePC: portales
+
+spring:
+  profiles.active: default
+  datasource:
+    testWhileIdle: true
+    validationQuery: SELECT 1
+    driverClassName: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@192.168.40.19:1521:xe
+    username: broker
+    password: suarezbrk
+    hikari:
+      maximum-pool-size: 2
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.Oracle10gDialect
+    show-sql: true
+  servlet:
+    multipart:
+      max-file-size: 30MB  # put always in megabytes or bytes
+      max-request-size: 30MB
+
+spring.mail:
+    host: smtp.office365.com
+    port: 587
+    username: grivera@segurossuarez.com
+    password: Segu2024!!
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server.tomcat.remote-ip-header: x-forwarded-for
+server.tomcat.protocol-header: x-forwarded-proto

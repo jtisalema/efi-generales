@@ -1,0 +1,9 @@
+$custom-font-sizes: (
+        7: $font-size-base * 0.85714
+);
+$font-sizes: map-merge($font-sizes, $custom-font-sizes);
+
+$custom-theme-colors: (
+        "alternative": $alternative
+);
+$theme-colors: map-merge($theme-colors, $custom-theme-colors);

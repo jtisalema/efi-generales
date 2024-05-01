@@ -1,0 +1,59 @@
+@mixin bg-img($size, $position-y: center, $position-x: center) {
+  background-size: $size;
+  background-repeat: no-repeat;
+  background-position: $position-y $position-x;
+}
+
+@mixin fill-container() {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+}
+
+@mixin absolute-center($vertically: true, $horizontally: true) {
+  position: absolute;
+
+  @if ($vertically) {
+    top: 50%;
+  }
+
+  @if ($vertically) {
+    left: 50%;
+  }
+
+  transform: translate(if($vertically, -50%, 0), if($horizontally, -50%, 0));
+}
+
+@mixin bg-filter($color, $opacity, $location: before, $gradient: null, $filter: null, $mix: null, $z-index: 0) {
+  position: relative;
+
+  &::#{$location} {
+    z-index: calc(0 + $z-index);
+    content: '';
+    pointer-events: none;
+    border-radius: inherit;
+    background-color: rgba($color, $opacity);
+
+    @include fill-container();
+
+    @if ($gradient) {
+      background-image: $gradient;
+    }
+
+    @if ($filter) {
+      backdrop-filter: blur(10px);
+    }
+
+    @if ($mix) {
+      mix-blend-mode: $mix;
+    }
+  }
+
+  & > * {
+    z-index: calc(1 + $z-index);
+    position: relative;
+  }
+}

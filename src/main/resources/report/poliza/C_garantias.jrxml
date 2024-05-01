@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-09-23T05:15:28 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="C_garantias" pageWidth="540" pageHeight="842" columnWidth="540" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="04d6f47f-ef41-4d1a-83a7-b0269f932991">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="cdCompania" class="java.lang.Long">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[new Long("1")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cdRamosCotizacion" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[new Long("135367")]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  g.NM_GARANTIA,
+  gn.CD_GARANTIA,
+  gn.FC_CREACION,
+  gn.FC_MAX_CONDICIONADA,
+  gn.FC_EFEC_CUMPLIMIENTO,
+  gn.TIPO,
+  gn.NUM_ANEXO,
+  gn.OBS_GARANTIA_NEGOCIO,
+  gn.ORD_IMPRESION
+FROM BRK_T_GARANTIAS_NEGOCIO gn, BRK_T_GARANTIAS g
+WHERE (gn.CD_GARANTIA = g.CD_GARANTIA)
+      AND gn.CD_COMPANIA = $P{cdCompania} 
+      AND gn.CD_RAMO_COTIZACION =  $P{cdRamosCotizacion}
+      AND gn.ACTIVO = 1
+ORDER BY gn.ORD_IMPRESION]]>
+	</queryString>
+	<field name="NM_GARANTIA" class="java.lang.String"/>
+	<field name="CD_GARANTIA" class="java.math.BigDecimal"/>
+	<field name="FC_CREACION" class="java.sql.Timestamp"/>
+	<field name="FC_MAX_CONDICIONADA" class="java.sql.Timestamp"/>
+	<field name="FC_EFEC_CUMPLIMIENTO" class="java.sql.Timestamp"/>
+	<field name="TIPO" class="java.lang.String"/>
+	<field name="NUM_ANEXO" class="java.lang.String"/>
+	<field name="OBS_GARANTIA_NEGOCIO" class="java.lang.String"/>
+	<field name="ORD_IMPRESION" class="java.math.BigDecimal"/>
+	<title>
+		<band height="20" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="5" width="200" height="10" uuid="727632bd-f1d5-4cc7-8e7a-54b51c53f33b">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top">
+                    <font fontName="DejaVu Sans" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GARANATÍAS DE COBERTURA]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="10">
+			<staticText>
+				<reportElement x="0" y="0" width="300" height="10" uuid="2e23420b-ea82-44bd-afcd-381b97bf498a">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="DejaVu Sans" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Garantía]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="0" width="80" height="10" uuid="3b325a62-c235-4ea3-8384-5c952a70390d">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="DejaVu Sans" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fc Condicionada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="80" height="10" uuid="ec2fd8d9-e978-4bd9-a8c9-6661fd397324">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="DejaVu Sans" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="0" width="80" height="10" uuid="29d88735-d976-4ed2-a2dc-4d6f27c8336a">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="DejaVu Sans" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Anexo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField pattern="">
+				<reportElement x="10" y="0" width="290" height="10" uuid="0d0589da-9d9f-4258-b8c0-3ddfc565fe63"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NM_GARANTIA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="380" y="0" width="80" height="10" uuid="28d06a08-bcdf-4ccb-a9e0-78d7a1050f39"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TIPO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="460" y="0" width="79" height="10" uuid="34159b53-95c7-43b2-859f-dcaef3f8e4c3"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NUM_ANEXO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="10" y="10" width="370" height="10" isRemoveLineWhenBlank="true" uuid="b050ff5c-a99b-4ce6-882c-0c5b3e402707"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{OBS_GARANTIA_NEGOCIO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MMM/yyyy" isBlankWhenNull="true">
+				<reportElement x="300" y="0" width="80" height="10" uuid="933628c1-8cbe-49e2-9fcf-8c613689123c"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FC_MAX_CONDICIONADA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

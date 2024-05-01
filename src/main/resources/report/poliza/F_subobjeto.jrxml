@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-09-23T12:40:01 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="F_subobjeto" pageWidth="540" pageHeight="842" columnWidth="540" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="2d6f44ce-863c-478e-9749-448b1177b4e6">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="cdCompania" class="java.lang.Long"/>
+	<parameter name="cdObjCotizacion" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[SELECT
+  s.CD_SUBOBJETO,
+  s.DSC_SUBOBJETO,
+  s.TASA,
+  s.VAL_PRIMA,
+  s.VAL_ASEGURADO,
+  s.OBS_SUBOBJETO,
+  s.ITEM
+FROM BRK_T_SUBOBJETOS s
+WHERE (s.CD_COMPANIA = $P{cdCompania} ) AND
+      (s.CD_OBJ_COTIZACION = $P{cdObjCotizacion}  )
+ORDER BY s.ITEM ASC]]>
+	</queryString>
+	<field name="CD_SUBOBJETO" class="java.math.BigDecimal"/>
+	<field name="DSC_SUBOBJETO" class="java.lang.String"/>
+	<field name="TASA" class="java.math.BigDecimal"/>
+	<field name="VAL_PRIMA" class="java.math.BigDecimal"/>
+	<field name="VAL_ASEGURADO" class="java.math.BigDecimal"/>
+	<field name="OBS_SUBOBJETO" class="java.lang.String"/>
+	<field name="ITEM" class="java.math.BigDecimal"/>
+	<title>
+		<band height="13" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="390" height="10" uuid="43e42554-c727-44be-bcd7-e762af3982bc"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top">
+                    <font fontName="DejaVu Sans" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DETALLE DEL OBJETO ASEGURADO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="10" y="0" width="380" height="10" uuid="2fdae139-b0c2-44b8-86be-b1d68eaa53f7"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DSC_SUBOBJETO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="390" y="0" width="100" height="10" uuid="26acbd7b-548f-46d9-be4b-9153f8f9871f"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{VAL_ASEGURADO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="10" y="10" width="380" height="10" isRemoveLineWhenBlank="true" uuid="e0f6a0f4-b4ee-4aea-ad2c-3fda5b69125f"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{OBS_SUBOBJETO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

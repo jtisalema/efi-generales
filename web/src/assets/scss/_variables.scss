@@ -1,0 +1,75 @@
+// Custom Variables
+$template-base-spacing: 12px;
+$table-hover-shadow: 0px 10px 24px #00000063;
+
+// Bootstrap variables
+
+
+// Color system
+$primary: #00BCEA;
+$success: #FFEC0F;
+$info: #005E75;
+$secondary: #707070;
+$danger: #FF1C1C;
+$warning: #FF6600;
+$light: #B8B8B8;
+$alternative: #56C218;
+
+$min-contrast-ratio: 2;
+$color-contrast-dark: #707070;
+
+$gradient: linear-gradient(180deg, rgba(#000, 0), rgba(#000, 0.14));
+
+// Body
+$body-color: #303030;
+
+// Options
+//$enable-shadows: true;
+$enable-negative-margins: true;
+
+// Components
+$border-radius: rem(5px);
+
+// Spacing
+$spacer: rem(2 * $template-base-spacing);
+
+// Typography
+$font-size-base: rem(14px);
+$font-family-base: 'Montserrat', sans-serif;
+$small-font-size: em(12px);
+
+// Buttons + Forms
+$input-btn-focus-width: rem(1px);
+$input-btn-line-height: 1.286;
+
+// Forms
+$input-padding-y: rem(3px);
+$form-label-margin-bottom: rem(0.5 * $template-base-spacing);
+
+$form-check-input-width: 1.4em;
+$form-check-input-border-radius: $form-check-input-width;
+
+// Grid columns
+$grid-gutter-width: rem(2 * $template-base-spacing);
+
+// Cards
+$card-border-width: 0;
+$card-cap-bg: transparent;
+
+// Offcanvas
+$offcanvas-horizontal-width: 324px;
+
+// Table
+$table-hover-bg: #fff;
+$table-bg: rgba($primary, 0.15);
+$table-cell-padding-y: rem(6px);
+
+// Modal
+$modal-backdrop-opacity: 1;
+$modal-backdrop-bg: rgba(#000, 0.6);
+$modal-header-border-color: $primary;
+
+// Close
+$btn-close-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='#000' viewBox='0 0 16 16'><path d='M8.9 7.96l6.84-6.84a0.66 0.66 0 0 0-0.03-0.94 0.66 0.66 0 0 0-0.9 0l-6.85 6.84-6.85-6.84a0.66 0.66 0 0 0-0.93 0.04c-0.24 0.26-0.23 0.65 0 0.9l6.84 6.84-6.84 6.85a0.66 0.66 0 0 0 0.03 0.94c0.26 0.24 0.65 0.24 0.9 0l6.85-6.84 6.84 6.84c0.26 0.28 0.67 0.28 0.94 0.03 0.28-0.26 0.28-0.67 0.03-0.93l-0.03-0.04-6.84-6.84z'></path></svg>") !default;
+$btn-close-opacity: .8;
+$btn-close-hover-opacity: 1;

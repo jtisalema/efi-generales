@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout (template, asunto)">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${asunto}">Title</title>
+</head>
+<body style="height: 100%;margin: 0;padding: 0;width: 100%;">
+
+
+<div style="text-align: center;background-color: #e6e6e6;font-family: Helvetica,Arial,sans-serif;color: #5f5f5f;">
+    <center>
+        <div style="height: 20px;">&#160;</div>
+        <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable"
+               style="background-color: #ffffff;width: 100%;max-width: 600px;margin: auto;">
+            <tbody>
+            <tr>
+                <td align="center" valign="top" class="textContent" style="text-align:center;padding: 20px;">
+                    <div style="display: flex;align-items: center">
+                        <img id="_x0000_i1026" src="http://www.compuseg.com/images/image001.png"
+                             alt="http://www.compuseg.com/images/image001.png" shrinktofit="true" width="800"
+                             height="150"/>
+                    </div>
+
+                    <div style="font-size:15px;margin-bottom:0;color:#FFFFFF;line-height:135%;border-bottom: 2px solid #205488;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p style="margin: 0;padding: 5px 20px;line-height: 150%;">
+                        Estimado Cliente,
+                    </p>
+                </td>
+            </tr>
+            <tr th:replace="${template}">
+                <td>
+                    <p style="margin: 0;padding: 5px 20px;line-height: 150%;">
+                        Por la presente le confirmamos que han sido generadas las siguientes credenciales para acceder
+                        al portal de Seguro Suarez, en donde podrá hacer consultas referentes a todas sus pólizas de
+                        seguro:
+                        <br/>
+                    </p>
+                    <br/>
+
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+                        <tbody>
+                        <tr>
+                            <td align="center" valign="top" style="padding: 18px 0 18px 18px;">
+                                <img src="https://gallery.mailchimp.com/4c5a4dea484f772374def9016/images/2eb6a98c-290d-4763-99b3-5224d673f5b5.png"
+                                     width="64" style="max-width: 64px;border: 0;height: auto;"/>
+                            </td>
+
+                            <td valign="top"
+                                style="padding-right: 18px;padding-top: 18px;padding-bottom: 18px;color: #554B4B;font-size: 14px;vertical-align: middle">
+                                <table>
+                                    <tbody>
+                                    <tr th:if=" ${usuario!=null}">
+                                        <td align="left" valign="top"><strong>Usuario</strong></td>
+                                        <td align="left" valign="top" width="150" th:text="${usuario}">dacopan</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left" valign="top" width="100"><strong>Contraseña</strong></td>
+                                        <td align="left" valign="top" width="150" th:text="${password}">4@B5Hif6x83T
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+
+                    <div style="margin: 0;padding: 5px 20px;line-height: 125%;text-align: left">
+                        <p>
+                            Ud. puede acceder al portal haciendo
+                            <a href="#" th:href="${url+'/faces/v/p/login.xhtml'}">clik aqui</a> o en su defecto
+                            ingresando a través de <a
+                                href="https://www.segurossuarez.com">https://www.segurossuarez.com</a>, en la
+                            opción “entrar” de la esquina superior
+                            derecha.
+                        </p>
+                    </div>
+
+                    <div style="margin: 0;padding: 5px 20px;line-height: 125%;text-align: left">
+                        <p>
+                            Esperamos esta herramienta sea de su utilidad; si tiene cualquier inquietud, por favor no
+                            dude en comunicarse con su ejecutivo de cuenta.
+                        </p>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p style="margin: 0;padding: 5px 20px;line-height: 125%;text-align: left">
+                        Reciba un afectuoso saludo
+                    </p>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <p style="padding: 5px 20px;margin:0;font-style: italic;color:#8a8989;font-size: 14px;">
+                        Favor no responder a este email ya que ha sido generado de forma automática.
+                    </p>
+                    <br/>
+                    <br/>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div id="signature">
+                        <span></span><span></span>
+                        <table style="border-collapse:collapse;" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td style="border:none;border-right:solid #006B6E 1.0pt;mso-border-right-alt:solid #006B6E .75pt;padding:9.0pt 6.75pt 9.0pt 6.75pt">
+                                    <a name="_MailAutoSig"></a></td>
+
+                                <td style="padding:0cm 0cm 0cm 3.75pt">
+                                    <p style="line-height:13.5pt"><span></span><a
+                                            href="https://www.segurossuarez.com/"><span><span
+                                            style="font-size:10.5pt;color:blue;text-decoration:none;text-underline:none">
+                                        <img src="https://www.segurossuarez.com/segurossuarez/wp-content/uploads/2015/12/LogoHeader1.png"
+                                             alt="segduarez logo" width="307"
+                                             height="52"/></span></span><span></span></a><span><b><span
+                                            style="font-size:9.0pt;color:#006B6E;"></span></b></span>
+                                    </p>
+                                    <p style="line-height:13.5pt"><span
+                                    ><span
+                                            style="font-size:10.5pt;color:#006B6E;mso-ansi-language:EN-US;"
+                                            lang="EN-US"><br>
+</span></span><span><b><span
+                                            style="font-size:9.0pt;color:#006B6E;mso-ansi-language:EN-US;"
+                                            lang="EN-US">T:</span></b></span><span
+                                    ><span
+                                            style="font-size:10.5pt;color:#006B6E;mso-ansi-language:EN-US;"
+                                            lang="EN-US">
+</span></span><span><span
+                                            style="font-size:9.0pt;color:#646464;mso-ansi-language:EN-US;"
+                                            lang="EN-US">1-700-SEGSUAREZ
+</span></span><span><b><span
+                                            style="font-size:9.0pt;color:#006B6E;mso-ansi-language:EN-US;"
+                                            lang="EN-US">|</span></b></span><span
+                                    ><span
+                                            style="font-size:10.5pt;color:#006B6E;mso-ansi-language:EN-US;"
+                                            lang="EN-US">
+</span></span><span><span
+                                            style="font-size:9.0pt;color:#646464;mso-ansi-language:EN-US;"
+                                            lang="EN-US">+593
+ 2 224 2887 ext: 3000 </span></span><span><span
+                                            style="font-size:10.5pt;color:#006B6E;mso-ansi-language:EN-US;"
+                                            lang="EN-US"><br>
+</span></span><span><b><span
+                                            style="font-size:9.0pt;color:#006B6E;mso-ansi-language:EN-US;"
+                                            lang="EN-US">D:</span></b></span><span
+                                    ><span
+                                            style="font-size:10.5pt;color:#006B6E;mso-ansi-language:EN-US;"
+                                            lang="EN-US">
+</span></span><span><span
+                                            style="font-size:9.0pt;color:#646464;mso-ansi-language:EN-US;"
+                                            lang="EN-US">Av.
+</span></span><span><span
+                                            style="font-size:9.0pt;color:#646464;">Pampite y Chimborazo, Centro Plaza, Oficina
+ 209, Cumbaya</span></span><span><span
+                                            style="font-size:10.5pt;color:#006B6E;">
+<br>
+</span></span><span><span style="font-size:9.0pt;color:#646464;">Quito, Ecuador EC170901</span></span>
+                                        <span><span style="font-size:10.5pt;color:#006B6E;">
+<br>
+</span></span><span><b><span style="font-size:9.0pt;color:#006B6E;">W:</span></b></span><span
+                                        ><span style="font-size:10.5pt;color:#006B6E;">
+</span></span><a href="https://www.segurossuarez.com"><span><span
+                                                style="font-size:9.0pt;color:#646464;text-decoration:none;text-underline:none">www.segurossuarez.com
+</span></span><span></span></a><span><span style="font-size:10.5pt;color:#006B6E;"></span></span>
+                                    </p>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <p style="padding: 5px 20px;margin:0;font-size: 7.5pt">
+                        No imprima este correo si no es necesario, cuidar el medio ambiente está en nuestras manos.
+                    </p>
+                    <p style="padding: 5px 20px;margin:0;font-size: 7.5pt">
+                        La información contenida en este e-mail es confidencial y solo puede ser utilizada por la
+                        persona o
+                        la Institución a la cual esta dirigido. Cualquier retención, difusión, distribución o copia de
+                        este
+                        mensaje esta prohibida. La Institución no asume responsabilidad sobre información, opiniones o
+                        criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra
+                        Institución. Si Usted recibió este mensaje por error notifique al Administrador o a quien le
+                        envió
+                        inmediatamente, elimínelo sin ver su contenido o hacer copias.
+                    </p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div style="height: 20px;">&#160;</div>
+    </center>
+</div>
+
+</body>
+</html>

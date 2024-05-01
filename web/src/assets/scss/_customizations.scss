@@ -1,0 +1,135 @@
+// Navbar
+.navbar-brand {
+  img {
+    height: rem(48px);
+  }
+}
+
+.navbar-user-avatar {
+  img {
+    height: rem(48px);
+    width: rem(48px);
+  }
+}
+
+.navbar-user-avatar-dropdown {
+  img {
+    height: rem(90px);
+    width: rem(90px);
+  }
+}
+
+// Cards
+.card-header {
+  min-height: rem(60px);
+}
+
+// Offcanvas
+.offcanvas {
+  &.offcanvas-end {
+    height: 96vh;
+    border-bottom-left-radius: rem(80px);
+  }
+}
+
+// Modal
+.modal {
+  --btn-size: #{rem(24px)};
+}
+
+.modal-backdrop.show {
+  backdrop-filter: blur(5px);
+}
+
+.modal-body {
+  padding-left: $spacer * 1.5;
+  padding-right: $spacer * 1.5;
+}
+
+.modal-header .btn-close {
+  position: absolute;
+  filter: $btn-close-white-filter;
+  top: calc(var(--btn-size) * 0.5);
+  width: var(--btn-size);
+  height: var(--btn-size);
+  padding-top: 0;
+  right: calc(-1.5 * var(--btn-size));
+  background-position-y: top;
+  background-size: var(--btn-size);
+
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.modal-title {
+  font-weight: inherit;
+}
+
+@include media-breakpoint-down(md) {
+  .modal-header .btn-close {
+    right: 0;
+    top: calc(-1 * var(--btn-size));
+  }
+  .modal-body {
+    padding-left: $spacer;
+    padding-right: $spacer;
+  }
+
+  .modal-dialog {
+    margin-top: calc(var(--btn-size) + var(--#{$prefix}modal-header-padding-y));
+  }
+}
+
+// Tables
+.table {
+  --table-row-gap: #{rem(6px)};
+  --table-row-border-radius: #{rem(6px)};
+  --table-row-indicator-width: #{rem(6px)};
+
+  border-collapse: separate;
+  border-spacing: 0 var(--table-row-gap);
+
+  &.table-white {
+    --bs-table-bg: white;
+  }
+
+  tbody {
+    tr {
+      border-radius: var(--table-row-border-radius);
+
+      > * {
+        vertical-align: middle;
+      }
+
+      > *:first-child {
+        border-left: var(--table-row-indicator-width) solid transparent;
+        border-top-left-radius: var(--table-row-border-radius);
+        border-bottom-left-radius: var(--table-row-border-radius);
+      }
+
+      > *:last-child {
+        border-top-right-radius: var(--table-row-border-radius);
+        border-bottom-right-radius: var(--table-row-border-radius);
+      }
+
+      &:hover {
+        box-shadow: $table-hover-shadow;
+
+        > *:first-child {
+          border-color: white;
+        }
+      }
+    }
+  }
+}
+
+@each $color, $value in $theme-colors {
+  .table tr.tr-#{$color} {
+    > * {
+      &:first-child {
+        border-left: var(--table-row-indicator-width) solid $value !important;
+      }
+    }
+  }
+}

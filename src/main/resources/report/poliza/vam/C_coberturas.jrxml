@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-09-26T09:11:05 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="C_coberturas" pageWidth="540" pageHeight="842" columnWidth="540" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="04d6f47f-ef41-4d1a-83a7-b0269f932991">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="cdCompania" class="java.lang.Long">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[new Long("1")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cdUbicacion" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[new Long("135367")]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  c.VAL_LIMITE,
+  c.VAL_PRIMA,
+  c.ORD_IMPRESION,
+  b.NM_COBERTURA,
+  c.OBS_COB_NEGOCIO,
+  r.DSC_RUBRO
+FROM brk_t_coberturas_negocio c INNER JOIN BRK_T_COBERTURAS b ON c.CD_COBERTURA = b.CD_COBERTURA
+  LEFT JOIN BRK_T_RUBROS r ON c.CD_RUBRO = r.CD_RUBRO AND c.CD_COMPANIA = r.CD_COMPANIA
+WHERE nvl(c.estado, '0') <> 'X'
+      AND c.ACTIVO = 1
+      AND c.CD_COMPANIA =  $P{cdCompania}
+      AND c.CD_UBICACION = $P{cdUbicacion}
+ORDER BY c.ORD_IMPRESION]]>
+	</queryString>
+	<field name="VAL_LIMITE" class="java.math.BigDecimal"/>
+	<field name="VAL_PRIMA" class="java.math.BigDecimal"/>
+	<field name="ORD_IMPRESION" class="java.math.BigDecimal"/>
+	<field name="NM_COBERTURA" class="java.lang.String"/>
+	<field name="OBS_COB_NEGOCIO" class="java.lang.String"/>
+	<field name="DSC_RUBRO" class="java.lang.String"/>
+	<columnHeader>
+		<band height="12">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement x="0" y="0" width="270" height="10" uuid="727632bd-f1d5-4cc7-8e7a-54b51c53f33b">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineColor="#D4CFCF"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="DejaVu Sans" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COBERTURAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="0" width="200" height="10" uuid="2f1aac0a-ce4c-4a2f-852f-2a08da497bb1"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#D4CFCF"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="DejaVu Sans" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBSERVACION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="0" width="70" height="10" uuid="6b9967c7-82ba-4f1b-931b-bb30ca6cace1">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineColor="#D4CFCF"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="DejaVu Sans" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LIMITE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="270" height="10" uuid="0d0589da-9d9f-4258-b8c0-3ddfc565fe63"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#D4CFCF"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NM_COBERTURA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="470" y="0" width="50" height="10" uuid="28d06a08-bcdf-4ccb-a9e0-78d7a1050f39"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#D4CFCF"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{VAL_LIMITE}==null?"-":$F{VAL_LIMITE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="270" y="0" width="200" height="10" uuid="4c8467f8-4192-4134-b719-422330d341ea"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#D4CFCF"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{OBS_COB_NEGOCIO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="520" y="0" width="20" height="10" uuid="4986c08b-dc0e-476c-aa40-8618acfe43ee">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box leftPadding="2">
+					<pen lineWidth="0.025" lineColor="#D4CFCF"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DSC_RUBRO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

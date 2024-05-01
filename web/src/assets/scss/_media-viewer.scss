@@ -1,0 +1,77 @@
+.media-modal .media-content {
+  max-height: 90vh;
+}
+
+.media-thumbnail {
+  --travel-distance: 46px;
+  --travel-duration: 0.15s;
+  --filter-opacity: 0.5;
+  --filter-color: #{to-rgb($primary)};
+
+  color: white;
+  position: relative;
+  transition: background-color var(--travel-duration);
+
+  &::before {
+    content: '';
+    z-index: 0;
+    @include fill-container();
+    background-color: rgba(var(--filter-color), var(--filter-opacity));
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  i {
+    margin-top: 0;
+    display: block;
+    @include absolute-center();
+    transition: var(--travel-duration) ease-in-out;
+    transition-property: opacity, top;
+  }
+
+  span {
+    opacity: 0;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: calc(50% + var(--travel-distance));
+    transform: translateY(-50%);
+    transition: var(--travel-duration) ease-out;
+    transition-property: opacity, top;
+  }
+
+  &:hover {
+    i {
+      top: calc(50% - var(--travel-distance));
+      opacity: 0;
+    }
+
+    span {
+      top: 50%;
+      opacity: 1;
+    }
+
+    &::before {
+      --filter-color: #{to-rgb(shade-color($primary, 70%))};
+      --filter-opacity: 0.6;
+    }
+  }
+}
+
+.media-content {
+  iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+}

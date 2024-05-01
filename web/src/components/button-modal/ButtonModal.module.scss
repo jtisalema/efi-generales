@@ -1,0 +1,60 @@
+@use "../../assets/scss/variables" as *;
+
+$transition: 0.2s ease-in-out;
+@mixin center-element() {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+$prefix: 'btnModal';
+.btnModal {
+  $size: 125px;
+  transition: $transition;
+  height: $size;
+  width: $size;
+  border-radius: 5px;
+  border: 1px solid $primary;
+  position: relative;
+  overflow: hidden;
+
+  &HoverIcon {
+    transition: $transition;
+    position: absolute;
+    left: 0;
+    bottom: -100%;
+    width: 100%;
+    height: 100%;
+    background: $primary;
+    color: $success;
+
+    i {
+      font-size: 3rem;
+      display: inline-grid;
+      place-content: center;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &Contenido {
+    transition: $transition;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &:hover {
+    .#{$prefix}HoverIcon {
+      bottom: 0;
+    }
+
+    .#{$prefix}Contenido {
+      top: -100%;
+    }
+  }
+}

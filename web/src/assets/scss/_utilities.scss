@@ -1,0 +1,159 @@
+$custom-flex: map-merge(map-get(map-get($utilities, "flex"), "values"), (
+        justified: 1 1 0
+));
+$custom-font-weight: map-merge(map-get(map-get($utilities, "font-weight"), "values"), (
+        regular: 500
+));
+
+$custom-min-viewport-height: map-merge(map-get(map-get($utilities, "min-viewport-height"), "values"), (
+        10: 10vh,
+        20: 20vh,
+        30: 30vh,
+        40: 40vh,
+        50: 50vh,
+        60: 60vh,
+        70: 70vh,
+        80: 80vh,
+        90: 90vh,
+));
+
+$utilities: map-merge(
+                $utilities,
+                (
+                        "flex": map-merge(map-get($utilities, "flex"), (values: $custom-flex)),
+                        "font-weight": map-merge(map-get($utilities, "font-weight"), (values: $custom-font-weight)),
+                        "min-viewport-height": map-merge(map-get($utilities, "min-viewport-height"), (values: $custom-min-viewport-height)),
+                        "position": map-merge(map-get($utilities, "position"), (responsive: true)),
+                        "border": map-merge(map-get($utilities, "border"), (responsive: true)),
+                        "border-top": map-merge(map-get($utilities, "border-top"), (responsive: true)),
+                        "border-end": map-merge(map-get($utilities, "border-end"), (responsive: true)),
+                        "border-bottom": map-merge(map-get($utilities, "border-bottom"), (responsive: true)),
+                        "border-start": map-merge(map-get($utilities, "border-start"), (responsive: true)),
+                )
+);
+
+
+@mixin bg-img($size, $position-y: center, $position-x: center) {
+  background-size: $size;
+  background-repeat: no-repeat;
+  background-position: $position-y $position-x;
+}
+
+// New utilities
+.bg-img-center {
+  @include bg-img(cover)
+}
+
+.bg-img-end {
+  @include bg-img(cover, center, right);
+}
+
+.bg-img-start {
+  @include bg-img(cover, center, left);
+}
+
+.bg-filter {
+  position: relative;
+
+  &::before {
+    z-index: 0;
+    content: '';
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: block;
+    position: absolute;
+    @include bg-img(cover);
+    background-color: rgba($primary, 0.8);
+    background-image: linear-gradient(180deg, rgba(#000, 0), rgba(#000, 0.40));
+    border-radius: inherit;
+  }
+
+  & > * {
+    z-index: 1;
+    position: relative;
+  }
+}
+
+.bg-filter-glass {
+  position: relative;
+  margin-top: 30px;
+  margin-bottom: 30px;
+
+  &::before {
+    z-index: 0;
+    content: '';
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: block;
+    position: absolute;
+    @include bg-img(cover);
+    backdrop-filter: blur(10px);
+    background-color: rgba(#010213, 0.24);
+    border-radius: inherit;
+  }
+
+  & > * {
+    z-index: 1;
+    position: relative;
+  }
+}
+
+.bg-fullscreen {
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+}
+
+.bg-texture {
+  --texture-width-scale: 1;
+  --texture-height-scale: 1;
+  --texture-offset-x-scale: 1;
+  --texture-offset-y-scale: 1;
+
+  &::before {
+    content: '';
+    top: calc(50px * var(--texture-offset-y-scale));
+    left: calc(50% - (175px * var(--texture-offset-x-scale)));
+    display: block;
+    position: absolute;
+    width: calc(420px * var(--texture-width-scale));
+    height: calc(410px * var(--texture-height-scale));
+    transform: translate(-50%, -50%);
+    background-image: url("../images/plataforma_textura1.svg");
+    @include bg-img(contain);
+  }
+
+  &::after {
+    content: '';
+    bottom: calc(-20px * (1 - var(--texture-offset-y-scale)));
+    left: calc(50% + (10px * var(--texture-offset-x-scale)));
+    display: block;
+    position: absolute;
+    width: calc(622px * var(--texture-width-scale));
+    height: calc(596px * var(--texture-height-scale));
+    transform: translate(-50%, 50%);
+    background-image: url("../images/plataforma_textura1.svg");
+    @include bg-img(contain);
+  }
+}
+
+
+@include media-breakpoint-down(sm) {
+  .bg-texture {
+    --texture-width-scale: 0.65;
+    --texture-height-scale: 0.65;
+    --texture-offset-x-scale: 0.5;
+    --texture-offset-y-scale: 0.1;
+  }
+}
+
+.z-index-999 {
+  z-index: 999 !important;
+}

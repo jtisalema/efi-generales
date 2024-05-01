@@ -1,0 +1,42 @@
+app:
+  name: segusuarez
+  broker: Seguros Suarez
+  prod: true
+  url: https://consultas.segurossuarez.com
+  minio:
+    url: https://cdn.segurossuarez.com
+    accessKey: eGtGRZM5IwEnKPg0
+    secretKey: usvMD9DghI3pNGhyU3ZPjxxsVy2QYtDI
+  factura-electronica:
+    url: https://factura.stpfdigital.com/api/sri/comprobante
+  computer-vision:
+    url: https://servicioefi.cognitiveservices.azure.com/computervision/imageanalysis:analyze?api-version=2023-02-01-preview&features=read&model-version=latest&language=es
+    subscription:
+      keys: 8d862d5aeb814ffea52d1cbc767ecf61, 61bcf1ea79034cf2a4d0b41b90ecb9cc
+spring:
+  datasource:
+    driverClassName: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@192.168.40.3:1521:dbsuarez
+    username: broker
+    password: suarezbrk
+    hikari:
+      maximum-pool-size: 5
+  jpa:
+    show-sql: false
+
+
+spring.mail:
+  host: smtp-relay.sendinblue.com
+  username: comunicados@segurossuarez.com
+  password: pWa6hsBvd8xkZU9M
+  port: 587
+  properties.mail:
+    transport.protocol: smtp
+    smtp:
+      auth: true
+      socketFactory.port: 587
+      socketFactory.class: javax.net.ssl.SSLSocketFactory
+      socketFactory.fallback: true
+      ssl.enable: false
+      starttls.enable: true
+

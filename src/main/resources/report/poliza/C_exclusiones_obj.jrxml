@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-09-19T13:55:49 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="C_exclusiones_obj" pageWidth="540" pageHeight="842" columnWidth="540" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="04d6f47f-ef41-4d1a-83a7-b0269f932991">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="cdCompania" class="java.lang.Long">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[new Long("1")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cdRamosCotizacion" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[new Long("135367")]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  u.CD_UBICACION,
+  ob.CD_OBJ_COTIZACION,
+  ex.DSC_EXCLUSION,
+  ex.OBS_EXC_NEGOCIO,
+  ob.DSC_OBJETO,
+  ex.ORD_IMPRESION,
+  u.DSC_UBICACION,
+  u.ITEM uItem,
+  ob.ITEM
+FROM BRK_T_EXCLUSIONES_NEGOCIO ex,
+  BRK_T_OBJ_COTIZACION ob,
+  BRK_T_RAMOS_COTIZACION rc,
+  BRK_T_UBICACION u
+WHERE rc.CD_COMPANIA = $P{cdCompania} 
+      AND rc.CD_COMPANIA = u.CD_COMPANIA
+      AND rc.CD_RAMO_COTIZACION = $P{cdRamosCotizacion} 
+      AND rc.CD_RAMO_COTIZACION = u.CD_RAMO_COTIZACION
+      AND u.CD_COMPANIA = ob.CD_COMPANIA
+      AND u.CD_UBICACION = ob.CD_UBICACION
+      AND ob.CD_COMPANIA = ex.CD_COMPANIA
+      AND ob.CD_OBJ_COTIZACION = ex.CD_OBJ_COTIZACION
+ORDER BY u.ITEM, ob.ITEM, ex.ORD_IMPRESION]]>
+	</queryString>
+	<field name="CD_UBICACION" class="java.math.BigDecimal"/>
+	<field name="CD_OBJ_COTIZACION" class="java.math.BigDecimal"/>
+	<field name="DSC_EXCLUSION" class="java.lang.String"/>
+	<field name="OBS_EXC_NEGOCIO" class="java.lang.String"/>
+	<field name="DSC_OBJETO" class="java.lang.String"/>
+	<field name="ORD_IMPRESION" class="java.math.BigDecimal"/>
+	<field name="DSC_UBICACION" class="java.lang.String"/>
+	<field name="UITEM" class="java.math.BigDecimal"/>
+	<field name="ITEM" class="java.math.BigDecimal"/>
+	<group name="cdUbicacion">
+		<groupExpression><![CDATA[$F{CD_UBICACION}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField pattern="">
+					<reportElement x="0" y="0" width="538" height="10" uuid="05790372-ce57-4030-ac5f-1f60eb632671"/>
+					<box>
+						<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="7" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{DSC_UBICACION}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement positionType="FixRelativeToBottom" x="0" y="10" width="200" height="10" uuid="5480f95a-a812-47a5-9786-b6cfabad203b">
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Top">
+                        <font fontName="DejaVu Sans" size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ITEM:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="cdObjCotizacion">
+		<groupExpression><![CDATA[$F{CD_OBJ_COTIZACION}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField pattern="">
+					<reportElement x="10" y="0" width="527" height="10" uuid="6e87045d-60e6-4d04-976e-313ceb90ca3c"/>
+					<box>
+						<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="7" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{DSC_OBJETO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement positionType="FixRelativeToBottom" x="10" y="10" width="189" height="10" uuid="42f03cc0-63a8-47b8-a4c9-b63a6fa6701e">
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Top">
+                        <font fontName="DejaVu Sans" size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[DESCRIPCIÓN:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<columnHeader>
+		<band height="25">
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="5" width="200" height="10" uuid="727632bd-f1d5-4cc7-8e7a-54b51c53f33b">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top">
+                    <font fontName="DejaVu Sans" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EXCLUSIONES POR ITEM:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="200" height="10" uuid="1559fe7d-66bd-489d-b850-97fe94415966">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top">
+                    <font fontName="DejaVu Sans" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UBICACION:]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField pattern="">
+				<reportElement x="20" y="0" width="508" height="10" uuid="0d0589da-9d9f-4258-b8c0-3ddfc565fe63"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["* "+$F{DSC_EXCLUSION}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="20" y="10" width="508" height="10" isRemoveLineWhenBlank="true" uuid="b050ff5c-a99b-4ce6-882c-0c5b3e402707"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{OBS_EXC_NEGOCIO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

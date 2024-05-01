@@ -1,0 +1,171 @@
+.home-assets {
+  --person-size-scale: 1;
+  --texture-size-scale: 1;
+
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+
+  .home-person {
+    z-index: 1;
+    left: 0;
+    bottom: 0;
+    width: auto;
+    height: calc(90% * var(--person-size-scale));
+    position: absolute;
+    aspect-ratio: 665 / 765;
+    pointer-events: none;
+
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(20px 3px 16px rgba(black, 0.15));
+    }
+  }
+
+  .home-texture {
+    z-index: 0;
+    left: 0;
+    bottom: 0;
+    width: auto;
+    height: calc(82% * var(--texture-size-scale));
+    position: absolute;
+    object-fit: contain;
+    aspect-ratio: 710 / 665;
+    transform: translateY(110px);
+    pointer-events: none;
+
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+  }
+}
+
+.sidebar-filter-gradient {
+  @include bg-filter($primary, 0.8, $gradient: linear-gradient(180deg, rgba(#000, 0), rgba(#000, 0.40)));
+}
+
+.home-aside {
+  --aside-width-scale: 1;
+
+  width: calc(rem(370px) * var(--aside-width-scale));
+  @include bg-filter($primary, 0.81, $mix: multiply, $z-index: 2);
+}
+
+.home-media-container {
+  overflow: hidden;
+
+  .media-content {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+.home-option {
+  --option-icon-scale: 1;
+  --option-text-scale: 1;
+
+  @include bg-filter(#010213, 0.4, before, $filter: blur(10px));
+
+  transition: border-color 0.2s ease;
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+
+  i {
+    font-size: calc(2.8rem * var(--option-icon-scale));
+  }
+
+  p {
+    font-size: calc(rem(16px) * var(--option-text-scale));
+  }
+
+  &:hover {
+    border: 1px solid $success;
+
+    i {
+      transition: color 0.2s ease;
+      color: $success;
+    }
+  }
+
+  &:root {
+    font-size: 10px;
+  }
+}
+
+@include media-breakpoint-down(xxl) {
+  .home-aside {
+    --aside-width-scale: 0.9;
+
+    &:root {
+      font-size: 12px;
+    }
+  }
+
+  .home-option {
+    --option-icon-scale: 0.8;
+    --option-text-scale: 0.8;
+  }
+
+  .home-text-container {
+    h2 {
+      font-size: 1.6rem;
+    }
+
+    .display-3 {
+      font-size: 3.5rem;
+    }
+  }
+}
+
+@include media-breakpoint-down(xl) {
+  .home-aside {
+    width: 100%;
+  }
+
+  .home-assets {
+    --person-size-scale: 1;
+    --texture-size-scale: 1;
+
+    .home-person {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .home-texture {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  .home-media-container .media-content {
+    height: 90px;
+  }
+
+  .home-option {
+    --option-icon-scale: 0.5;
+    --option-text-scale: 0.7;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .home-media-container .media-content {
+    height: 65px;
+  }
+
+  .home-option {
+    --option-icon-scale: 0.4;
+    --option-text-scale: 0.6;
+  }
+
+  .home-assets {
+    --person-size-scale: 0.95;
+    --texture-size-scale: 0.9;
+  }
+}

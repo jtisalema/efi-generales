@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-EfiWebApplication<efi-generales-main>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.tefisoft.efiweb.EfiWebApplication",
+            "projectName": "efi-generales-main",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

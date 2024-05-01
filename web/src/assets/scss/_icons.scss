@@ -1,0 +1,142 @@
+/*--------------------------------
+
+Nucleo icon font
+Generated using nucleoapp.com
+
+-------------------------------- */
+
+$uqai-font-path: "../fonts" !default;
+
+@font-face {
+  font-family: 'Nucleo';
+  src: url('#{$uqai-font-path}/Nucleo.eot');
+  src: url('#{$uqai-font-path}/Nucleo.eot') format('embedded-opentype'),
+  url('#{$uqai-font-path}/Nucleo.woff2') format('woff2'),
+  url('#{$uqai-font-path}/Nucleo.woff') format('woff'),
+  url('#{$uqai-font-path}/Nucleo.ttf') format('truetype'),
+}
+
+/* base class */
+.icon-uqai {
+  --icon-top-offset: 0.5;
+  --icon-size-multiplier: 1.4;
+
+  display: inline-block;
+  vertical-align: middle;
+  font-style: normal;
+  font-weight: normal;
+  font-family: 'Nucleo', sans-serif;
+  font-size: calc(1em * var(--icon-size-multiplier));
+  margin-top: calc(((1 - var(--icon-size-multiplier)) * 1em) * var(--icon-top-offset));
+  margin-bottom: calc(((1 - var(--icon-size-multiplier)) * 1em) * (1 - var(--icon-top-offset)));
+
+  color: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-uqai-normal {
+  --icon-top-offset: 0;
+  --icon-size-multiplier: 1;
+}
+
+/* size examples - relative units */
+.icon-uqai-sm {
+  --icon-size-multiplier: 1.2;
+}
+
+.icon-uqai-lg {
+  --icon-size-multiplier: 1.6;
+}
+
+/* rotate the icon infinitely */
+.icon-uqai-is-spinning {
+  animation: icon-uqai-spin 1s infinite linear;
+}
+
+@keyframes icon-uqai-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* transform */
+.icon-uqai-rotate-90 {
+  transform: rotate(90deg);
+}
+
+.icon-uqai-rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icon-uqai-rotate-270 {
+  transform: rotate(270deg);
+}
+
+.icon-uqai-flip-y {
+  transform: scaleY(-1);
+}
+
+.icon-uqai-flip-x {
+  transform: scaleX(-1);
+}
+
+/* icons */
+$icons: (
+        'video': 'ea02',
+        'ver': 'ea03',
+        'valor-reclamo': 'ea04',
+        'usuario': 'ea05',
+        'subir-archivo': 'ea06',
+        'siniestro-reportado': 'ea07',
+        'siniestro-general': 'ea08',
+        'regresar': 'ea09',
+        'pregunta': 'ea0a',
+        'polizas-contratantes': 'ea0b',
+        'polizas-asegurados': 'ea0c',
+        'poliza': 'ea0d',
+        'organizar': 'ea0e',
+        'notificacion': 'ea0f',
+        'menu': 'ea10',
+        'lista-siniestros-reportados': 'ea11',
+        'flecha-izquierda': 'ea12',
+        'flecha-derecha': 'ea13',
+        'flecha-arriba': 'ea14',
+        'flecha-abajo': 'ea15',
+        'filtros': 'ea16',
+        'estado-revisar': 'ea17',
+        'estado-rechazado': 'ea18',
+        'estado-devuelto': 'ea19',
+        'estado-aprobado': 'ea1a',
+        'enviar': 'ea1b',
+        'editar': 'ea1c',
+        'documentos': 'ea1d',
+        'crear-siniestro': 'ea1e',
+        'contrasena': 'ea1f',
+        'comentario': 'ea20',
+        'check-vacio': 'ea21',
+        'check': 'ea22',
+        'cerrar-sesion': 'ea23',
+        'cerrar': 'ea24',
+        'carga': 'ea25',
+        'borrar': 'ea26',
+        'ayuda': 'ea27',
+        'agregar': 'ea28',
+        'abrir-carpeta': 'ea29',
+        'estado_doc_adicional': 'ea2a',
+        'tipo_gasto': 'ea2b',
+        'icon_foto': 'ea2c',
+);
+
+@function unicode($str) {
+  @return unquote("\"\\#{$str}\"");
+}
+
+@each $name, $code in $icons {
+  .uqai-#{""+$name}::before {
+    content: unicode($code);
+  }
+}

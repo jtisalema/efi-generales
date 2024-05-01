@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-09-23T12:41:41 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="F_ubicacion" pageWidth="550" pageHeight="842" whenNoDataType="NoPages" columnWidth="550" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" uuid="66510cd1-3f0f-40bc-b5b7-504efe9ff325">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="cdCompania" class="java.lang.Long">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[new Long("1")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cdRamosCotizacion" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[new Long("135367")]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+  BRK_T_UBICACION.CD_RAMO_COTIZACION,
+  BRK_T_UBICACION.DSC_UBICACION,
+  BRK_T_UBICACION.CD_COMPANIA,
+  BRK_T_UBICACION.CD_UBICACION,
+  BRK_T_UBICACION.VAL_ASEGURADO,
+  NVL(BRK_T_UBICACION.TOT_ASE_ACTUAL, BRK_T_UBICACION.TOT_ASEGURADO) TOT_ASEGURADO,
+  BRK_T_UBICACION.TASA,
+  BRK_T_UBICACION.FACTOR,
+  BRK_T_UBICACION.VAL_PRIMA,
+  BRK_T_UBICACION.ITEM,
+  brk_t_ramos_cotizacion.fc_desde,
+  brk_t_ramos_cotizacion.fc_hasta,
+  F_NUM_VAL_ASEGURADO_UBC(BRK_T_UBICACION.CD_COMPANIA, BRK_T_UBICACION.CD_UBICACION, brk_t_ramos_cotizacion.fc_desde,
+                          brk_t_ramos_cotizacion.fc_hasta)           VAL_ASEG_UBC
+FROM BRK_T_UBICACION, brk_t_ramos_cotizacion
+WHERE BRK_T_UBICACION.Cd_Compania = brk_t_ramos_cotizacion.cd_compania
+      AND BRK_T_UBICACION.cd_ramo_cotizacion = brk_t_ramos_cotizacion.cd_ramo_cotizacion
+      AND (BRK_T_UBICACION.CD_COMPANIA = $P{cdCompania} )
+      AND (brk_t_ramos_cotizacion.CD_RAMO_COTIZACION = $P{cdRamosCotizacion}  )
+      AND brk_t_ubicacion.activo = 1
+      AND F_NUM_CONT_OBJ_ACT(BRK_T_UBICACION.CD_COMPANIA, BRK_T_UBICACION.CD_UBICACION, brk_t_ramos_cotizacion.fc_desde,
+                             brk_t_ramos_cotizacion.fc_hasta) > 0
+UNION
+SELECT DISTINCT
+  BRK_T_UBICACION.CD_RAMO_COTIZACION,
+  BRK_T_UBICACION.DSC_UBICACION,
+  BRK_T_UBICACION.CD_COMPANIA,
+  BRK_T_UBICACION.CD_UBICACION,
+  BRK_T_UBICACION.VAL_ASEGURADO,
+  NVL(BRK_T_UBICACION.TOT_ASE_ACTUAL, BRK_T_UBICACION.TOT_ASEGURADO) TOT_ASEGURADO,
+  BRK_T_UBICACION.TASA,
+  BRK_T_UBICACION.FACTOR,
+  BRK_T_UBICACION.VAL_PRIMA,
+  BRK_T_UBICACION.ITEM,
+  brk_t_ramos_cotizacion.fc_desde,
+  brk_t_ramos_cotizacion.fc_hasta,
+  F_NUM_VAL_ASEGURADO_UBC(BRK_T_UBICACION.CD_COMPANIA, BRK_T_UBICACION.CD_UBICACION, brk_t_ramos_cotizacion.fc_desde,
+                          brk_t_ramos_cotizacion.fc_hasta)           VAL_ASEG_UBC
+FROM BRK_T_UBICACION, brk_t_ramos_cotizacion /*, brk_t_obj_cotizacion             */
+WHERE BRK_T_UBICACION.Cd_Compania = brk_t_ramos_cotizacion.cd_compania
+      AND BRK_T_UBICACION.cd_ramo_cotizacion = brk_t_ramos_cotizacion.cd_ramo_cotizacion
+      AND (BRK_T_UBICACION.CD_COMPANIA = $P{cdCompania}  )
+      AND (brk_t_ramos_cotizacion.cd_ram_cot_ori =  $P{cdRamosCotizacion} )
+      AND brk_t_ubicacion.activo = 1
+      AND F_NUM_CONT_OBJ_ACT(BRK_T_UBICACION.CD_COMPANIA, BRK_T_UBICACION.CD_UBICACION, brk_t_ramos_cotizacion.fc_desde,
+                             brk_t_ramos_cotizacion.fc_hasta) > 0
+      AND BRK_T_UBICACION.cd_ubica_org IS NULL]]>
+	</queryString>
+	<field name="CD_RAMO_COTIZACION" class="java.lang.Long"/>
+	<field name="DSC_UBICACION" class="java.lang.String"/>
+	<field name="CD_COMPANIA" class="java.lang.Long"/>
+	<field name="CD_UBICACION" class="java.lang.Long"/>
+	<field name="VAL_ASEGURADO" class="java.math.BigDecimal"/>
+	<field name="TOT_ASEGURADO" class="java.math.BigDecimal"/>
+	<field name="TASA" class="java.math.BigDecimal"/>
+	<field name="FACTOR" class="java.math.BigDecimal"/>
+	<field name="VAL_PRIMA" class="java.math.BigDecimal"/>
+	<field name="ITEM" class="java.math.BigDecimal"/>
+	<field name="FC_DESDE" class="java.sql.Timestamp"/>
+	<field name="FC_HASTA" class="java.sql.Timestamp"/>
+	<field name="VAL_ASEG_UBC" class="java.math.BigDecimal"/>
+	<sortField name="ITEM"/>
+	<title>
+		<band height="15">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="2" width="90" height="10" uuid="36bcda06-7562-4db0-bec0-b366e70a299c"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+                    <font fontName="DejaVu Sans" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBJETO ASEGURADO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField pattern="">
+				<reportElement x="0" y="0" width="20" height="10" uuid="8bf25142-416d-489f-9e90-bbe8ee2c5272"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ITEM}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="20" y="0" width="340" height="10" uuid="0bba712e-c1a3-407a-b2ac-122331746e68"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DSC_UBICACION}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00">
+				<reportElement x="360" y="0" width="80" height="10" uuid="1b59124f-d71a-48b4-a936-977bb63943b9"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{VAL_ASEG_UBC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="470" y="0" width="48" height="10" uuid="938a2b31-7f76-435e-aa13-ef47ac8bd2dd"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TASA}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="10" y="10" width="540" height="10" isRemoveLineWhenBlank="true" uuid="9726375e-5092-46d6-a5b7-48d13f668b53"/>
+				<subreportParameter name="cdCompania">
+					<subreportParameterExpression><![CDATA[$F{CD_COMPANIA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cdUbicacion">
+					<subreportParameterExpression><![CDATA[$F{CD_UBICACION}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="query">
+					<subreportParameterExpression><![CDATA[" (o.CD_UBICACION IN (SELECT CD_UBICACION FROM brk_t_ubicacion WHERE (CD_UBICACION ="+ $F{CD_UBICACION}+" OR cd_ubica_org ="+$F{CD_UBICACION}+") AND cd_compania = "+$F{CD_COMPANIA}+"))"]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["report/poliza/F_objeto.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

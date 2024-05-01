@@ -1,0 +1,57 @@
+version: '3'
+services:
+  efi-vam-server:
+    image: registry.gitlab.com/wcbrokers/segusuarez/efi-vam/server:${VERSION_VAM}
+    restart: unless-stopped
+    container_name: efi-vam-server
+    environment:
+      - "SPRING_PROFILES_ACTIVE=${SPRING_PROFILE}"
+      - "APP_MAIL=${APP_MAIL}"
+    volumes:
+      - ${DATA_PATH}/images:/opt/public/images/efi
+
+  efi-generales-server:
+    image: registry.gitlab.com/wcbrokers/segusuarez/efi-generales/server:${VERSION_GENERALES}
+    restart: unless-stopped
+    container_name: efi-generales-server
+    environment:
+      - "SPRING_PROFILES_ACTIVE=${SPRING_PROFILE}"
+      - "APP_MAIL=${APP_MAIL}"
+      - "APP_COMPUTER_VISION_URL=${COMPUTER_VISION_URL}"
+      - "APP_COMPUTER_VISION_SUBSCRIPTION_KEYS=${SUBSCRIPTION_KEYS}"
+    volumes:
+      - ${DATA_PATH}/images:/opt/public/images/efi
+      - /data/efi-docs:/opt/public/images/efi/docs
+
+  efi-generales-ui:
+    image: registry.gitlab.com/wcbrokers/segusuarez/efi-generales/web:${VERSION_GENERALES}
+    restart: unless-stopped
+    container_name: efi-generales-ui
+    depends_on:
+      - efi-generales-server
+    volumes:
+      - ${DATA_PATH}/proxy/portal.conf:/etc/nginx/conf.d/portal.conf
+      - ${DATA_PATH}/proxy/minio.conf:/etc/nginx/conf.d/minio.conf
+    ports:
+      - "80:80"
+
+  efi-gateway-server:
+    image: registry.gitlab.com/wcbrokers/segusuarez/efi-api-gateway/server:${VERSION_GATEWAY}
+    restart: unless-stopped
+    container_name: efi-gateway-server
+    environment:
+      - "SPRING_PROFILES_ACTIVE=${SPRING_PROFILE}"
+
+  efi-minio-server:
+    image: quay.io/minio/minio:RELEASE.2022-10-21T22-37-48Z
+    command: server /data --console-address ":9001"
+    container_name: efi-minio-server
+    ports:
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: uqai
+      MINIO_ROOT_PASSWORD: uqai2023-minio
+      MINIO_SERVER_URL: https://cdn.segurossuarez.com
+      MINIO_BROWSER_REDIRECT_URL: http://cdnconsole.segurossuarez.com:9001
+    volumes:
+      - ${DATA_PATH}/minio:/data

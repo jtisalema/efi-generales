@@ -1,0 +1,12 @@
+@use "sass:math";
+
+$browser-font-size: 16px;
+$template-font-size: 14px;
+
+@function rem($value) {
+  @return math.div($value, $browser-font-size) * 1rem;
+}
+
+@function em($value) {
+  @return math.div($value, $template-font-size) * 1em;
+}

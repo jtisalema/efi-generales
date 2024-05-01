@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-09-23T12:39:28 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="F_objeto" pageWidth="540" pageHeight="842" columnWidth="538" leftMargin="2" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" uuid="8efec5f6-ed7a-4c22-9c43-8c704756e120">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="cdUbicacion" class="java.lang.Long"/>
+	<parameter name="cdCompania" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[new Long("1")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cdRamoCotizacion" class="java.lang.Long"/>
+	<parameter name="query" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+  o.DSC_OBJETO,
+  o.VAL_ASEGURADO,
+  o.CD_OBJ_COTIZACION,
+  o.VAL_PRIMA,
+  o.FACTOR,
+  o.ITEM,
+  o.OBS_OBJETO,
+  o.CD_COMPANIA,
+  to_number(o.TASA)                     TASA,
+  o.TOT_ASEGURADO,
+  NVL(o.TOT_ASEGURADO, o.VAL_ASEGURADO) TOT_ASEGURADO1,
+  o.CD_UBICACION
+FROM BRK_T_OBJ_COTIZACION o, brk_t_ramos_cotizacion rc, brk_t_cotizaciones c
+WHERE c.CD_COMPANIA = rc.CD_COMPANIA
+      AND c.cd_cotizacion = rc.cd_cotizacion
+      AND o.CD_COMPANIA = rc.CD_COMPANIA
+      AND o.cd_ramo_cotizacion = rc.cd_ramo_cotizacion
+      AND c.tipo NOT LIKE '%CANCEL%'
+      AND c.tipo NOT LIKE '%AJUSTE%'
+      AND c.tipo NOT LIKE '%ANUL%'
+      AND o.DSC_OBJETO <> 'R.A.S.A.'
+      AND o.ACTIVO = 1
+      AND o.CD_COMPANIA = $P{cdCompania}
+      AND $P!{query} 
+ORDER BY o.CD_OBJ_COTIZACION ASC]]>
+	</queryString>
+	<field name="DSC_OBJETO" class="java.lang.String"/>
+	<field name="VAL_ASEGURADO" class="java.math.BigDecimal"/>
+	<field name="CD_OBJ_COTIZACION" class="java.lang.Long"/>
+	<field name="VAL_PRIMA" class="java.math.BigDecimal"/>
+	<field name="FACTOR" class="java.math.BigDecimal"/>
+	<field name="ITEM" class="java.math.BigDecimal"/>
+	<field name="OBS_OBJETO" class="java.lang.String"/>
+	<field name="CD_COMPANIA" class="java.lang.Long"/>
+	<field name="TASA" class="java.math.BigDecimal"/>
+	<field name="TOT_ASEGURADO" class="java.math.BigDecimal"/>
+	<field name="TOT_ASEGURADO1" class="java.math.BigDecimal"/>
+	<field name="CD_UBICACION" class="java.math.BigDecimal"/>
+	<title>
+		<band height="10" splitType="Stretch">
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="90" height="10" uuid="b95004b1-3012-4f84-a25f-0f1f79ecc114"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+                    <font fontName="DejaVu Sans" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ITEM ASEGURADO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="32" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField pattern="">
+				<reportElement x="0" y="0" width="15" height="10" uuid="c5bb6018-5ea3-4a12-9758-36190066fd63">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ITEM}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="15" y="0" width="315" height="10" uuid="241e0dda-ed91-4a4d-bf58-e5ea01293773"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DSC_OBJETO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00">
+				<reportElement x="330" y="0" width="90" height="10" uuid="70f66f38-ce4b-4be1-8bb8-c29c082fc4bc"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TOT_ASEGURADO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="470" y="0" width="48" height="10" uuid="37144e0e-13b3-4606-b154-34c4630f8374"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TASA}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="12" width="537" height="10" isRemoveLineWhenBlank="true" uuid="68a3e2c4-2578-4d30-8b95-b0572757d7cf"/>
+				<subreportParameter name="cdCompania">
+					<subreportParameterExpression><![CDATA[$F{CD_COMPANIA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cdObjCotizacion">
+					<subreportParameterExpression><![CDATA[$F{CD_OBJ_COTIZACION}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["report/poliza/F_caracteristicas.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="22" width="537" height="10" isRemoveLineWhenBlank="true" uuid="77ecaaca-9d2d-4597-bf14-3c89bc90beb4"/>
+				<subreportParameter name="cdCompania">
+					<subreportParameterExpression><![CDATA[$F{CD_COMPANIA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cdObjCotizacion">
+					<subreportParameterExpression><![CDATA[$F{CD_OBJ_COTIZACION}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["report/poliza/F_subobjeto.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

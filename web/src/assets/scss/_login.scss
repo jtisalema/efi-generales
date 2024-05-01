@@ -1,0 +1,80 @@
+.login-page {
+  min-height: rem(660px);
+}
+
+.form-login {
+  .form-control {
+    background: transparent !important;
+    text-align: center;
+    font-style: italic;
+    color: $white;
+    border-top-width: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-radius: unset;
+    border-bottom: 1px solid #ffec0f;
+
+    &:focus {
+      box-shadow: none;
+    }
+
+    &::placeholder {
+      color: rgba($white, 0.8);
+    }
+  }
+}
+
+.login-logo-container {
+  width: rem(330px);
+}
+
+.login-filter-glass {
+  @include bg-filter(#010213, 0.24, before, $filter: blur(10px));
+}
+
+.bg-texture {
+  --texture-width-scale: 1;
+  --texture-height-scale: 1;
+  --texture-offset-x-scale: 1;
+  --texture-offset-y-scale: 1;
+
+  &::before {
+    content: '';
+    top: calc(50px * var(--texture-offset-y-scale));
+    left: calc(50% - (175px * var(--texture-offset-x-scale)));
+    display: block;
+    position: absolute;
+    width: calc(420px * var(--texture-width-scale));
+    height: calc(410px * var(--texture-height-scale));
+    transform: translate(-50%, -50%);
+    background-image: url("../images/plataforma_textura1.svg");
+    @include bg-img(contain);
+  }
+
+  &::after {
+    content: '';
+    bottom: calc(-20px * (1 - var(--texture-offset-y-scale)));
+    left: calc(50% + (10px * var(--texture-offset-x-scale)));
+    display: block;
+    position: absolute;
+    width: calc(622px * var(--texture-width-scale));
+    height: calc(596px * var(--texture-height-scale));
+    transform: translate(-50%, 50%);
+    background-image: url("../images/plataforma_textura1.svg");
+    @include bg-img(contain);
+  }
+}
+
+
+@include media-breakpoint-down(sm) {
+  .bg-texture {
+    --texture-width-scale: 0.65;
+    --texture-height-scale: 0.65;
+    --texture-offset-x-scale: 0.5;
+    --texture-offset-y-scale: 0.1;
+  }
+
+  .login-logo-container {
+    width: rem(300px);
+  }
+}

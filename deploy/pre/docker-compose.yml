@@ -1,0 +1,70 @@
+version: '3'
+services:
+  efi-vam-server:
+    image: registry.gitlab.com/wcbrokers/segusuarez/efi-vam/server:${VERSION_VAM}
+    restart: unless-stopped
+    container_name: efi-vam-server
+    environment:
+      - "SPRING_PROFILES_ACTIVE=${SPRING_PROFILE}"
+      - "APP_MAIL=${TEMP_EMAIL}"
+
+    volumes:
+      - ${DATA_PATH}:/opt/public/images/efi
+
+  efi-generales-server:
+    image: registry.gitlab.com/wcbrokers/segusuarez/efi-generales/server:${VERSION_GENERALES}
+    restart: unless-stopped
+    container_name: efi-generales-server
+    environment:
+      - "SPRING_PROFILES_ACTIVE=${SPRING_PROFILE}"
+      - "APP_URL=http://192.168.40.19"
+      - "APP_MAIL=${TEMP_EMAIL}"
+      #- "APP_COMPUTER_VISION_URL=https://www.666.com/make-request"
+    volumes:
+      - /opt/efi:/opt/public/images/efi
+
+  efi-generales-ui:
+    image: registry.gitlab.com/wcbrokers/segusuarez/efi-generales/web:${VERSION_GENERALES}
+    restart: unless-stopped
+    container_name: efi-generales-ui
+    depends_on:
+      - efi-generales-server
+    volumes:
+      - ${DATA_PATH}/proxy/portal.conf:/etc/nginx/conf.d/portal.conf
+    ports:
+      - "80:80"
+
+  efi-gateway-server:
+    image: registry.gitlab.com/wcbrokers/segusuarez/efi-api-gateway/server:${VERSION_GATEWAY}
+    restart: unless-stopped
+    container_name: efi-gateway-server
+    environment:
+      - "SPRING_PROFILES_ACTIVE=${SPRING_PROFILE}"
+      - "APP_PROD=true"
+
+  efi-oracle-db:
+    image: gvenzl/oracle-xe:11
+    restart: unless-stopped
+    container_name: efi-oracle-db
+    environment:
+      ORACLE_PASSWORD: broker
+    ports:
+      - "1521:1521"
+    volumes:
+      - ${DATA_PATH}/oracle:/u01/app/oracle/oradata
+      - ${DATA_PATH}/oracle/backup:/opt/backup
+
+  efi-minio-server:
+    image: quay.io/minio/minio:RELEASE.2022-10-21T22-37-48Z
+    command: server /data --console-address ":9001"
+    container_name: efi-minio-server
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      MINIO_ROOT_USER: uqai
+      MINIO_ROOT_PASSWORD: uqai2023-minio
+      #MINIO_SERVER_URL: https://cdn.segsuarez.com
+      #MINIO_BROWSER_REDIRECT_URL: http://cdnconsole.segsuarez.com:8080
+    volumes:
+      - ${DATA_PATH}/minio:/data

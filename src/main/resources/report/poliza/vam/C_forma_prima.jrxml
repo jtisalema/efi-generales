@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-09-26T09:16:54 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="C_forma_prima" pageWidth="540" pageHeight="842" columnWidth="540" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="04d6f47f-ef41-4d1a-83a7-b0269f932991">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="cdCompania" class="java.lang.Long">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[new Long("1")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cdUbicacion" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[new Long("135367")]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  f.CD_FORMA_PRIMA,
+  b.DSC_RUBRO,
+  f.VAL_FORMA_PRIMA,
+  f.PERIODO,
+  f.VAL_TARJETA
+FROM BRK_T_FORMA_PRIMA f LEFT JOIN BRK_T_RUBROS b ON f.CD_COMPANIA = b.CD_COMPANIA AND f.CD_RUBRO = b.CD_RUBRO
+WHERE f.CD_COMPANIA =  $P{cdCompania} AND f.CD_UBICACION = $P{cdUbicacion}
+ORDER BY f.CD_FORMA_PRIMA]]>
+	</queryString>
+	<field name="CD_FORMA_PRIMA" class="java.lang.Long"/>
+	<field name="DSC_RUBRO" class="java.lang.String"/>
+	<field name="VAL_FORMA_PRIMA" class="java.math.BigDecimal"/>
+	<field name="PERIODO" class="java.lang.Integer"/>
+	<field name="VAL_TARJETA" class="java.math.BigDecimal"/>
+	<title>
+		<band height="15">
+			<staticText>
+				<reportElement x="0" y="5" width="200" height="10" uuid="787aa748-6584-4d34-b3f8-1edb48ebaf97">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineColor="#D4CFCF"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font fontName="DejaVu Sans" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FORMA DE PRIMA:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="10">
+			<staticText>
+				<reportElement mode="Opaque" x="200" y="0" width="100" height="10" backcolor="#F0F0F0" uuid="8b1af372-e4b8-4158-8fb7-fb52f1c7ad8e">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineColor="#D4CFCF"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="DejaVu Sans" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="200" height="10" backcolor="#F0F0F0" uuid="254409ce-7476-4722-a133-78bbeb5c32d1"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#D4CFCF"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="DejaVu Sans" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Forma]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="300" y="0" width="120" height="10" backcolor="#F0F0F0" uuid="86289e9b-0c99-4514-a2a5-80b06d980103">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineColor="#D4CFCF"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="DejaVu Sans" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período Prima]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="420" y="0" width="100" height="10" backcolor="#F0F0F0" uuid="e0178ab6-a801-4f25-8ac1-a6ac50ca7e7f">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineColor="#D4CFCF"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#D4CFCF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="DejaVu Sans" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo Tarjeta]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField pattern="">
+				<reportElement x="0" y="0" width="200" height="10" uuid="0d0589da-9d9f-4258-b8c0-3ddfc565fe63"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.025" lineStyle="Solid" lineColor="#ADAAAA"/>
+					<leftPen lineWidth="0.025" lineStyle="Solid" lineColor="#ADAAAA"/>
+					<bottomPen lineWidth="0.025" lineStyle="Solid" lineColor="#ADAAAA"/>
+					<rightPen lineWidth="0.025" lineStyle="Solid" lineColor="#ADAAAA"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DSC_RUBRO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="300" y="0" width="120" height="10" isRemoveLineWhenBlank="true" uuid="b050ff5c-a99b-4ce6-882c-0c5b3e402707"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.025" lineStyle="Solid" lineColor="#ADAAAA"/>
+					<leftPen lineWidth="0.025" lineStyle="Solid" lineColor="#ADAAAA"/>
+					<bottomPen lineWidth="0.025" lineStyle="Solid" lineColor="#ADAAAA"/>
+					<rightPen lineWidth="0.025" lineStyle="Solid" lineColor="#ADAAAA"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO}==1?"MENSUAL":($F{PERIODO}==2?"BIMENSUAL"	:($F{PERIODO}==3?"TRIMESTRAL":"SEMESTRAL"))]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="200" y="0" width="100" height="10" uuid="441cfb29-aefd-4ff6-a4f1-ff34598468d4"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.025" lineStyle="Solid" lineColor="#ADAAAA"/>
+					<leftPen lineWidth="0.025" lineStyle="Solid" lineColor="#ADAAAA"/>
+					<bottomPen lineWidth="0.025" lineStyle="Solid" lineColor="#ADAAAA"/>
+					<rightPen lineWidth="0.025" lineStyle="Solid" lineColor="#ADAAAA"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{VAL_FORMA_PRIMA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="420" y="0" width="100" height="10" uuid="ab45f532-c72c-4327-8346-315f82b9996d">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.025" lineStyle="Solid" lineColor="#ADAAAA"/>
+					<leftPen lineWidth="0.025" lineStyle="Solid" lineColor="#ADAAAA"/>
+					<bottomPen lineWidth="0.025" lineStyle="Solid" lineColor="#ADAAAA"/>
+					<rightPen lineWidth="0.025" lineStyle="Solid" lineColor="#ADAAAA"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{VAL_TARJETA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

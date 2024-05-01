@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-09-21T09:15:56 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="C_deducibles_ramo" pageWidth="540" pageHeight="842" columnWidth="540" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="04d6f47f-ef41-4d1a-83a7-b0269f932991">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="cdCompania" class="java.lang.Long">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[new Long("1")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cdRamosCotizacion" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[new Long("135367")]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  d.CD_DEDUCIBLE,
+  d.PCT_V_ASEG,
+  d.PCT_RECLAMO,
+  d.VAL_MINIMO,
+  d.VAL_FIJO,
+  d.OBS_DEDUCIBLE
+FROM BRK_T_DEDUCIBLES d
+WHERE d.CD_RAMO_COTIZACION = $P{cdRamosCotizacion}
+      AND d.CD_COMPANIA =  $P{cdCompania}
+      AND d.ACTIVO = 1]]>
+	</queryString>
+	<field name="CD_DEDUCIBLE" class="java.math.BigDecimal"/>
+	<field name="PCT_V_ASEG" class="java.math.BigDecimal"/>
+	<field name="PCT_RECLAMO" class="java.math.BigDecimal"/>
+	<field name="VAL_MINIMO" class="java.math.BigDecimal"/>
+	<field name="VAL_FIJO" class="java.math.BigDecimal"/>
+	<field name="OBS_DEDUCIBLE" class="java.lang.String"/>
+	<variable name="Variable_1" class="java.lang.String"/>
+	<columnHeader>
+		<band height="15">
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="190" height="10" uuid="47544e1d-1c18-4975-94f4-26f9ce038c78">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top">
+                    <font fontName="DejaVu Sans" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEDUCIBLES DEL RAMO:]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="10" y="0" width="520" height="10" uuid="0d0589da-9d9f-4258-b8c0-3ddfc565fe63"/>
+				<box>
+					<pen lineWidth="0.025" lineColor="#ADAAAA"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{PCT_RECLAMO}==null?"":(FIXED($F{PCT_RECLAMO},2)+"% del valor del siniestro,  "))+
+($F{PCT_V_ASEG}==null?"":("Mínimo "+FIXED($F{PCT_V_ASEG},2)+"% del valor asegurado,  "))+
+($F{VAL_MINIMO}==null?"":("Mínimo "+FIXED($F{VAL_MINIMO},2)+",  "))+
+($F{VAL_FIJO}==null?"":(FIXED($F{VAL_FIJO},2)+" como valor fijo,  "))+
+($F{OBS_DEDUCIBLE}==null?"":$F{OBS_DEDUCIBLE})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

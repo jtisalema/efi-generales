@@ -1,0 +1,33 @@
+app:
+  name: segusuarez
+  broker: Seguros Suarez
+  prod: false
+  url: https://ss.jedai.group
+  minio:
+    url: http://192.168.40.19:9000
+    accessKey: uqai
+    secretKey: uqai2023-minio
+  factura-electronica:
+    url: https://factura.stpfdigital.com/api/sri/comprobante
+
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@efi-oracle-db:1521:XE
+  jpa:
+    show-sql: false
+
+spring.mail:
+  cc: cristianpg14@gmail.com
+  host: smtp-relay.sendinblue.com
+  username: comunicados@segurossuarez.com
+  password: pWa6hsBvd8xkZU9M
+  port: 587
+  properties.mail:
+    transport.protocol: smtp
+    smtp:
+      auth: true
+      socketFactory.port: 587
+      socketFactory.class: javax.net.ssl.SSLSocketFactory
+      socketFactory.fallback: true
+      ssl.enable: false
+      starttls.enable: true

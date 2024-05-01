@@ -1,0 +1,91 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id "org.sonarqube" version "3.5.0.2730"
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+version = '2.4.0'
+sourceCompatibility = 11
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://jaspersoft.jfrog.io/jaspersoft/jr-ce-releases" }
+    maven { url "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts" }
+}
+
+configurations {
+    providedRuntime
+    providedCompile
+}
+
+processResources {
+    exclude '*.jasper'
+}
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    implementation('org.springframework.boot:spring-boot-starter-mail')
+    implementation('org.springframework.boot:spring-boot-starter-security')
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
+    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hibernate5', version: '2.9.7'
+    implementation("com.oracle.database.jdbc:ojdbc8:18.3.0.0")
+    implementation group: 'io.minio', name: 'minio', version: '8.3.4'
+    implementation 'com.squareup.okhttp3:okhttp:4.8.1'
+    implementation 'org.springframework:spring-mock:2.0.8'
+
+    //swagger
+    implementation("io.springfox:springfox-swagger2:2.9.2")
+    implementation("io.springfox:springfox-swagger-ui:2.9.2")
+
+
+    //web
+    implementation('org.apache.commons:commons-lang3:3.5')
+    implementation group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.18.1'
+    implementation group: 'net.sf.jasperreports', name: 'jasperreports-functions', version: '6.18.1'
+    implementation group: 'net.sf.jasperreports', name: 'jasperreports-fonts', version: '6.18.1'
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.12.1'
+
+    //others
+    compileOnly('org.projectlombok:lombok')
+    annotationProcessor('org.projectlombok:lombok')
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.8.0'
+    //Cache2k
+    implementation group: 'org.cache2k', name: 'cache2k-core', version: '2.0.0.Final'
+    implementation group: 'org.cache2k', name: 'cache2k-api', version: '2.0.0.Final'
+    implementation group: 'org.cache2k', name: 'cache2k-addon', version: '2.0.0.Final'
+
+    //excel
+    implementation group: 'org.apache.poi', name: 'poi', version: '4.1.2'
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
+
+    // tika (documents)
+    // https://mvnrepository.com/artifact/org.apache.tika/tika-parsers
+    implementation group: 'org.apache.tika', name: 'tika-parser-pdf-module', version: '2.7.0'
+    // https://mvnrepository.com/artifact/org.apache.tika/tika-parsers-standard-package
+    implementation group: 'org.apache.tika', name: 'tika-parsers-standard-package', version: '2.7.0'
+    // https://mvnrepository.com/artifact/org.apache.tika/tika-core
+    implementation group: 'org.apache.tika', name: 'tika-core', version: '2.7.0'
+    // https://mvnrepository.com/artifact/net.sf.cssbox/pdf2dom
+    implementation group: 'net.sf.cssbox', name: 'pdf2dom', version: '2.0.3'
+
+
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+    implementation 'com.fasterxml.jackson.module:jackson-module-jaxb-annotations'
+
+    // https://mvnrepository.com/artifact/com.jamesmurty.utils/java-xmlbuilder
+    implementation 'com.jamesmurty.utils:java-xmlbuilder:1.3'
+
+
+}
+tasks.named('test') {
+    useJUnitPlatform()
+}
