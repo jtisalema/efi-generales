@@ -54,8 +54,8 @@ public class DocumentoDigitalService {
     private static final String ESTADO = "estado";
     private static final String CD_ARCHIVO = "cdArchivo";
     private static final String COMPROBANTE = "comprobante";
+    private static final String NOMBRETIPOARCHIVO = "nmDocumento";
     private static final String JSON_EXTENSION = ".json";
-
 
     public DocumentoDigital convertValue(ObjectNode item) {
         try {
@@ -73,7 +73,8 @@ public class DocumentoDigitalService {
 
     public DocumentoDigital saveDocumentAndFile(ObjectNode item, MultipartFile file, boolean isUser) {
 
-        if (file != null) fileProcessService.isADocumentReadable(file, item);
+        if (file != null)
+            fileProcessService.isADocumentReadable(file, item);
 
         var documentoDigital = this.convertValue((ObjectNode) item.path(DOCUMENTO_DIGITAL));
         var isMedicinaContinua = item.path("reqFecha").asBoolean();
@@ -82,7 +83,8 @@ public class DocumentoDigitalService {
         var detalleDocumento = documentoDigital.getDetalleDocumento();
         var cdCobertura = documentoDigital.getCdCobertura();
         try {
-            this.handleDocumentoDigital(item, documentoDigital, file);
+            var nombreDocumento = item.path(NOMBRETIPOARCHIVO).asText().trim().replaceAll("\\s+", "");
+            this.handleDocumentoDigital(item, documentoDigital, file, nombreDocumento);
             this.handleEstado(documentoDigital, isUser);
             documentoDigitalRepository.save(documentoDigital);
             var tipo = ObjectUtils.isEmpty(documentoDigital.getTipo()) ? "" : documentoDigital.getTipo().toUpperCase();
@@ -111,9 +113,11 @@ public class DocumentoDigitalService {
     public void saveComprobanteToMinio(ObjectNode item, DocumentoDigital documentoDigital) {
         try {
             var pathFile = documentoDigital.getPathFile();
-            if (pathFile == null || !item.hasNonNull(COMPROBANTE)) return;
+            if (pathFile == null || !item.hasNonNull(COMPROBANTE))
+                return;
             var lastIndex = pathFile.lastIndexOf("/");
-            if (lastIndex <= 1) return;
+            if (lastIndex <= 1)
+                return;
             this.saveJsonToMinio(item.path(COMPROBANTE), pathFile);
         } catch (Exception ex) {
             log.error("Error guardando el comprobante: " + ex.getMessage());
@@ -138,7 +142,8 @@ public class DocumentoDigitalService {
         var documentosDigitales = new ArrayList<DocumentoDigital>();
 
         items.forEach(itemJson -> {
-            if (itemJson.isEmpty()) itemJson = objectMapper.createObjectNode();
+            if (itemJson.isEmpty())
+                itemJson = objectMapper.createObjectNode();
             var itemNode = (ObjectNode) itemJson;
             var isDeleteNeeded = itemNode.path(DOCUMENTO_DIGITAL).path(ESTADO).asText().equalsIgnoreCase(POR_ELIMINAR);
             DocumentoDigital documentoDigital;
@@ -155,7 +160,8 @@ public class DocumentoDigitalService {
     }
 
     public MultipartFile findMultipartFileByNameAndSize(ObjectNode item, List<MultipartFile> files) {
-        if (ObjectUtils.isEmpty(files)) return null;
+        if (ObjectUtils.isEmpty(files))
+            return null;
         var nombre = item.path(DOCUMENTO_DIGITAL).path("nombre").asText();
         var size = item.path(DOCUMENTO_DIGITAL).path("tamanio").asLong();
         return files.stream()
@@ -173,15 +179,18 @@ public class DocumentoDigitalService {
     }
 
     /**
-     * Determina el FileType de archivo de un archivo MultipartFile basado en su mimetype,
-     * a futuro se podria considerar tambien la extension del archivo para archivos un un mimetype especiales
+     * Determina el FileType de archivo de un archivo MultipartFile basado en su
+     * mimetype,
+     * a futuro se podria considerar tambien la extension del archivo para archivos
+     * un un mimetype especiales
      *
      * @param archivo Archivo a determinar su FileType
      * @return FileType del archivo
      */
     private DocumentoDigitalEnum fileTypeFromFile(MultipartFile archivo) {
         var contentType = archivo.getContentType();
-        if (contentType == null) return DocumentoDigitalEnum.UNKNOWN;
+        if (contentType == null)
+            return DocumentoDigitalEnum.UNKNOWN;
         var mime = contentType.toLowerCase();
         var type = DocumentoDigitalEnum.FILE;
         if (mime.contains("image")) {
@@ -195,7 +204,8 @@ public class DocumentoDigitalService {
     }
 
     /**
-     * Normaliza el texto del nombre de un archivo quitando simbolos y caracteres especiales
+     * Normaliza el texto del nombre de un archivo quitando simbolos y caracteres
+     * especiales
      * y recota la dimension de caracteres del nombre
      *
      * @param filename texto a normalizar
@@ -212,13 +222,14 @@ public class DocumentoDigitalService {
                 .trim() // eliminar espacios al inicio y final
                 .replaceAll("[^A-Za-z0-9_\\-]", ""); // eliminar caracteres especiales
         if (normalized.length() > 50) {
-            normalized = normalized.substring(0, 50);  // recorta el nombre del archivo a maximo 50 caracteres
+            normalized = normalized.substring(0, 50); // recorta el nombre del archivo a maximo 50 caracteres
         }
         return normalized + "." + extension;
     }
 
-    public void saveFileToMinio(DocumentoDigital documentoDigital, MultipartFile file) {
-        if (ObjectUtils.isEmpty(file)) return;
+    public void saveFileToMinio(DocumentoDigital documentoDigital, MultipartFile file, String nombreArchivo) {
+        if (ObjectUtils.isEmpty(file))
+            return;
 
         var type = this.fileTypeFromFile(file);
         var originalFileName = file.getOriginalFilename();
@@ -228,13 +239,23 @@ public class DocumentoDigitalService {
         String mime = file.getContentType();
         var cdArchivo = documentoDigital.getCdArchivo();
 
-        String uri = String.format("%s/%s/%s/%s.%s",
-                documentoDigital.getCdCliente(),
-                "SINIESTRO",
-                documentoDigital.getCdCompania(),
-                (cdArchivo == null ? id : cdArchivo) + id,
-                fileExtension);
-
+        String uri = "";
+        if (nombreArchivo.isEmpty() || nombreArchivo.isBlank())
+            uri = String.format("%s/%s/%s/%s.%s",
+                    documentoDigital.getCdCliente(),
+                    "SINIESTRO",
+                    documentoDigital.getCdCompania(),
+                    (cdArchivo == null ? id : cdArchivo) + id,
+                    fileExtension);
+        else {
+            uri = String.format("%s/%s/%s/%s%s.%s",
+                    documentoDigital.getCdCliente(),
+                    "SINIESTRO",
+                    documentoDigital.getCdCompania(),
+                    nombreArchivo.replaceAll("\\.", "_"),
+                    RandomStringUtils.randomNumeric(5).toLowerCase(),
+                    fileExtension);
+        }
         externalStorageSrv.store(uri, file);
         var prevFile = documentoDigital.getPathFile();
         documentoDigital.setNombre(normalizedFilename);
@@ -245,13 +266,15 @@ public class DocumentoDigitalService {
     }
 
     public void deleteAttachmentFiles(String pathFile) {
-        if (ObjectUtils.isEmpty(pathFile)) return;
+        if (ObjectUtils.isEmpty(pathFile))
+            return;
         var jsonFile = pathFile + JSON_EXTENSION;
         externalStorageSrv.delete(pathFile);
         externalStorageSrv.delete(jsonFile);
     }
 
-    public void handleDocumentoDigital(ObjectNode item, DocumentoDigital documentoDigital, MultipartFile file) {
+    public void handleDocumentoDigital(ObjectNode item, DocumentoDigital documentoDigital, MultipartFile file,
+            String nombreArchivo) {
         try {
             Integer cdCliente = item.path("cdCliente").asInt();
             var cdCompania = item.path("cdCompania").asInt(1);
@@ -269,7 +292,7 @@ public class DocumentoDigitalService {
             documentoDigital.setCdRamo(cdRamo);
             documentoDigital.setPoliza(poliza);
             documentoDigital.setActivo(true);
-            this.saveFileToMinio(documentoDigital, file);
+            this.saveFileToMinio(documentoDigital, file, nombreArchivo);
             this.saveComprobanteToMinio(item, documentoDigital);
         } catch (StorageException exception) {
             log.error("No se pudo guardar el archivo: " + exception.getMessage());
@@ -300,7 +323,8 @@ public class DocumentoDigitalService {
         }
     }
 
-    //recibo la lista de archivos que voy a buscar y con esto genero la url para acceder a los documentos.
+    // recibo la lista de archivos que voy a buscar y con esto genero la url para
+    // acceder a los documentos.
     public DocumentoDigital generarUrl(DocumentoDigital documentoDigital) {
         Map<String, String> headers = new HashMap<>();
         try {
@@ -325,7 +349,8 @@ public class DocumentoDigitalService {
         } catch (Exception ex) {
             log.error("Error en deleteFile :: " + ex.getMessage());
         }
-        return DocumentoDigital.builder().cdArchivo(null).activo(docDigital.getActivo()).cdCobertura(docDigital.getCdCobertura())
+        return DocumentoDigital.builder().cdArchivo(null).activo(docDigital.getActivo())
+                .cdCobertura(docDigital.getCdCobertura())
                 .cdDocSiniestro(docDigital.getCdDocSiniestro()).cdSdocSiniestro(docDigital.getCdSdocSiniestro())
                 .tipo(docDigital.getTipo()).numGrupo(docDigital.getNumGrupo()).orden(docDigital.getOrden())
                 .build();
@@ -347,18 +372,22 @@ public class DocumentoDigitalService {
     }
 
     public void deleteAllByCdArchivoIn(List<Integer> cdsArchivos) {
-        if (ObjectUtils.isEmpty(cdsArchivos)) return;
+        if (ObjectUtils.isEmpty(cdsArchivos))
+            return;
         documentoDigitalRepository.deleteAllByCdArchivoIn(cdsArchivos);
     }
 
-    public List<DocumentoDigital> findAllByCdReclamoAndCdRamoAndCdIncSiniestro(Integer cdReclamo, Integer cdRamo, Integer cdIncSiniestro) {
+    public List<DocumentoDigital> findAllByCdReclamoAndCdRamoAndCdIncSiniestro(Integer cdReclamo, Integer cdRamo,
+            Integer cdIncSiniestro) {
         if (cdReclamo > 0 && cdIncSiniestro > 0) {
-            return documentoDigitalRepository.findAllByCdReclamoAndCdRamoAndCdIncSiniestro(cdReclamo, cdRamo, cdIncSiniestro);
+            return documentoDigitalRepository.findAllByCdReclamoAndCdRamoAndCdIncSiniestro(cdReclamo, cdRamo,
+                    cdIncSiniestro);
         }
         return List.of();
     }
 
-    public List<DetalleDocumentoSiniestro> findAllByCdReclamoAndCdArchivoIn(Integer cdReclamo, List<Integer> cdsArchivos) {
+    public List<DetalleDocumentoSiniestro> findAllByCdReclamoAndCdArchivoIn(Integer cdReclamo,
+            List<Integer> cdsArchivos) {
         if (cdReclamo > 0 && !cdsArchivos.isEmpty()) {
             return detalleDocumentoSiniestroService.findAllByCdReclamoAndCdArchivoIn(cdReclamo, cdsArchivos);
         }
@@ -378,7 +407,8 @@ public class DocumentoDigitalService {
             var estado = item.path(ESTADO).asText();
             var observaciones = Utilities.truncate(item.path("observaciones").asText(), 500);
             var idUsuarioEjecutivo = item.path("idUsuarioEjecutivo").asInt();
-            documentoDigitalRepository.nativeUpdateEstadoAndObservacionesAndIdEjecutivoByCdArchivo(cdArchivoNode.asInt(), estado, observaciones, idUsuarioEjecutivo);
+            documentoDigitalRepository.nativeUpdateEstadoAndObservacionesAndIdEjecutivoByCdArchivo(
+                    cdArchivoNode.asInt(), estado, observaciones, idUsuarioEjecutivo);
         }
         return item;
     }
@@ -392,7 +422,7 @@ public class DocumentoDigitalService {
     public void eliminarDocs() {
         List<DocumentoDigital> docs = documentoDigitalRepository.findAllByCdReclamoIsNull();
         ZonedDateTime hoy = ZonedDateTime.now();
-        //un dia anterior
+        // un dia anterior
         LocalDateTime hasta = hoy.toLocalDate().minusDays(1).atTime(23, 59, 59);
 
         var count = docs.stream().parallel().filter(documentoDigital -> {

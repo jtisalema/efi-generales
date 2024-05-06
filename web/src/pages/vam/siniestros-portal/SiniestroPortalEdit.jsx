@@ -103,6 +103,7 @@ const SiniestroPortal = ({open, setOpen, aseguradoras, findRamos, setTitulares, 
     }
 
     const changeSubdocumentsState = async ({values}) => {
+        console.log(values);
         if (!isUser) return;
         const cdsArchivos = [];
         values?.gastos?.forEach(gasto => {

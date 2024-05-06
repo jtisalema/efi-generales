@@ -7,11 +7,13 @@ import com.tefisoft.efiweb.exc.StorageException;
 import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
 import io.minio.GetPresignedObjectUrlArgs;
+import io.minio.ListObjectsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
 import io.minio.StatObjectArgs;
+import io.minio.errors.MinioException;
 import io.minio.http.Method;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,8 +26,12 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import io.minio.Result;
+import io.minio.messages.Item;
 
 @Service
 @CommonsLog
@@ -38,7 +44,9 @@ public class ExternalStorageSrvImpl implements ExternalStorageSrv {
     private static final int PRIVATE_MAX_AGE = 10800; // 180min*60segundos
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public ExternalStorageSrvImpl(@Value("${app.minio.url}") String server, @Value("${app.minio.accessKey}") String accessKey, @Value("${app.minio.secretKey}") String secretKey, @Value("${app.minio.bucket}") String bucket) {
+    public ExternalStorageSrvImpl(@Value("${app.minio.url}") String server,
+            @Value("${app.minio.accessKey}") String accessKey, @Value("${app.minio.secretKey}") String secretKey,
+            @Value("${app.minio.bucket}") String bucket) {
         this.minioClient = MinioClient.builder()
                 .endpoint(server)
                 .credentials(accessKey, secretKey)
@@ -58,7 +66,7 @@ public class ExternalStorageSrvImpl implements ExternalStorageSrv {
             }
         } catch (Exception ex) {
             log.error("error in bucketExiste", ex);
-            //throw new StorageException(ex.getMessage());
+            // throw new StorageException(ex.getMessage());
         }
     }
 
@@ -148,7 +156,8 @@ public class ExternalStorageSrvImpl implements ExternalStorageSrv {
     @Override
     public String loadPublicUrl(String uri, int maxAge, boolean cdn, Map<String, String> headers) {
         try {
-            var builder = GetPresignedObjectUrlArgs.builder().method(Method.GET).expiry(maxAge).bucket(bucket).object(uri);
+            var builder = GetPresignedObjectUrlArgs.builder().method(Method.GET).expiry(maxAge).bucket(bucket)
+                    .object(uri);
             if (cdn) {
                 if (headers == null) {
                     headers = new HashMap<>();
@@ -176,7 +185,6 @@ public class ExternalStorageSrvImpl implements ExternalStorageSrv {
     public String loadPublicUrl(String uri) {
         return loadPublicUrl(uri, PUBLIC_MAX_AGE, true, null);
     }
-
 
     @Override
     public String loadPrivateUrl(String uri, Map<String, String> headers) {
@@ -229,4 +237,5 @@ public class ExternalStorageSrvImpl implements ExternalStorageSrv {
             throw new StorageException(ex.getMessage());
         }
     }
+
 }

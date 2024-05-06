@@ -281,7 +281,7 @@ public class UsuarioSrv {
             assert resource != null;
             MultipartFile multipartFile = new MockMultipartFile(cdAdicional,
                     cdAdicional, "image/png", IOUtils.toByteArray(resource));
-            externalStorageSrv.delete(String.format(EXTERNAL_IMG_PATH, cdAdicional));
+            // externalStorageSrv.delete(String.format(EXTERNAL_IMG_PATH, cdAdicional));
             externalStorageSrv.store(String.format(EXTERNAL_IMG_PATH, cdAdicional), multipartFile);
         } catch (IOException ex) {
             log.error("Error al cargar avatar: " + ex.getMessage(), ex);

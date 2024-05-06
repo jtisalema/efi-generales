@@ -1,9 +1,12 @@
 package com.tefisoft.efiweb.srv;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.jamesmurty.utils.XMLBuilder2;
 import com.tefisoft.efiweb.exc.CustomException;
+import com.tefisoft.efiweb.srv.SMSService.SMSDetail;
 import com.tefisoft.efiweb.util.Utilities;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
@@ -12,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -49,9 +53,9 @@ public class SMSService {
     @Value("${app.sms.emNombrePC}")
     private String emNombrePC;
 
-
     private final XmlMapper xmlMapper = new XmlMapper();
     private final RestTemplate restTemplate;
+    private final AdministracionHomeSrv administracionHomeSrv;
 
     public String createBody(String phone, String message, String emReferencia) {
 
@@ -73,7 +77,7 @@ public class SMSService {
                 .elem("emHoraEnv").text("00:00").up()
                 .elem("emReferencia").text(emReferencia).up()
                 .elem("emKey").text(this.generateEmKey(emReferencia)).up()
-                .up() //parEmisor
+                .up() // parEmisor
                 .elem("parDestinatarios").text(phone).up()
                 .elem("parMensaje").text(message).up()
                 .up() // EnviarSMS
@@ -87,7 +91,6 @@ public class SMSService {
         message = Utilities.truncate(message, 160);
         return message;
     }
-
 
     public String generateEmKey(String emReferencia) {
         String formatoMd5 = "%s;%s;%s;%s;%s;%s";
@@ -104,8 +107,10 @@ public class SMSService {
         try {
             var response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
             handleXmlResponse(response);
+            callSaveSMSDetailService(true, phone, message);
         } catch (Exception ex) {
             log.error("Error sending SMS, message: " + ex.getMessage());
+            callSaveSMSDetailService(false, phone, message);
             throw new CustomException(ex.getMessage());
         }
     }
@@ -115,7 +120,108 @@ public class SMSService {
         var enviarSmsResult = body.path("Body").path("EnviarSMSResponse").path("EnviarSMSResult");
         var reNumErrores = enviarSmsResult.path("reNumErrores").asInt();
         var reErrores = enviarSmsResult.path("reErrores");
-        if (reNumErrores > 0) throw new CustomException(reErrores.toString());
+        if (reNumErrores > 0)
+            throw new CustomException(reErrores.toString());
     }
+
+    // #region Incorporación de servicio contador envio SMS
+    public ObjectNode findConfig() {
+        return administracionHomeSrv.find();
+    }
+
+    public void callSaveSMSDetailService(boolean esExitoso, String numeroTelefono, String mensaje) {
+        try {
+            ObjectNode cfg = findConfig();
+            String tokenEnvioSms = cfg.path("tokenEnvioSms").asText();
+            SMSDetail informacionSmsGuardar = new SMSDetail();
+            informacionSmsGuardar.setCelular(numeroTelefono);
+            informacionSmsGuardar.setMensaje(mensaje);
+            informacionSmsGuardar.setOrigen("App Clientes");
+            if (esExitoso) {
+                informacionSmsGuardar.setEstado("1");
+            } else {
+                informacionSmsGuardar.setEstado("2");
+                informacionSmsGuardar.setMensajeError("No se pudo enviar el mensaje.");
+            }
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonBody = objectMapper.writeValueAsString(informacionSmsGuardar);
+
+            // Construye los encabezados de la solicitud
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("Authorization", "Bearer ".concat(tokenEnvioSms));
+
+            // Construye la entidad de solicitud con el cuerpo y los encabezados
+            HttpEntity<String> requestEntity = new HttpEntity<>(jsonBody, headers);
+
+            // Realiza la solicitud POST al servicio
+            ResponseEntity<String> responseEntity = restTemplate.exchange(
+                    "https://cotizador.segurossuarez.com/backend/public/api/saveSMSDetail",
+                    HttpMethod.POST,
+                    requestEntity,
+                    String.class);
+
+            // Maneja la respuesta si es necesario
+            HttpStatus statusCode = responseEntity.getStatusCode();
+            if (statusCode == HttpStatus.OK) {
+                String responseBody = responseEntity.getBody();
+            } else {
+            }
+        } catch (JsonProcessingException e) {
+            // Maneja la excepción
+            System.err.println("Error al convertir el objeto a JSON: " + e.getMessage());
+            e.printStackTrace(); // Esto muestra la traza completa de la excepción
+        }
+    }
+
+    public class SMSDetail {
+        private String mensaje;
+        private String celular;
+        private String estado;
+        private String mensajeError;
+        private String origen;
+
+        public String getMensaje() {
+            return mensaje;
+        }
+
+        public void setMensaje(String mensaje) {
+            this.mensaje = mensaje;
+        }
+
+        public String getCelular() {
+            return celular;
+        }
+
+        public void setCelular(String celular) {
+            this.celular = celular;
+        }
+
+        public String getEstado() {
+            return estado;
+        }
+
+        public void setEstado(String estado) {
+            this.estado = estado;
+        }
+
+        public String getMensajeError() {
+            return mensajeError;
+        }
+
+        public void setMensajeError(String mensajeError) {
+            this.mensajeError = mensajeError;
+        }
+
+        public String getOrigen() {
+            return origen;
+        }
+
+        public void setOrigen(String origen) {
+            this.origen = origen;
+        }
+
+    }
+    // #endregion
 
 }

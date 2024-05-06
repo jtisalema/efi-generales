@@ -20,8 +20,8 @@ app:
   data: /opt/public/images/efi
   minio:
     url: http://localhost:9000
-    accessKey: minioAccess
-    secretKey: minioSecret
+    accessKey: uqai
+    secretKey: uqai2023-minio
     bucket: segusuarez
   whatsapp:
     siniestro:

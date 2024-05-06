@@ -66,11 +66,16 @@ public class SendWhatsappSrv {
 
     @PostConstruct
     public void init() {
-        notificacionesMap.put(TipoNotificacionEnum.SINIESTRO_CREADO, Pair.of(CREACION_ESTADO_SUBJECT, CREACION_TEMPLATE));
-        notificacionesMap.put(TipoNotificacionEnum.CAMBIO_ESTADO, Pair.of(CAMBIO_ESTADO_SUBJECT, CAMBIO_ESTADO_TEMPLATE));
-        notificacionesMap.put(TipoNotificacionEnum.SINIESTRO_CADUCIDAD, Pair.of(SINIESTRO_CADUCIDAD_SUBJECT, SINIESTRO_CADUCIDAD_TEMPLATE));
-        notificacionesMap.put(TipoNotificacionEnum.RECETA_CADUCAR, Pair.of(RECETA_CADUCAR_SUBJECT, RECETA_CADUCAR_TEMPLATE));
-        notificacionesMap.put(TipoNotificacionEnum.SINIESTRO_LIQUIDADO, Pair.of(CAMBIO_ESTADO_SUBJECT, LIQUIDADO_TEMPPLATE));
+        notificacionesMap.put(TipoNotificacionEnum.SINIESTRO_CREADO,
+                Pair.of(CREACION_ESTADO_SUBJECT, CREACION_TEMPLATE));
+        notificacionesMap.put(TipoNotificacionEnum.CAMBIO_ESTADO,
+                Pair.of(CAMBIO_ESTADO_SUBJECT, CAMBIO_ESTADO_TEMPLATE));
+        notificacionesMap.put(TipoNotificacionEnum.SINIESTRO_CADUCIDAD,
+                Pair.of(SINIESTRO_CADUCIDAD_SUBJECT, SINIESTRO_CADUCIDAD_TEMPLATE));
+        notificacionesMap.put(TipoNotificacionEnum.RECETA_CADUCAR,
+                Pair.of(RECETA_CADUCAR_SUBJECT, RECETA_CADUCAR_TEMPLATE));
+        notificacionesMap.put(TipoNotificacionEnum.SINIESTRO_LIQUIDADO,
+                Pair.of(CAMBIO_ESTADO_SUBJECT, LIQUIDADO_TEMPPLATE));
     }
 
     public ObjectNode findConfig() {
@@ -82,7 +87,8 @@ public class SendWhatsappSrv {
             var dataMensaje = siniestroPortalSrv.findDataByMensaje(cdCompania, cdReclamo, cdIncSiniestro);
             findTemplateAndSendMessages(dataMensaje, TipoNotificacionEnum.valueOf(tipoNotificacion.toUpperCase()));
         } catch (Exception ex) {
-            log.error("error in handleMessage, cdCompania: " + cdCompania + " cdReclamo: " + cdReclamo + " cdIncSiniestro:  "
+            log.error("error in handleMessage, cdCompania: " + cdCompania + " cdReclamo: " + cdReclamo
+                    + " cdIncSiniestro:  "
                     + cdIncSiniestro + " tipoNotificacion " + tipoNotificacion + ex);
         }
     }
@@ -94,10 +100,15 @@ public class SendWhatsappSrv {
         boolean sendWhatsapp = cfg.path("sendWhatsapp").asBoolean();
         boolean sendSms = cfg.path("sendSms").asBoolean();
         sendNotificationToEmail(dataMensaje, tipoNotificacion);
-        if (sendSms) sendSms(dataMensaje, tipoNotificacion);
+        if (sendSms)
+            sendSms(dataMensaje, tipoNotificacion);
         for (JsonNode templateNode : temps) {
-            if (!dataMensaje.isEmpty() && templateNode.get("tipo").asText().equalsIgnoreCase(tipoNotificacion.name())) {//si existe esta notificacion
-                if (sendWhatsapp) buildBodyAndSendWhatsapp(dataMensaje, templateNode, urlTemplate);
+            if (!dataMensaje.isEmpty() && templateNode.get("tipo").asText().equalsIgnoreCase(tipoNotificacion.name())) {// si
+                                                                                                                        // existe
+                                                                                                                        // esta
+                                                                                                                        // notificacion
+                if (sendWhatsapp)
+                    buildBodyAndSendWhatsapp(dataMensaje, templateNode, urlTemplate);
                 break;
             }
         }
@@ -110,15 +121,17 @@ public class SendWhatsappSrv {
         }
     }
 
-
     public void sendSms(Map<String, String> dataMensaje, TipoNotificacionEnum tipoNotificacion) {
-        if (ObjectUtils.isEmpty(tipoNotificacion)) return;
+        if (ObjectUtils.isEmpty(tipoNotificacion))
+            return;
         var phone = getOrDefaulBlank(dataMensaje, Ctns.PHONE);
         log.info("Entro a sendSms phone: " + phone);
-        if (phone.isEmpty()) return;
+        if (phone.isEmpty())
+            return;
         phone = handlePhonePreffix0(phone);
         dataMensaje.put(Ctns.PHONE, phone);
-        var sendSiniestroMessage = Arrays.asList(TipoNotificacionEnum.SINIESTRO_CREADO, TipoNotificacionEnum.SINIESTRO_CADUCIDAD, TipoNotificacionEnum.CAMBIO_ESTADO);
+        var sendSiniestroMessage = Arrays.asList(TipoNotificacionEnum.SINIESTRO_CREADO,
+                TipoNotificacionEnum.SINIESTRO_CADUCIDAD, TipoNotificacionEnum.CAMBIO_ESTADO);
         if (sendSiniestroMessage.contains(tipoNotificacion)) {
             emailService.sendSms(dataMensaje, EmailService.SMS_SINIESTRO_TEMPLATE);
         } else if (TipoNotificacionEnum.RECETA_CADUCAR.equals(tipoNotificacion)) {
@@ -130,14 +143,18 @@ public class SendWhatsappSrv {
         sendNotificationToEmail(dataMensaje, tipoNotificacion, null);
     }
 
-    public <T> void sendNotificationToEmail(Map<String, T> dataMensaje, TipoNotificacionEnum tipoNotificacion, Map<String, byte[]> attachment) {
+    public <T> void sendNotificationToEmail(Map<String, T> dataMensaje, TipoNotificacionEnum tipoNotificacion,
+            Map<String, byte[]> attachment) {
         var mail = dataMensaje.get("mail");
-        if (ObjectUtils.isEmpty(mail)) return;
+        if (ObjectUtils.isEmpty(mail))
+            return;
 
         Pair<String, String> subjectTemplate = notificacionesMap.getOrDefault(tipoNotificacion, null);
-        if (subjectTemplate == null) return;
+        if (subjectTemplate == null)
+            return;
 
-        emailService.sendNotificationToEmail(dataMensaje, subjectTemplate.getFirst(), subjectTemplate.getSecond(), attachment);
+        emailService.sendNotificationToEmail(dataMensaje, subjectTemplate.getFirst(), subjectTemplate.getSecond(),
+                attachment);
     }
 
     public String getOrDefaulBlank(Map<String, String> fields, String key) {
@@ -163,7 +180,8 @@ public class SendWhatsappSrv {
         props.put(VariablesWhatsapp.INCAPACIDAD, incapacidad);
         props.put(VariablesWhatsapp.PACIENTE, paciente);
         if (estado != null)
-            props.put(VariablesWhatsapp.ESTADO, Utilities.mapearEstados(EstadoSiniestroEnum.valueOf(estado.toUpperCase()), true));
+            props.put(VariablesWhatsapp.ESTADO,
+                    Utilities.mapearEstados(EstadoSiniestroEnum.valueOf(estado.toUpperCase()), true));
         // props receta
         String nombreDocumento = getOrDefaulBlank(fields, NOMBRE_DOCUMENTO);
         String fechaEmision = getOrDefaulBlank(fields, FECHA_EMISION);
@@ -201,7 +219,8 @@ public class SendWhatsappSrv {
     public HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json;charset=UTF-8");
-        headers.set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36");
+        headers.set("User-Agent",
+                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36");
         return headers;
     }
 
@@ -210,7 +229,8 @@ public class SendWhatsappSrv {
             HttpHeaders headers = getHttpHeaders();
             HttpEntity<?> entity = new HttpEntity<>(mapper.writeValueAsString(body), headers);
             log.info("Body a enviar :: " + body);
-            ResponseEntity<String> respuesta = restTemplate.exchange(urlTemplate, HttpMethod.POST, entity, String.class);
+            ResponseEntity<String> respuesta = restTemplate.exchange(urlTemplate, HttpMethod.POST, entity,
+                    String.class);
             log.info("Respuesta de chasqui :: " + respuesta.getBody());
         } catch (JsonProcessingException e) {
             log.error("Error al procesar JSON :: " + e.getMessage());
@@ -220,7 +240,8 @@ public class SendWhatsappSrv {
     }
 
     // Set<cdReclamo, cdCompania>
-    public <T extends IToFindDataMessage> Map<String, Map<String, String>> findDistinctDataMessages(Set<T> cdReclamoCdCompania) {
+    public <T extends IToFindDataMessage> Map<String, Map<String, String>> findDistinctDataMessages(
+            Set<T> cdReclamoCdCompania) {
         Map<String, Map<String, String>> dataMensaje = new HashMap<>();
         cdReclamoCdCompania.forEach(v -> {
             var data = processData(v.getCdReclamo(), v.getCdCompania(), v.getCdIncSiniestro());
@@ -235,24 +256,30 @@ public class SendWhatsappSrv {
             var value = siniestroPortalSrv.findDataByMensaje(cdCompania, cdReclamo, cdIncSiniestro);
             return Map.entry(key, value);
         } catch (Exception ex) {
-            log.error(String.format("Error al procesar los datos para encontrar el siniestro, cdReclamo: %d, cdCompania: %d, cdIncSiniestro: %d, Excepción: %s",
+            log.error(String.format(
+                    "Error al procesar los datos para encontrar el siniestro, cdReclamo: %d, cdCompania: %d, cdIncSiniestro: %d, Excepción: %s",
                     cdReclamo, cdCompania, cdIncSiniestro, ex.getMessage()), ex);
-            throw new CustomException("No se encontró el siniestro del mensaje con cdReclamo: " + cdReclamo + ", cdCompania: " + cdCompania + ", cdIncSiniestro: " + cdIncSiniestro);
+            throw new CustomException("No se encontró el siniestro del mensaje con cdReclamo: " + cdReclamo
+                    + ", cdCompania: " + cdCompania + ", cdIncSiniestro: " + cdIncSiniestro);
         }
     }
 
-    public <T extends IToFindDataMessage> void sendMessagesInList(List<T> listToNotify, TipoNotificacionEnum tipoNotificacionEnum, AditionalMessageProperties<T> aditionalProperties) {
-        if (listToNotify.isEmpty()) return;
+    public <T extends IToFindDataMessage> void sendMessagesInList(List<T> listToNotify,
+            TipoNotificacionEnum tipoNotificacionEnum, AditionalMessageProperties<T> aditionalProperties) {
+        if (listToNotify.isEmpty())
+            return;
         var cdReclamoCdCompaniaSet = new HashSet<>(listToNotify);
         var dataMessages = this.findDistinctDataMessages(cdReclamoCdCompaniaSet);
         listToNotify.forEach(item -> {
             var key = String.format(KEY_DATA_MSG, item.getCdReclamo(), item.getCdCompania());
             var dataMsj = dataMessages.get(key);
-            if (aditionalProperties != null) aditionalProperties.putProperties(item, dataMsj);
+            if (aditionalProperties != null)
+                aditionalProperties.putProperties(item, dataMsj);
             try {
                 this.findTemplateAndSendMessages(dataMsj, tipoNotificacionEnum);
             } catch (Exception ex) {
-                log.error("Error al enviar mensaje a: " + dataMsj.getOrDefault("phone", "+666") + ", message: " + ex.getMessage());
+                log.error("Error al enviar mensaje a: " + dataMsj.getOrDefault("phone", "+666") + ", message: "
+                        + ex.getMessage());
             }
         });
     }

@@ -72,7 +72,7 @@ export function getValorReclamo(gastos = []) {
     return valorReclamo;
 }
 
-export const MAX_ADJUNTOS_SIZE = 30 * 1024 * 1024; // 30 mb
+export const MAX_ADJUNTOS_SIZE = 20 * 1024 * 1024; // 30 mb
 export const MAX_SIZE_IN_GROUP = 10 * 1024 * 1024; // 30 mb
 export const MAX_SIZE_IMAGEN = 2 * 1024 * 1024; // 30 mb
 

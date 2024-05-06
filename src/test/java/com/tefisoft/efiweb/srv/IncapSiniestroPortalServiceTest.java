@@ -7,10 +7,6 @@ import com.tefisoft.efiweb.enums.TextResponseEnum;
 import com.tefisoft.efiweb.enums.TipoNotificacionEnum;
 import com.tefisoft.efiweb.exc.CustomException;
 import com.tefisoft.efiweb.interfaces.AditionalMessageProperties;
-import com.tefisoft.efiweb.util.HelperUtil;
-
-import lombok.extern.apachecommons.CommonsLog;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,1 +1,14 @@
-{"tipo":"VIDEO","url":"https://www.youtube.com/embed/5x4NibxzJvc","urlTemplate":"https://chasqui.yanibot.com/server/api/public/sendMessage/646bc9a1d4c3c65cf82cc884?token=pNoge","templates":[{"tipo":"SINIESTRO_CREADO","idTemplate":"646bc9ded4c3c65cf82cc888"},{"tipo":"CAMBIO_ESTADO","idTemplate":"646bc9ded4c3c65cf82cc887"},{"tipo":"RECETA_CADUCAR","idTemplate":"646bc9ded4c3c65cf82cc886"},{"tipo":"SINIESTRO_CADUCIDAD","idTemplate":"646bc9ded4c3c65cf82cc886x"}],"show":true,"sendSms":true}
+{
+  "tipo": "VIDEO",
+  "url": "https://www.youtube.com/embed/5x4NibxzJvc",
+  "urlTemplate": "https://chasqui.yanibot.com/server/api/public/sendMessage/646bc9a1d4c3c65cf82cc884?token=pNoge",
+  "templates": [
+    { "tipo": "SINIESTRO_CREADO", "idTemplate": "646bc9ded4c3c65cf82cc888" },
+    { "tipo": "CAMBIO_ESTADO", "idTemplate": "646bc9ded4c3c65cf82cc887" },
+    { "tipo": "RECETA_CADUCAR", "idTemplate": "646bc9ded4c3c65cf82cc886" },
+    { "tipo": "SINIESTRO_CADUCIDAD", "idTemplate": "646bc9ded4c3c65cf82cc886x" }
+  ],
+  "show": true,
+  "sendSms": true,
+  "tokenEnvioSms": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImIwYWE4NmI4MjQ4NjAyMDI0YzgzMDJmNzhhMTg1ZWI2NGJhZDBiMGVkMDlhYTY4OTdlMGE5NzZkNjJmMjRiZWM1Njc2OGFiYTRiOWY1OTllIn0.eyJhdWQiOiIxIiwianRpIjoiYjBhYTg2YjgyNDg2MDIwMjRjODMwMmY3OGExODVlYjY0YmFkMGIwZWQwOWFhNjg5N2UwYTk3NmQ2MmYyNGJlYzU2NzY4YWJhNGI5ZjU5OWUiLCJpYXQiOjE3MDcyNDk3MTAsIm5iZiI6MTcwNzI0OTcxMCwiZXhwIjoxNzM4ODcyMTEwLCJzdWIiOiI1NzIiLCJzY29wZXMiOltdfQ.KAQy5_CThN0CPpCNGZGNLOGeEFYURvI56G_lQcRF_HzkTF_YfgWyMGunmVuXDchZ2XMltK2GTJ6JinEadjNkmbtR1sVvtc62UGwwKUWoFQXa8FUhSm6ZWnK5ueTRfbvptpylwPT9Wj3MtedGELEumlIUgmEjPB6rDTS7jBUOw9fNGj5wooMlGg2K89RugTYpqh6JOz09Jk_EQZ3FJTIJbXnN33FLEUgw6ijcjWuHPCwM3afcbEEan-d-AbqFecCw-OvYmK132pTDjrdX7mklFhwpFQY4LXtjC0OzU4sRiWlDER0kyjPy4EUy8LAoBh_o8zunezrmEqGUxGjleX_8Leg0aixBKUldiAimPmF5vn7dEqwKKppNVLvBxhbzAVVz1_oWgiCl7Lrq1S3fDjJ_h3pVEi4SFuv7-xDC9UsebLARGTQVlTUQe8dw5gs9mxPopyz2xHhlY71YdZdzvTqcai3qCpnua_ABrSBY5ZX3VsZHgAvorYyJgKhA1_mvFucoNLjGjyHG84Y-nB4nipx1GXiE8fXgE5C62nvZuJfmxzr5OLqnAcAt0l11fMfGE7IHKDYQbV0Y0QBmWcuIF7dshHaY4ygVyK8aOv6lSnq-GzWiodIiS-bNToqeO9wz_Qjit1ON3_1hQgnFApSAgyGikAsQxdwsptnZAZTSTkErZrU"
+}

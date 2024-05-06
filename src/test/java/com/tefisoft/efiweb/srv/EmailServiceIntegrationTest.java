@@ -117,7 +117,7 @@ class EmailServiceIntegrationTest {
     @Test
     void itShouldSendAnsSMSCorrectly() {
         // when - then
-        Assertions.assertDoesNotThrow(() -> smsService.createAndSendSoapRequest("0969189156",
+        Assertions.assertDoesNotThrow(() -> smsService.createAndSendSoapRequest("0984315652",
                 "Seguros Suárez recuerda que la receta de medicina" +
                         " continua está por CADUCAR por favor actualizar en nuestra plataforma, " +
                         "para mayor información llamar 033920141",
