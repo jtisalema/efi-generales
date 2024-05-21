@@ -1,5 +1,6 @@
 package com.tefisoft.efiweb.srv;
 
+import com.ctc.wstx.util.StringUtil;
 import com.tefisoft.efiweb.dao.UsuarioDAO;
 import com.tefisoft.efiweb.entidad.Usuario;
 
@@ -28,12 +29,14 @@ import java.io.ByteArrayInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import javax.servlet.http.HttpServletResponse;
-
+import org.springframework.util.StringUtils;
 import static com.tefisoft.efiweb.util.VariablesSiniestro.DAYS_TO_EXPIRE;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class EmailServiceIntegrationTest {
 
+    @Autowired
+    private SiniestroPortalSrv siniestroPortalSrv;
     @Autowired
     private EmailService emailService;
     @Autowired
@@ -58,8 +61,8 @@ class EmailServiceIntegrationTest {
         fields.put("ramo", "GASTOS MÉDICOS MAYORES-MEDICA/GM21C22753");
         fields.put("incapacidad",
                 "GRIPE GRIPE GRIPE GRIPE GRIPE GRIPE GRIPE GRIPE GRIPE GRIPE GRIPE GRIPE GRIPE GRIPE ");
-        fields.put("mail", "jtisalema@segurossuarez.com");
-        fields.put("phone", "593969189156");
+        fields.put("mail", "grivera@segurossuarez.com");
+        fields.put("phone", "0984315652");
         fields.put("paciente", "MANANGON PADILLA CYNTHIA ELIZABETH CYNTHIA ELIZABETH");
     }
 
@@ -68,6 +71,8 @@ class EmailServiceIntegrationTest {
         // given
         var subject = EmailService.CREACION_ESTADO_SUBJECT;
         var pathTemplate = EmailService.CREACION_TEMPLATE;
+        fields.put("ejecutivoEmail", "grivera@segurossuarez.com");
+        fields.put("mail", "grivera@segurossuarez.com");
         // when -then
         Assertions.assertDoesNotThrow(() -> emailService.sendNotificationToEmail(fields, subject, pathTemplate));
     }
@@ -75,10 +80,14 @@ class EmailServiceIntegrationTest {
     @Test
     void itShouldSendACambioEstadoNotificationToEmailCorrectly() {
         // given
+        var fields = siniestroPortalSrv.findDataByMensaje(1, 98, 104);
+        fields.put("ejecutivoEmail", "grivera@segurossuarez.com");
+        fields.put("mail", "jtisalema@segurossuarez.com");
         var subject = EmailService.CAMBIO_ESTADO_SUBJECT;
         var pathTemplate = EmailService.CAMBIO_ESTADO_TEMPLATE;
         // when -then
         Assertions.assertDoesNotThrow(() -> emailService.sendNotificationToEmail(fields, subject, pathTemplate));
+
     }
 
     @Test
@@ -86,7 +95,8 @@ class EmailServiceIntegrationTest {
         // given
         fields.put("nombreDocumento", "Documento de prueba");
         fields.put("fechaEmision", LocalDate.now().minusDays(15).toString());
-        fields.put("ejecutivoEmail", "jtisalema@segurossuarez.com");
+        fields.put("ejecutivoEmail", "grivera@segurossuarez.com");
+        fields.put("mail", "grivera@segurossuarez.com");
         var subject = EmailService.RECETA_CADUCAR_SUBJECT;
         var pathTemplate = EmailService.RECETA_CADUCAR_TEMPLATE;
         // when -then
@@ -167,5 +177,13 @@ class EmailServiceIntegrationTest {
             }
 
         });
+    }
+
+    @Test
+    void enviarEncuestasSatisfaccion() {
+        String correoElectronico = "grivera@segurossuarez.com";
+        String nombreApellido = "Estimado: " + "Giovanni Francisco Rivera Rodríguez";
+        Assertions.assertDoesNotThrow(
+                () -> emailService.sendSatisfactionSurvey(correoElectronico, nombreApellido));
     }
 }

@@ -37,6 +37,7 @@ import static com.tefisoft.efiweb.srv.EmailService.CAMBIO_ESTADO_SUBJECT;
 import static com.tefisoft.efiweb.srv.EmailService.CAMBIO_ESTADO_TEMPLATE;
 import static com.tefisoft.efiweb.srv.EmailService.CREACION_ESTADO_SUBJECT;
 import static com.tefisoft.efiweb.srv.EmailService.CREACION_TEMPLATE;
+import static com.tefisoft.efiweb.srv.EmailService.LIQUIDACION_SUBJECT;
 import static com.tefisoft.efiweb.srv.EmailService.LIQUIDADO_TEMPPLATE;
 import static com.tefisoft.efiweb.srv.EmailService.RECETA_CADUCAR_SUBJECT;
 import static com.tefisoft.efiweb.srv.EmailService.RECETA_CADUCAR_TEMPLATE;
@@ -75,7 +76,7 @@ public class SendWhatsappSrv {
         notificacionesMap.put(TipoNotificacionEnum.RECETA_CADUCAR,
                 Pair.of(RECETA_CADUCAR_SUBJECT, RECETA_CADUCAR_TEMPLATE));
         notificacionesMap.put(TipoNotificacionEnum.SINIESTRO_LIQUIDADO,
-                Pair.of(CAMBIO_ESTADO_SUBJECT, LIQUIDADO_TEMPPLATE));
+                Pair.of(LIQUIDACION_SUBJECT, LIQUIDADO_TEMPPLATE));
     }
 
     public ObjectNode findConfig() {

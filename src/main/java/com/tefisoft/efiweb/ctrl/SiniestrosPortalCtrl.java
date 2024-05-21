@@ -82,9 +82,16 @@ public class SiniestrosPortalCtrl {
     }
 
     @PostMapping("/send-notification-liquidado")
-    public ResponseEntity<String> sendNotificationLiquidado(@RequestBody ObjectNode siniestroLiquidadoInfo) {
+    public ResponseEntity<String> sendNotificationLiquidado(@RequestBody String siniestroLiquidadoInfo) {
         try {
-            String result = incapSiniestroPortalService.notifyIncapSiniestroLiquidado(siniestroLiquidadoInfo);
+            ObjectMapper objectMapper = new ObjectMapper();
+            log.info(String.format("Send notification liquidado: Parámetro sin modificar: %s", siniestroLiquidadoInfo));
+            if (!siniestroLiquidadoInfo.endsWith("}")) {
+                siniestroLiquidadoInfo += "}";
+            }
+            log.info(String.format("Send notification liquidado: Parámetro modificado: %s", siniestroLiquidadoInfo));
+            ObjectNode jsonNode = objectMapper.readValue(siniestroLiquidadoInfo, ObjectNode.class);
+            String result = incapSiniestroPortalService.notifyIncapSiniestroLiquidado(jsonNode);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -108,6 +115,26 @@ public class SiniestrosPortalCtrl {
             }
         } else {
             return new ResponseEntity<>("Error al obtener información de CIE10", response.getStatusCode());
+        }
+    }
+
+    
+
+    @PostMapping("/send-notification-satisfaction")
+    public ResponseEntity<String> sendNotificationLSatisfaction(@RequestBody String encuestaSatisfaccionInfo) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            log.info(String.format("Send notification satisfaction: Parámetro sin modificar: %s", encuestaSatisfaccionInfo));
+            if (!encuestaSatisfaccionInfo.endsWith("}")) {
+                encuestaSatisfaccionInfo += "}";
+            }
+            log.info(String.format("Send notification liquidado: Parámetro modificado: %s", encuestaSatisfaccionInfo));
+            ObjectNode jsonNode = objectMapper.readValue(encuestaSatisfaccionInfo, ObjectNode.class);
+            String result = incapSiniestroPortalService.notifyIncapSiniestroLiquidado(jsonNode);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(HelperUtil.constructTextResponse(TextResponseEnum.ERROR, e.getMessage()));
         }
     }
 

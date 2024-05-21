@@ -95,6 +95,10 @@ public class SiniestroPortalSrv {
                 if (EstadoSiniestroEnum.POR_REGULARIZAR.name().equals(dataPaciente.path("estadoPortal").asText())) {
                     commentObservation = comment.path("comentario").asText();
                 }
+                if (EstadoSiniestroEnum.RECHAZADO.name().equals(dataPaciente.path("estadoPortal").asText()) &&
+                        EstadoSiniestroEnum.RECHAZADO.name().equals(comment.path("estado").asText())) {
+                    commentObservation = comment.path("comentario").asText();
+                }
             }
         } catch (Exception ex) {
             log.error("Error al obtener el comentario.", ex);

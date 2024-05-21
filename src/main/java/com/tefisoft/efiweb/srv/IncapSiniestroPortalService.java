@@ -152,8 +152,8 @@ public class IncapSiniestroPortalService {
 
             double fileSize = storageService.getMbFileSize(docs);
 
-            if (fileSize >= 25) {
-                throw new CustomException("El tamaño total de los archivos excede el límite de 25 MB");
+            if (fileSize >= 20) {
+                throw new CustomException("El tamaño total de los archivos excede el límite de 20 MB");
             }
 
             for (LocalStorageSrv.FileDoc fileDoc : docs) {

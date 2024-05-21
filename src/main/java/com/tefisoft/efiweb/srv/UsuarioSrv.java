@@ -54,7 +54,8 @@ public class UsuarioSrv {
     static final String EXTERNAL_IMG_PATH = "users/profiles/%s";
 
     @Autowired
-    public UsuarioSrv(UsuarioDAO usuarios, EmailService emailService, ClienteDAO clienteDAO, @Value("${app.data}") String path, ExternalStorageSrv externalStorageSrv) {
+    public UsuarioSrv(UsuarioDAO usuarios, EmailService emailService, ClienteDAO clienteDAO,
+            @Value("${app.data}") String path, ExternalStorageSrv externalStorageSrv) {
         this.usuarios = usuarios;
         this.emailService = emailService;
         this.clienteDAO = clienteDAO;
@@ -63,7 +64,8 @@ public class UsuarioSrv {
     }
 
     /**
-     * el usuario coloco mal su contraseña entonces debe aumentarse el contador de inicios de sesion
+     * el usuario coloco mal su contraseña entonces debe aumentarse el contador de
+     * inicios de sesion
      * fallidos, y actualizar la fecha de inicios de sesion fallidos
      *
      * @param usuario usuario q fallo en inio de sesioón
@@ -108,11 +110,11 @@ public class UsuarioSrv {
         }
         return null;
 
-
     }
 
     /**
-     * cuando se solicita una nueva contraseña, se envia el numero de cedula del cliente
+     * cuando se solicita una nueva contraseña, se envia el numero de cedula del
+     * cliente
      *
      * @param item q solicito el cambio de contraseña
      */
@@ -122,7 +124,8 @@ public class UsuarioSrv {
         Usuario u = usuarios.findByUsuario(usuario.trim());
         if (u != null) {
             if (ObjectUtils.isEmpty(u.getCedula()))
-                throw new CustomException("El usuario ingresado no tiene una identificación registrada en el sistema. Por favor comuníquese con su ejecutivo de cuenta");
+                throw new CustomException(
+                        "El usuario ingresado no tiene una identificación registrada en el sistema. Por favor comuníquese con su ejecutivo de cuenta");
 
             u.setIntentosFallidos(0);
             u.setActivo(true);
@@ -134,7 +137,8 @@ public class UsuarioSrv {
 
     /**
      * cuando el usuario colocó la contraseña correcta pero la cuenta esta bloqueada
-     * porque el tiempo desde el ultimo intento fallido de inicio de sesion no supera
+     * porque el tiempo desde el ultimo intento fallido de inicio de sesion no
+     * supera
      * el tiempo permitido
      *
      * @param usuario usuario cuya cuenta esta bloqueada
@@ -262,7 +266,8 @@ public class UsuarioSrv {
         headers.set("Cache-Control", "public, max-age=2592000");
         ClassLoader classLoader = getClass().getClassLoader();
         URL resource = classLoader.getResource(img);
-        return resource != null ? ResponseEntity.ok().headers(headers).body(new UrlResource(resource)) : ResponseEntity.notFound().build();
+        return resource != null ? ResponseEntity.ok().headers(headers).body(new UrlResource(resource))
+                : ResponseEntity.notFound().build();
     }
 
     public void saveFile(String cdCliente, MultipartFile foto) {
@@ -297,4 +302,15 @@ public class UsuarioSrv {
     public List<Usuario> getUsuariosByCedula(String cedula) {
         return usuarios.findAllByCedula(cedula);
     }
+
+    /**
+     * Envio de la encuesta de satisfacción al usuario
+     * 
+     * @param item Información del usuario al que se le va enviar la encuesta de
+     *             satisfacción
+     */
+    public void envioEncuestaSatisfaccion(String correoElectronico, String nombreApellido) {
+        emailService.sendSatisfactionSurvey(correoElectronico, nombreApellido);
+    }
+
 }

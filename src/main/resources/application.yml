@@ -10,7 +10,7 @@ app:
   broker: Efi
   prod: false
   url: http://localhost:3000
-  mail: jtisalema@segurossuarez.com
+  mail: grivera@segurossuarez.com
   images:
     landing: 5
     login: 3
@@ -64,8 +64,8 @@ spring:
     show-sql: true
   servlet:
     multipart:
-      max-file-size: 30MB  # put always in megabytes or bytes
-      max-request-size: 30MB
+      max-file-size: 20MB  # put always in megabytes or bytes
+      max-request-size: 20MB
 
 spring.mail:
     host: smtp.office365.com

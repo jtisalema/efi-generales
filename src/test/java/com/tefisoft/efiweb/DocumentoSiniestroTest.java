@@ -81,7 +81,8 @@ class DocumentoSiniestroTest {
 
     @Test
     void getMessageDataByCdReclamoAndCdCompania() {
-        var data = siniestroPortalSrv.findDataByMensaje(2, 984069, 666);
+        // var data = siniestroPortalSrv.findDataByMensaje(1, 65, 69);
+        var data = siniestroPortalSrv.findDataByMensaje(1, 98, 104);
     }
 
     @Test

@@ -27,6 +27,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.activation.DataSource;
+import javax.mail.SendFailedException;
 import javax.mail.util.ByteArrayDataSource;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,6 +65,8 @@ public class EmailService {
     public static final String CREACION_ESTADO_SUBJECT = "Creación de Siniestro";
     public static final String RECETA_CADUCAR_SUBJECT = "Receta pronto a expirar";
     public static final String CAMBIO_ESTADO_SUBJECT = "Cambio de estado de Siniestro";
+    public static final String LIQUIDACION_SUBJECT = "Liquidación de Siniestro";
+    public static final String ENCUESTASATISFACCION_SUBJECT = "\"Estamos mejorando para ti\" Califica nuestro servicio.";
 
     public static final String SINIESTRO_CADUCIDAD_SUBJECT = "Estado de la caducidad del siniestro";
     private static final String CREATE_PASSWORD_SUBJECT = "SEGUROS SUÁREZ: Usuario para el Ingreso a la Web App";
@@ -75,6 +78,7 @@ public class EmailService {
     public static final String RECETA_CADUCAR_TEMPLATE = "email/recetaCaduca";
     public static final String SINIESTRO_CADUCIDAD_TEMPLATE = "email/caducidadSiniestro";
     public static final String LIQUIDADO_TEMPPLATE = "email/liquidacionSiniestro";
+    public static final String ENCUESTASATISFACCION_TEMPLATE = "email/encuestaSatisfaccion";
 
     public static final String SMS_SINIESTRO_TEMPLATE = "sms/crearCambiarCaducidad";
     public static final String SMS_RECETA_TEMPLATE = "sms/receta";
@@ -112,7 +116,8 @@ public class EmailService {
         try {
 
             log.info("Enviando Mensaje: " + usr.getEmail());
-            sendEmailWithMultiAttachments(usr.getEmail(), PASSWORD_SUBJECT, mergeTemplateIntoString(CREATE_PASSWORD_TEMPLATE, model), PdfUtils.pdfToByte(PDF_ROUTE));
+            sendEmailWithMultiAttachments(usr.getEmail(), PASSWORD_SUBJECT,
+                    mergeTemplateIntoString(CREATE_PASSWORD_TEMPLATE, model), PdfUtils.pdfToByte(PDF_ROUTE));
         } catch (Exception e) {
             log.error(CREATE_PASSWORD_TEMPLATE, e);
         }
@@ -137,11 +142,13 @@ public class EmailService {
     }
 
     @Async
-    public <T> void sendNotificationToEmail(Map<String, T> fields, String subject, String pathTemplate, Map<String, byte[]> attachment) {
+    public <T> void sendNotificationToEmail(Map<String, T> fields, String subject, String pathTemplate,
+            Map<String, byte[]> attachment) {
         sendNotificationToEmailImplementation(fields, subject, pathTemplate, attachment);
     }
 
-    private <T> void sendNotificationToEmailImplementation(Map<String, T> fields, String subject, String pathTemplate, Map<String, byte[]> attachment) {
+    private <T> void sendNotificationToEmailImplementation(Map<String, T> fields, String subject, String pathTemplate,
+            Map<String, byte[]> attachment) {
         var mail = (String) fields.get("mail");
         var ejecutivoEmail = (String) fields.get("ejecutivoEmail");
         var fieldsData = getThymeleafCommonModel(fields, false);
@@ -155,6 +162,12 @@ public class EmailService {
         }
 
         fieldsData.put("urlResources", urlLogin);
+
+        if (pathTemplate.equals(EmailService.CAMBIO_ESTADO_TEMPLATE)) {
+            var estadoSiniestro = fields.get("estado");
+            subject = subject + (StringUtils.hasText(estadoSiniestro.toString()) ? "-" + estadoSiniestro : "");
+        }
+
         try {
             if (attachment != null) {
                 var cdRamoCotizacion = (int) fields.get("cdRamoCotizacion");
@@ -162,15 +175,15 @@ public class EmailService {
 
                 String replyTo = telefonosRepositoryJDBC.getMailEjecutivoSiniestro(cdCompania, cdRamoCotizacion);
                 sendEmailWithMultiAttachments(
-                        new String[]{mail.trim(), ejecutivoEmail.trim()},
+                        new String[] { mail.trim(), ejecutivoEmail.trim() },
                         replyTo,
                         subject,
                         attachment,
-                        mergeTemplateIntoString(pathTemplate, fieldsData)
-                );
+                        mergeTemplateIntoString(pathTemplate, fieldsData));
                 return;
             }
-            sendEmail(new String[]{mail.trim(), ejecutivoEmail.trim()}, subject, mergeTemplateIntoString(pathTemplate, fieldsData));
+            sendEmail(new String[] { mail.trim(), ejecutivoEmail.trim() }, subject,
+                    mergeTemplateIntoString(pathTemplate, fieldsData));
         } catch (Exception ex) {
             log.error("Error el anviar mail a: " + mail);
             throw new CustomException(ex.getMessage());
@@ -212,7 +225,8 @@ public class EmailService {
         return model;
     }
 
-    private String mergeTemplateIntoString(final @NonNull String templateReference, final @NonNull Map<String, Object> model) {
+    private String mergeTemplateIntoString(final @NonNull String templateReference,
+            final @NonNull Map<String, Object> model) {
         final String trimmedTemplateReference = templateReference.trim();
         final Context context = new Context();
         context.setVariables(model);
@@ -221,7 +235,7 @@ public class EmailService {
     }
 
     private void sendEmail(String toEmail, String subject, String content) {
-        sendEmail(new String[]{toEmail}, subject, content);
+        sendEmail(new String[] { toEmail }, subject, content);
     }
 
     private void sendEmail(String[] toEmail, String subject, String content) {
@@ -236,16 +250,21 @@ public class EmailService {
         this.javaMailSender.send(preparator);
     }
 
-    public void sendEmailWithMultiAttachments(String[] toEmail, String replyTo, String subject, Map<String, byte[]> attachment, String content) {
-        if (ObjectUtils.isEmpty(toEmail)) throw new IllegalArgumentException("emails must not be null or empty");
-        if (attachment == null) throw new IllegalArgumentException("attachment must not be null");
+    public void sendEmailWithMultiAttachments(String[] toEmail, String replyTo, String subject,
+            Map<String, byte[]> attachment, String content) {
+        if (ObjectUtils.isEmpty(toEmail))
+            throw new IllegalArgumentException("emails must not be null or empty");
+        if (attachment == null)
+            throw new IllegalArgumentException("attachment must not be null");
 
         MimeMessagePreparator preparator = mimeMessage -> {
-            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED, UTF_8);
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED,
+                    UTF_8);
             message.setTo(processEmail(toEmail));
             message.setSubject(subject);
             message.setFrom(fromEmail);
-            if (StringUtils.hasText(content)) message.setText(content, true);
+            if (StringUtils.hasText(content))
+                message.setText(content, true);
             attachment.forEach((key, value) -> {
                 var attachmentInputStream = new ByteArrayDataSource(value, "application/pdf");
                 try {
@@ -262,7 +281,7 @@ public class EmailService {
     }
 
     private void sendEmailWithMultiAttachments(String toEmail, String subject, String content, byte[] attachment) {
-        sendEmailWithMultiAttachments(new String[]{toEmail}, subject, content, attachment);
+        sendEmailWithMultiAttachments(new String[] { toEmail }, subject, content, attachment);
     }
 
     private void sendEmailWithMultiAttachments(String[] toEmail, String subject, String content, byte[] attachment) {
@@ -286,7 +305,25 @@ public class EmailService {
     }
 
     public String processEmail(String email) {
-        if (tempEmail.equals("na")) return email;
+        if (tempEmail.equals("na"))
+            return email;
         return tempEmail;
     }
+
+    // #region Incorporación correo encuesta de satisfacción.
+    @Async
+    public void sendSatisfactionSurvey(String correoElectronico, String nombreApellido) {
+        var model = commonModelFields();
+        model.put("nombreApellido", "Estimado/a: " + nombreApellido);
+        try {
+            log.info("Enviando encuesta satisfacción: " + correoElectronico);
+            sendEmail(correoElectronico, ENCUESTASATISFACCION_SUBJECT,
+                    mergeTemplateIntoString(ENCUESTASATISFACCION_TEMPLATE, model));
+        } catch (Exception e) {
+            log.info("No se pudo enviar el correo electronico a:" + correoElectronico);
+            log.error(ENCUESTASATISFACCION_TEMPLATE, e);
+        }
+    }
+    // #endregion
+
 }

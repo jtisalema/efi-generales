@@ -1,6 +1,6 @@
 package com.tefisoft.efiweb.ctrl;
 
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tefisoft.efiweb.entidad.BrkTClientes;
 import com.tefisoft.efiweb.entidad.Usuario;
@@ -39,7 +39,8 @@ public class UsuarioCtrl {
 
     @GetMapping(value = "/api/usuario", params = "username")
     public Usuario findOne(@RequestParam String username) {
-        return usuarioSrv.findByUsuario(new String(Base64.getDecoder().decode(username.getBytes(StandardCharsets.UTF_8))));
+        return usuarioSrv
+                .findByUsuario(new String(Base64.getDecoder().decode(username.getBytes(StandardCharsets.UTF_8))));
     }
 
     @GetMapping(value = "/api/usuario", params = "cedula")
@@ -65,7 +66,6 @@ public class UsuarioCtrl {
     public Page<?> findByTabla(@RequestBody ObjectNode item) {
         return usuarioSrv.searByTable(item);
     }
-
 
     @GetMapping("/api/user/img/{id}")
     public ResponseEntity<Resource> getFile(@PathVariable String id, HttpServletResponse response) {
@@ -100,7 +100,8 @@ public class UsuarioCtrl {
     }
 
     @PostMapping("/api/user/{cdAdicional}")
-    public void save(@PathVariable String cdAdicional, @RequestPart(name = "foto", required = false) MultipartFile foto) throws CustomException {
+    public void save(@PathVariable String cdAdicional, @RequestPart(name = "foto", required = false) MultipartFile foto)
+            throws CustomException {
         usuarioSrv.saveFile(cdAdicional, foto);
     }
 
@@ -108,4 +109,27 @@ public class UsuarioCtrl {
     public void save(@RequestParam Integer cdAdicional, @RequestParam String avatar) throws CustomException {
         usuarioSrv.saveAvatar(cdAdicional.toString(), avatar);
     }
+
+    @PostMapping("/api/user/send-satisfaction-survey")
+    public String postMethodName(@RequestBody ObjectNode informacionPersonasEnviar) {
+        try {
+            String informacionPersoansEnviar = informacionPersonasEnviar.get("personasEnviar").asText();
+            String[] personasEnviarEncuesta = informacionPersoansEnviar.split(";");
+            for (String informacionPersona : personasEnviarEncuesta) {
+                String nombreApellidoPersona = informacionPersona.split(":")[0];
+                String correoPersona = informacionPersona.split(":")[1];
+                if (!correoPersona.equals("") && !nombreApellidoPersona.equals("")) {
+                    usuarioSrv.envioEncuestaSatisfaccion(correoPersona, nombreApellidoPersona);
+                } else {
+                    log.info("No se pudo enviar el correo a:" + correoPersona);
+                }
+            }
+            return "Envio realizado correctamente";
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+            return ex.getMessage();
+        }
+
+    }
+
 }
