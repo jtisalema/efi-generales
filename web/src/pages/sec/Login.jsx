@@ -220,7 +220,7 @@ export const Login = () => {
                         </Button>
                       </div>
                       <div className="text-center">
-                        <span style={{ color: "white" }}>v1.0.0</span>
+                        <span style={{ color: "white" }}>v1.0.1</span>
                       </div>
                     </CardFooter>
                   </Form>

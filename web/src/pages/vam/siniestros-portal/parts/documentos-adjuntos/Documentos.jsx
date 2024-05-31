@@ -29,14 +29,21 @@ export const Documentos = ({
   const newCamposAdicionalesKey = () => setCamposKey(Date.now());
   var indiceTitulo = title && title.split(".")[0];
   indiceTitulo = indiceTitulo !== undefined ? indiceTitulo : "1";
-  console.log("indiceTitulo:" + indiceTitulo);
   if (documentos && documentos.length > 0) {
     documentos.forEach((element, index) => {
       let nuevoNombreDocumento = "";
       const puntos = (element.nmDocumento.match(/\./g) || []).length;
+      if (element.orden == null) {
+        nuevoNombreDocumento = "0";
+      }
       if (puntos != 2) {
         nuevoNombreDocumento =
-          indiceTitulo + "." + (index + 1) + "." + element.nmDocumento;
+          nuevoNombreDocumento +
+          indiceTitulo +
+          "." +
+          (index + 1) +
+          "." +
+          element.nmDocumento;
         element.nmDocumento = nuevoNombreDocumento;
       }
     });
