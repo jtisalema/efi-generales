@@ -61,7 +61,7 @@ public class EmailService {
 
     private static final String UTF_8 = "UTF-8";
     private static final String ASUNTO = "asunto";
-    private static final String PASSWORD_SUBJECT = "Contraseña Seguros Suárez";
+    private static final String PASSWORD_SUBJECT = "Usuario Web Seguros Suárez";
     public static final String CREACION_ESTADO_SUBJECT = "Creación de Siniestro";
     public static final String RECETA_CADUCAR_SUBJECT = "Receta pronto a expirar";
     public static final String CAMBIO_ESTADO_SUBJECT = "Cambio de estado de Siniestro";
