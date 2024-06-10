@@ -55,12 +55,12 @@ export const Login = () => {
   };
 
   const onRequestAuth = (newValues, { setSubmitting }) => {
-    console.log(newValues);
     const data = newValues;
     setLoading(true);
     //headers q lee el spring security (efi-sec)
+    console.log("enki:"+data.enki.trim());
     let headers = {
-      authorization: "Basic " + btoa(data.enki + ":" + data.perseo),
+      authorization: "Basic " + btoa(data.enki.trim() + ":" + data.perseo),
     };
 
     // envio de peticion
@@ -220,7 +220,7 @@ export const Login = () => {
                         </Button>
                       </div>
                       <div className="text-center">
-                        <span style={{ color: "white" }}>v1.0.1</span>
+                        <span style={{ color: "white" }}>v1.0.2</span>
                       </div>
                     </CardFooter>
                   </Form>

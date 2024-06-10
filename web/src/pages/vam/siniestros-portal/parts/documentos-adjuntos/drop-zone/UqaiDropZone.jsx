@@ -24,6 +24,7 @@ export const UqaiDropZone = forwardRef(function UqaiDropZone({
                                                              }, ref) {
 
     const alert = useRef(null);
+    const isObligatory = field.value != null && field.value.obligatorio;
 
     const {values, isSubmitting} = form;
     let {name, value} = field;
@@ -234,7 +235,7 @@ export const UqaiDropZone = forwardRef(function UqaiDropZone({
                             </div>
                         </div>
                         {documentoDigital?.cdArchivo && !isLoading && showActions ?
-                            <AccionesAdjuntos documentoDigital={documentoDigital} onDelete={onDelete} onEdit={open}
+                            <AccionesAdjuntos documentoDigital={documentoDigital} onDelete={isObligatory?null:onDelete} onEdit={open}
                                               name={name} isSubdocumento={value?.subdocumento}
                                               isRequired={props?.isRequired}
                             />
