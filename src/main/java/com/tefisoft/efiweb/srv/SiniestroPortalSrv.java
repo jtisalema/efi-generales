@@ -52,16 +52,20 @@ public class SiniestroPortalSrv {
 
     public ObjectNode findOne(Integer cdComp, Integer cdReclamo, Integer cdIncSiniestro) {
         var siniestro = siniestroPortalDao.findByCdCompaniaAndCdReclamo(cdComp, cdReclamo).orElseThrow();
-        var incapSiniestro = incapSiniestroPortalDao.findById(IncapSiniestroPortal.IncapSiniestroPortalId.builder().cdCompania(cdComp).cdIncSiniestro(cdIncSiniestro).build()).orElseThrow();
-        var objSiniestro = objSiniestroPortalDao.findById(ObjSiniestroPortal.SiniestroObjPortalId.builder().cdCompania(cdComp).cdObjSiniestro(incapSiniestro.getCdObjSiniestro()).build()).orElseThrow();
-        var segSiniestro = segSiniestroPortalDao.findByCdReclamoAndCdIncSiniestro(cdReclamo, incapSiniestro.getCdIncSiniestro());
+        var incapSiniestro = incapSiniestroPortalDao.findById(IncapSiniestroPortal.IncapSiniestroPortalId.builder()
+                .cdCompania(cdComp).cdIncSiniestro(cdIncSiniestro).build()).orElseThrow();
+        var objSiniestro = objSiniestroPortalDao.findById(ObjSiniestroPortal.SiniestroObjPortalId.builder()
+                .cdCompania(cdComp).cdObjSiniestro(incapSiniestro.getCdObjSiniestro()).build()).orElseThrow();
+        var segSiniestro = segSiniestroPortalDao.findByCdReclamoAndCdIncSiniestro(cdReclamo,
+                incapSiniestro.getCdIncSiniestro());
         if (segSiniestro.isEmpty()) {
             throw new CustomException("Siniestro incompleto ");
         }
         return getDataSiniestros(siniestro, objSiniestro, incapSiniestro, segSiniestro.get(0));
     }
 
-    private ObjectNode getDataSiniestros(BrkTSiniestroPortal siniestro, ObjSiniestroPortal objSiniestro, IncapSiniestroPortal incapSiniestro, BrkTSegSiniestroPortal segSiniestro) {
+    private ObjectNode getDataSiniestros(BrkTSiniestroPortal siniestro, ObjSiniestroPortal objSiniestro,
+            IncapSiniestroPortal incapSiniestro, BrkTSegSiniestroPortal segSiniestro) {
         ObjectNode finalObj = mapper.createObjectNode();
         finalObj.setAll((ObjectNode) mapper.valueToTree(siniestro));
         finalObj.setAll((ObjectNode) mapper.valueToTree(objSiniestro));
@@ -73,17 +77,21 @@ public class SiniestroPortalSrv {
     public Map<String, String> findDataByMensaje(Integer cdComp, Integer cdReclamo, Integer cdIncSiniestro) {
         var mapMensaje = new HashMap<String, String>();
         var commentObservation = "";
+        var urlSiniestroRegularizar = "";
         var dataPaciente = findOne(cdComp, cdReclamo, cdIncSiniestro);
         var ramo = ramoDao.findById(dataPaciente.path("cdRamo").asInt()).orElse(new BrkTRamos());
-        var incapacidad = incapacidadDao.findById(dataPaciente.path("cdIncapacidad").asInt()).orElse(new BrkTIncapacidad());
+        var incapacidad = incapacidadDao.findById(dataPaciente.path("cdIncapacidad").asInt())
+                .orElse(new BrkTIncapacidad());
         var datos = polizaContenidoService.getCelularAndMail(cdReclamo, cdComp);
         var numSiniestro = dataPaciente.path(NUM_SINIESTRO).asText()
                 + "."
                 + dataPaciente.path("item").asText()
                 + "/"
                 + dataPaciente.path("anoSiniestro").asInt();
-        var replyTo = telefonosRepositoryJDBC.getMailEjecutivoSiniestro(cdComp, dataPaciente.get("cdRamoCotizacion").asInt());
-        var ejecutivoName = telefonosRepositoryJDBC.getNameEjecutivoSiniestro(cdComp, dataPaciente.get("cdRamoCotizacion").asInt());
+        var replyTo = telefonosRepositoryJDBC.getMailEjecutivoSiniestro(cdComp,
+                dataPaciente.get("cdRamoCotizacion").asInt());
+        var ejecutivoName = telefonosRepositoryJDBC.getNameEjecutivoSiniestro(cdComp,
+                dataPaciente.get("cdRamoCotizacion").asInt());
 
         if (ObjectUtils.isEmpty(replyTo)) {
             replyTo = "";
@@ -94,6 +102,8 @@ public class SiniestroPortalSrv {
             for (JsonNode comment : observationStatus) {
                 if (EstadoSiniestroEnum.POR_REGULARIZAR.name().equals(dataPaciente.path("estadoPortal").asText())) {
                     commentObservation = comment.path("comentario").asText();
+                    urlSiniestroRegularizar = "https://consultas.segurossuarez.com/vam/reportar-siniestro/" + cdComp
+                            + "/" + cdReclamo + "/" + cdIncSiniestro;
                 }
                 if (EstadoSiniestroEnum.RECHAZADO.name().equals(dataPaciente.path("estadoPortal").asText()) &&
                         EstadoSiniestroEnum.RECHAZADO.name().equals(comment.path("estado").asText())) {
@@ -108,10 +118,12 @@ public class SiniestroPortalSrv {
         mapMensaje.put(RAMO, ramo.getNmRamo() + "/" + dataPaciente.path("poliza").asText());
         mapMensaje.put(INCAPACIDAD, incapacidad.getNmIncapacidad());
         mapMensaje.put(PACIENTE, dataPaciente.path("dscObjeto").asText());
-        mapMensaje.put(ESTADO, dataPaciente.path("estadoPortal").asText());//nuevo estad
+        mapMensaje.put(ESTADO, dataPaciente.path("estadoPortal").asText());// nuevo estad
         mapMensaje.put(Ctns.PHONE, !ObjectUtils.isEmpty(datos.get("celular")) ? datos.get("celular").toString() : "");
         mapMensaje.put("mail", !ObjectUtils.isEmpty(datos.get("correo")) ? datos.get("correo").toString() : "");
         mapMensaje.put("commentObservation", StringUtils.hasText(commentObservation) ? commentObservation : "");
+        mapMensaje.put("urlSiniestroRegularizar",
+                StringUtils.hasText(urlSiniestroRegularizar) ? urlSiniestroRegularizar : "");
         mapMensaje.put("ejecutivo", ejecutivoName);
         mapMensaje.put("ejecutivoEmail", replyTo);
         var emReferencia = String.format("%s%s%s", cdIncSiniestro, cdReclamo, incapacidad.getCdIncapacidad());
