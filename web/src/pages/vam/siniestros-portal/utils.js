@@ -85,9 +85,9 @@ export const defaultFilter = (user, isEjecutivo, isAdmin) => {
         cdRamo: 0,
         cdEstado: 0,
         cdCompania: user.cdCompania,
-        fcCreacionDesde: firstDayMonth(),
+        fcCreacionDesde: firstDayYear(),
         fcCreacionHasta: lastDayMonth(),
-        fcIncurrenciaDesde: firstDayMonth(),
+        fcIncurrenciaDesde: firstDayYear(),
         fcIncurrenciaHasta: lastDayMonth(),
         cdReclamo: 0,
         cdContratante: null,
@@ -194,7 +194,14 @@ export const defaultSiniestroPreAutorizado = () => {
 
 function firstDayMonth() {
     let date = new Date();
-    date.setFullYear(date.getFullYear() - 1);
+    date.setDate(1);
+    return date;
+}
+
+function firstDayYear(){
+    let date=new Date();
+    date.setMonth(0);
+    date.setDate(1);
     return date;
 }
 

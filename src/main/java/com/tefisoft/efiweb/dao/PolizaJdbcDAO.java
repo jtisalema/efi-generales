@@ -34,8 +34,10 @@ public class PolizaJdbcDAO implements Serializable {
     private static final String Q_COBERTURA_UBC = Q_COBERTURA + "AND c.cd_ubicacion = ?";
 
     private static final String Q_CLAUSULAS = "SELECT cn.CD_CLAUSULA_NEGOCIO, cn.CD_OBJ_COTIZACION, cn.CD_SUBOBJETO, cn.CD_CLAUSULA, cn.CD_RAMO_COTIZACION, cn.CD_UBICACION, cn.CD_COMPANIA, cn.AFECTA_VA, cn.AFECTA_PRIMA, cn.TASA, cn.FACTOR, cn.VAL_PRIMA, cn.ADICIONAL_RAMO, cn.ACTIVO, cn.VAL_LIMITE, cn.OBS_CLAUSULAS_NEGOCIO, cn.ORD_IMPRESION, cl.NM_CLAUSULA, cn.UNIDADES FROM BRK_T_CLAUSULAS_NEGOCIO cn, BRK_T_CLAUSULAS cl WHERE (cl.CD_CLAUSULA = cn.CD_CLAUSULA) AND cn.CD_COMPANIA=? ";
-    private static final String Q_CLAUSULAS_GNC = Q_CLAUSULAS + "AND cn.CD_RAMO_COTIZACION = ? ORDER BY cn.CD_CLAUSULA_NEGOCIO ASC";
-    private static final String Q_CLAUSULAS_UBC = Q_CLAUSULAS + "AND cn.cd_ubicacion = ? ORDER BY cn.CD_CLAUSULA_NEGOCIO ASC";
+    private static final String Q_CLAUSULAS_GNC = Q_CLAUSULAS
+            + "AND cn.CD_RAMO_COTIZACION = ? ORDER BY cn.CD_CLAUSULA_NEGOCIO ASC";
+    private static final String Q_CLAUSULAS_UBC = Q_CLAUSULAS
+            + "AND cn.cd_ubicacion = ? ORDER BY cn.CD_CLAUSULA_NEGOCIO ASC";
 
     private static final String Q_DEDUCIBLES = "SELECT d.CD_DEDUCIBLE, d.CD_COB_NEGOCIO, d.CD_COMPANIA, d.PCT_V_ASEG, d.PCT_RECLAMO, d.VAL_MINIMO, d.OBS_DEDUCIBLE, d.CD_OBJ_COTIZACION, d.CD_RAMO_COTIZACION, d.CD_UBICACION, d.VAL_FIJO, d.ACTIVO FROM BRK_T_DEDUCIBLES d WHERE d.CD_COMPANIA =? ";
     private static final String Q_DEDUCIBLES_COB = Q_DEDUCIBLES + "AND d.CD_COB_NEGOCIO=?";
@@ -52,7 +54,7 @@ public class PolizaJdbcDAO implements Serializable {
     private static final String Q_SUBOBJ_OBJ = "SELECT s.CD_SUBOBJETO, s.DSC_SUBOBJETO, s.FC_NACIMIENTO, s.OBS_SUBOBJETO,s.BENEFICIO, s.ACTIVO, s.CEDULA_S, s.TOT_ASE_ACTUAL, s.TOT_PRI_ACTUAL, s.TASA, s.CD_COMPANIA, s.CD_DEP_BEN as CD_ASEGURADO FROM BRK_T_SUBOBJETOS s WHERE s.CD_COMPANIA = ? AND s.CD_OBJ_COTIZACION =? ORDER BY s.DSC_SUBOBJETO";
     private static final String Q_EXCLUSION_COBERTURA = "SELECT DISTINCT E.ORD_IMPRESION, E.DSC_EXCLUSION, E.OBS_EXC_NEGOCIO, E.ACTIVO, E.CD_EXC_NEGOCIO, E.CD_COMPANIA, E.CD_COB_NEGOCIO, E.CD_UBICACION, E.CD_RAMO_COTIZACION, E.CD_SUBOBJETO, E.CD_OBJ_COTIZACION FROM BRK_T_EXCLUSIONES_NEGOCIO E  WHERE E.CD_COB_NEGOCIO = ? AND (E.CD_COMPANIA = ?)";
     private static final String Q_EXCLUSION_RAMO = "SELECT DISTINCT E.ORD_IMPRESION, E.DSC_EXCLUSION, E.OBS_EXC_NEGOCIO, E.ACTIVO, E.CD_EXC_NEGOCIO, E.CD_COMPANIA, E.CD_COB_NEGOCIO, E.CD_UBICACION, E.CD_RAMO_COTIZACION, E.CD_SUBOBJETO, E.CD_OBJ_COTIZACION FROM BRK_T_EXCLUSIONES_NEGOCIO E  WHERE (E.CD_COMPANIA = ?) AND (E.CD_RAMO_COTIZACION = ?)";
-    //Gestor Usuarios
+    // Gestor Usuarios
     private static final String Q_SELECT_COUNT = "SELECT COUNT(*) ";
     private static final String Q_GESTOR_USUARIO_FROM = " FROM BRK_T_CLIENTES, " +
             "BRK_T_EJECUTIVOS, " +
@@ -61,15 +63,16 @@ public class PolizaJdbcDAO implements Serializable {
             "( BRK_T_EJECUTIVOS.CD_COMPANIA = BRK_T_TELEFONOS.CD_COMPANIA ) and " +
             "( BRK_T_EJECUTIVOS.CD_EJECUTIVO = BRK_T_TELEFONOS.CD_CODIGO ) and " +
             "( ( NVL(BRK_T_EJECUTIVOS.ESTADO,'0') <> 'X' ) AND " +
-            "( to_char(BRK_T_CLIENTES.CD_CLIENTE)  like ? ) AND " + //:as_cd_cliente
-            "( BRK_T_EJECUTIVOS.NM_EJECUTIVO like ? ) AND " + //:as_nm_contacto
-            "( BRK_T_EJECUTIVOS.AP_EJECUTIVO like ? ) AND " + //:as_ap_contacto
-            "( BRK_T_CLIENTES.RUC_CED like ? ) AND " + //:as_cedula
-            "( BRK_T_CLIENTES.NM_CLIENTE like ? ) AND " + //:as_nm_contratante
-            "( BRK_T_CLIENTES.AP_CLIENTE like ? ) AND " +//:as_ap_contratante
-            "( BRK_T_TELEFONOS.MAIL like ? ) ) "; //:as_correo
+            "( to_char(BRK_T_CLIENTES.CD_CLIENTE)  like ? ) AND " + // :as_cd_cliente
+            "( BRK_T_EJECUTIVOS.NM_EJECUTIVO like ? ) AND " + // :as_nm_contacto
+            "( BRK_T_EJECUTIVOS.AP_EJECUTIVO like ? ) AND " + // :as_ap_contacto
+            "( BRK_T_CLIENTES.RUC_CED like ? ) AND " + // :as_cedula
+            "( BRK_T_CLIENTES.NM_CLIENTE like ? ) AND " + // :as_nm_contratante
+            "( BRK_T_CLIENTES.AP_CLIENTE like ? ) AND " + // :as_ap_contratante
+            "( BRK_T_TELEFONOS.MAIL like ? ) ) "; // :as_correo
 
-    private static final String Q_GESTOR_USUARIO_PAGED = "SELECT * FROM (SELECT ROWNUM RNUM, BRK_T_CLIENTES.CD_CLIENTE, " +
+    private static final String Q_GESTOR_USUARIO_PAGED = "SELECT * FROM (SELECT ROWNUM RNUM, BRK_T_CLIENTES.CD_CLIENTE, "
+            +
             "BRK_T_CLIENTES.RUC_CED, " +
             "BRK_T_CLIENTES.NM_CLIENTE, " +
             "BRK_T_CLIENTES.AP_CLIENTE, " +
@@ -87,8 +90,8 @@ public class PolizaJdbcDAO implements Serializable {
             "BRK_T_EJECUTIVOS.SELECCIONA, " +
             "BRK_T_EJECUTIVOS.DESACTIVA " +
             Q_GESTOR_USUARIO_FROM +
-            "AND ROWNUM <= ?) " + //:as_pageSize
-            "WHERE RNUM >= ?"; //:as_page
+            "AND ROWNUM <= ?) " + // :as_pageSize
+            "WHERE RNUM >= ?"; // :as_page
 
     public static final String Q_COMUNICADOS = "select tr.CD_TAB_RUBRO, " +
             "       tr.CD_COMPANIA, " +
@@ -103,12 +106,16 @@ public class PolizaJdbcDAO implements Serializable {
             "  and (tr.CD_COMPANIA = :cdCompania) " +
             "  and ((t.NM_TABLA like '%BRK_T_AVISOSINIESTRO%'))";
 
-    public static final String QR_MAIL_CELULAR = "select CELULAR, CORREO from brk_t_asegurados_vam where CEDULA = (select o.CEDULA_O " +
-            "from brk_t_obj_cotizacion o, " +
-            "     BRK_T_SINIESTRO_SS s " +
-            "where s.cd_compania = o.cd_compania (+) " +
-            "  AND s.cd_asegurado_tit = o.cd_asegurado (+) " +
-            "  and s.CD_RECLAMO = :cdReclamo and o.CD_COMPANIA = :cdCompania)";
+    public static final String QR_MAIL_CELULAR = "select CELULAR, CORREO \n" +
+            "from brk_t_asegurados_vam av \n" +
+            "where CEDULA = (\n" +
+            "    select distinct o.CEDULA_O\n" +
+            "    from brk_t_obj_cotizacion o\n" +
+            "    left join BRK_T_SINIESTRO_SS s on s.cd_compania = o.cd_compania \n" +
+            "                                   and s.cd_asegurado_tit = o.cd_asegurado\n" +
+            "    where s.CD_RECLAMO = :cdReclamo \n" +
+            "      and o.CD_COMPANIA = :cdCompania\n" +
+            ")";
 
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
@@ -118,84 +125,107 @@ public class PolizaJdbcDAO implements Serializable {
 
     // coberturas
     public List<Cobertura> getCoberturasByRamoCot(Integer cdCompania, Integer cdRamoCotizacion) {
-        return this.jdbcTemplate.query(Q_COBERTURA_GNC, new Object[]{cdCompania, cdRamoCotizacion}, new BeanPropertyRowMapper<>(Cobertura.class));
+        return this.jdbcTemplate.query(Q_COBERTURA_GNC, new Object[] { cdCompania, cdRamoCotizacion },
+                new BeanPropertyRowMapper<>(Cobertura.class));
     }
 
     public List<Cobertura> getCoberturasByUbicacion(Integer cdCompania, Integer cdUbicacion) {
-        return this.jdbcTemplate.query(Q_COBERTURA_UBC, new Object[]{cdCompania, cdUbicacion}, new BeanPropertyRowMapper<>(Cobertura.class));
+        return this.jdbcTemplate.query(Q_COBERTURA_UBC, new Object[] { cdCompania, cdUbicacion },
+                new BeanPropertyRowMapper<>(Cobertura.class));
     }
 
-    //clausulas
+    // clausulas
     public List<Clausula> getClausulasByRamoCot(Integer cdCompania, Integer cdRamoCotizacion) {
-        return this.jdbcTemplate.query(Q_CLAUSULAS_GNC, new Object[]{cdCompania, cdRamoCotizacion}, new BeanPropertyRowMapper<>(Clausula.class));
+        return this.jdbcTemplate.query(Q_CLAUSULAS_GNC, new Object[] { cdCompania, cdRamoCotizacion },
+                new BeanPropertyRowMapper<>(Clausula.class));
     }
 
     public List<Clausula> getClausulasByUbicacion(Integer cdCompania, Integer cdUbicacion) {
-        return this.jdbcTemplate.query(Q_CLAUSULAS_UBC, new Object[]{cdCompania, cdUbicacion}, new BeanPropertyRowMapper<>(Clausula.class));
+        return this.jdbcTemplate.query(Q_CLAUSULAS_UBC, new Object[] { cdCompania, cdUbicacion },
+                new BeanPropertyRowMapper<>(Clausula.class));
     }
 
-    //deducibles
+    // deducibles
     public List<Deducible> getOtrosDeduciblesByRamCot(Integer cdCompania, Integer cdRamoCotizacion) {
-        return this.jdbcTemplate.query(Q_DEDUCIBLES_OTR, new Object[]{cdCompania, cdRamoCotizacion}, new BeanPropertyRowMapper<>(Deducible.class));
+        return this.jdbcTemplate.query(Q_DEDUCIBLES_OTR, new Object[] { cdCompania, cdRamoCotizacion },
+                new BeanPropertyRowMapper<>(Deducible.class));
     }
 
     public List<Deducible> getDeduciblesByCobertura(Integer cdCompania, Integer cdCoberturaDeducible) {
-        return this.jdbcTemplate.query(Q_DEDUCIBLES_COB, new Object[]{cdCompania, cdCoberturaDeducible}, new BeanPropertyRowMapper<>(Deducible.class));
+        return this.jdbcTemplate.query(Q_DEDUCIBLES_COB, new Object[] { cdCompania, cdCoberturaDeducible },
+                new BeanPropertyRowMapper<>(Deducible.class));
     }
 
     public List<Deducible> getDeduciblesByUbicacion(Integer cdCompania, Integer cdUbicacion) {
-        return this.jdbcTemplate.query(Q_DEDUCIBLES_UBC, new Object[]{cdCompania, cdUbicacion}, new BeanPropertyRowMapper<>(Deducible.class));
+        return this.jdbcTemplate.query(Q_DEDUCIBLES_UBC, new Object[] { cdCompania, cdUbicacion },
+                new BeanPropertyRowMapper<>(Deducible.class));
     }
 
     public List<GarantiasNegocio> getGarantiasByRamoCot(Integer cdRamoCotizacion) {
-        return this.jdbcTemplate.query(Q_GARANTIAS_NEGOCIO, new Object[]{cdRamoCotizacion}, new BeanPropertyRowMapper<>(GarantiasNegocio.class));
+        return this.jdbcTemplate.query(Q_GARANTIAS_NEGOCIO, new Object[] { cdRamoCotizacion },
+                new BeanPropertyRowMapper<>(GarantiasNegocio.class));
     }
 
     public FormaPago getFormaPagoByCotizacion(Integer cdCompania, Integer cdCotizacion) {
-        return this.jdbcTemplate.queryForObject(Q_FORMA_PAGO, new Object[]{cdCompania, cdCotizacion}, new BeanPropertyRowMapper<>(FormaPago.class));
+        return this.jdbcTemplate.queryForObject(Q_FORMA_PAGO, new Object[] { cdCompania, cdCotizacion },
+                new BeanPropertyRowMapper<>(FormaPago.class));
     }
 
     public FormaPago getFormaPagoByCotizacionVAM(Integer cdCompania, Integer cdCotizacion) {
-        return this.jdbcTemplate.queryForObject(Q_FORMA_PAGO_VAM, new Object[]{cdCompania, cdCotizacion}, new BeanPropertyRowMapper<>(FormaPago.class));
+        return this.jdbcTemplate.queryForObject(Q_FORMA_PAGO_VAM, new Object[] { cdCompania, cdCotizacion },
+                new BeanPropertyRowMapper<>(FormaPago.class));
     }
 
     public List<Financiamiento> getFinanciamientosByFp(Integer cdCompania, Integer cdFormaPago) {
-        return this.jdbcTemplate.query(Q_FINANCIAMIENTO, new Object[]{cdCompania, cdFormaPago}, new BeanPropertyRowMapper<>(Financiamiento.class));
+        return this.jdbcTemplate.query(Q_FINANCIAMIENTO, new Object[] { cdCompania, cdFormaPago },
+                new BeanPropertyRowMapper<>(Financiamiento.class));
     }
 
     public List<DetalleFinanciamiento> getDetalleFinanciamiento(Integer cdCompania, Integer cdFinanciamiento) {
-        return this.jdbcTemplate.query(Q_DET_FINAN, new Object[]{cdCompania, cdFinanciamiento}, new BeanPropertyRowMapper<>(DetalleFinanciamiento.class));
+        return this.jdbcTemplate.query(Q_DET_FINAN, new Object[] { cdCompania, cdFinanciamiento },
+                new BeanPropertyRowMapper<>(DetalleFinanciamiento.class));
     }
 
     public List<FormaPrima> getFormaPrimaByUbc(Integer cdCompania, Integer cdUbicacion) {
-        return this.jdbcTemplate.query(Q_FORMA_PRIMA, new Object[]{cdCompania, cdUbicacion}, new BeanPropertyRowMapper<>(FormaPrima.class));
+        return this.jdbcTemplate.query(Q_FORMA_PRIMA, new Object[] { cdCompania, cdUbicacion },
+                new BeanPropertyRowMapper<>(FormaPrima.class));
     }
 
     public List<ExclusionesNegocio> getExclusionByUbc(Integer cdCompania, Integer cdUbicacion) {
-        return this.jdbcTemplate.query(Q_EXCLUSION, new Object[]{cdCompania, cdUbicacion}, new BeanPropertyRowMapper<>(ExclusionesNegocio.class));
+        return this.jdbcTemplate.query(Q_EXCLUSION, new Object[] { cdCompania, cdUbicacion },
+                new BeanPropertyRowMapper<>(ExclusionesNegocio.class));
     }
 
     public List<Subobjetos> getSubobjetosByObtCot(Integer cdCompania, Integer cdObjetoCotizacion) {
-        return this.jdbcTemplate.query(Q_SUBOBJ_OBJ, new Object[]{cdCompania, cdObjetoCotizacion}, new BeanPropertyRowMapper<>(Subobjetos.class));
+        return this.jdbcTemplate.query(Q_SUBOBJ_OBJ, new Object[] { cdCompania, cdObjetoCotizacion },
+                new BeanPropertyRowMapper<>(Subobjetos.class));
     }
 
-    //Exlusiones
+    // Exlusiones
     public List<ExclusionCobertura> getExclusionCobertura(Integer cdCompania, Integer cdCodNegocio) {
-        return this.jdbcTemplate.query(Q_EXCLUSION_COBERTURA, new Object[]{cdCompania, cdCodNegocio}, new BeanPropertyRowMapper<>(ExclusionCobertura.class));
+        return this.jdbcTemplate.query(Q_EXCLUSION_COBERTURA, new Object[] { cdCompania, cdCodNegocio },
+                new BeanPropertyRowMapper<>(ExclusionCobertura.class));
     }
 
     public List<ExclusionCobertura> getExclusionRamo(Integer cdCompania, Integer cdRamoCotizacion) {
-        return this.jdbcTemplate.query(Q_EXCLUSION_RAMO, new Object[]{cdCompania, cdRamoCotizacion}, new BeanPropertyRowMapper<>(ExclusionCobertura.class));
+        return this.jdbcTemplate.query(Q_EXCLUSION_RAMO, new Object[] { cdCompania, cdRamoCotizacion },
+                new BeanPropertyRowMapper<>(ExclusionCobertura.class));
     }
-    //Beneficiario
+    // Beneficiario
 
-    //gestor usuarios web
-    public Integer getGestorUsuariosCount(String cdCliente, String nmContacto, String apContacto, String cedula, String nmContratante, String apContratante, String correo) {
-        return this.jdbcTemplate.queryForObject(Q_SELECT_COUNT + Q_GESTOR_USUARIO_FROM, new Object[]{cdCliente, nmContacto, apContacto, cedula, nmContratante, apContratante, correo}, Integer.class);
+    // gestor usuarios web
+    public Integer getGestorUsuariosCount(String cdCliente, String nmContacto, String apContacto, String cedula,
+            String nmContratante, String apContratante, String correo) {
+        return this.jdbcTemplate.queryForObject(Q_SELECT_COUNT + Q_GESTOR_USUARIO_FROM,
+                new Object[] { cdCliente, nmContacto, apContacto, cedula, nmContratante, apContratante, correo },
+                Integer.class);
     }
 
-    public List<GestorUsuario> getGestorUsuarios(String cdCliente, String nmContacto, String apContacto, String cedula, String nmContratante, String apContratante, String correo, Integer pageSize, Integer page) {
-        return this.jdbcTemplate.query(Q_GESTOR_USUARIO_PAGED, new Object[]{cdCliente, nmContacto, apContacto, cedula, nmContratante, apContratante, correo, pageSize, page}, new BeanPropertyRowMapper<>(GestorUsuario.class));
+    public List<GestorUsuario> getGestorUsuarios(String cdCliente, String nmContacto, String apContacto, String cedula,
+            String nmContratante, String apContratante, String correo, Integer pageSize, Integer page) {
+        return this.jdbcTemplate.query(Q_GESTOR_USUARIO_PAGED, new Object[] { cdCliente, nmContacto, apContacto, cedula,
+                nmContratante, apContratante, correo, pageSize, page },
+                new BeanPropertyRowMapper<>(GestorUsuario.class));
     }
 
     public Map<String, Object> getCelularAndMail(Integer cdReclamo, Integer cdCompania) {

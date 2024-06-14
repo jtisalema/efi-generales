@@ -74,7 +74,7 @@ public class SiniestroJdbcDao implements Serializable {
             "  AND (:poliza IS NULL OR s.POLIZA = :poliza) " +
             "  AND (:cdRamo IS NULL OR s.CD_RAMO = :cdRamo) " +
             "  AND (:cdAseguradora IS NULL OR s.CD_ASEGURADORA = :cdAseguradora) " +
-            "  AND (:fcDesde IS NULL OR s.FC_SINIESTRO BETWEEN :fcDesde AND :fcHasta) " +
+            "  AND (:fcDesde IS NULL OR s.FC_SINIESTRO BETWEEN TO_DATE(:fcDesde, 'dd/MM/yyyy') AND TO_DATE(:fcHasta, 'dd/MM/yyyy')) " +
             "  AND (:anio IS NULL OR s.ANO_SINIESTRO = :anio) " +
             "  AND (:dscObjeto IS NULL OR os.DSC_OBJETO LIKE :dscObjeto) " +
             "  AND (:titular IS NULL OR o.DSC_OBJETO LIKE :titular) " +
@@ -123,7 +123,7 @@ public class SiniestroJdbcDao implements Serializable {
             "  AND (:cdEjecutivo IS NULL OR rc.CD_EJECUTIVO_SINIESTRO = :cdEjecutivo) " +
             "  AND i.LIQUIDADO <> 1 ";
 
-    private static final String Q_SEARCH_INCAP_SIN_VAM_DATA = "SELECT s.CD_RECLAMO, s.CD_COMPANIA, c.ALIAS_COMPANIA, s.NUM_SINIESTRO, i.ITEM, i.CD_INC_SINIESTRO, s.ANO_SINIESTRO, s.CD_ASEGURADO_TIT, e.alias_estado, s.POLIZA, r.NM_ALIAS NM_RAMO_ALIAS,r.NM_RAMO NM_RAMO, A.NM_ALIAS NM_ASEG,A.NM_ASEGURADORA, os.CL_ASEGURADO, os.DSC_OBJETO, i.CD_INCAPACIDAD, ic.NM_INCAPACIDAD, TRUNC(i.fc_ultimodoc) fc_ultimodoc, (to_date(SYSDATE, 'dd/mm/yyyy') - to_date(i.fc_ultimodoc, 'dd/mm/yyyy')) dias, (to_date(i.fc_liquida, 'dd/mm/yyyy') - to_date(i.fc_ultimodoc, 'dd/mm/yyyy'))  dias2, o.DSC_OBJETO TITULAR, i.TP_SINIESTRO, f_sum_val_incurrido_vam(i.cd_compania, i.cd_inc_siniestro) val_incurrido, i.FC_ALCANCE as FC_SINIESTRO, s.CD_CLIENTE, i.estado, os.CD_ASEGURADO, rc.CD_RAMO, rc.cd_ramo_cotizacion " + Q_SEARCH_INCAP_SIN_VAM_FROM;
+    private static final String Q_SEARCH_INCAP_SIN_VAM_DATA = "SELECT s.CD_RECLAMO, s.CD_COMPANIA, c.ALIAS_COMPANIA, s.NUM_SINIESTRO, i.ITEM, i.CD_INC_SINIESTRO, s.ANO_SINIESTRO, s.CD_ASEGURADO_TIT, e.alias_estado, s.POLIZA, r.NM_ALIAS NM_RAMO_ALIAS,r.NM_RAMO NM_RAMO, A.NM_ALIAS NM_ASEG,A.NM_ASEGURADORA, os.CL_ASEGURADO, os.DSC_OBJETO, i.CD_INCAPACIDAD, ic.NM_INCAPACIDAD, TRUNC(i.fc_ultimodoc) fc_ultimodoc, (TRUNC(SYSDATE) - TRUNC(NVL(i.fc_ultimodoc, SYSDATE))) dias, (TRUNC(NVL(i.fc_liquida, SYSDATE)) - TRUNC(NVL(i.fc_ultimodoc, SYSDATE))) dias2, o.DSC_OBJETO TITULAR, i.TP_SINIESTRO, f_sum_val_incurrido_vam(i.cd_compania, i.cd_inc_siniestro) val_incurrido, i.FC_ALCANCE as FC_SINIESTRO, s.CD_CLIENTE, i.estado, os.CD_ASEGURADO, rc.CD_RAMO, rc.cd_ramo_cotizacion " + Q_SEARCH_INCAP_SIN_VAM_FROM;
     private static final String Q_SEARCH_INCAP_SIN_VAM_COUNT = "SELECT COUNT(i.CD_INC_SINIESTRO) " + Q_SEARCH_INCAP_SIN_VAM_FROM;
     private static final String Q_SEARCH_RAMO_COTIZACION = "select distinct r.NM_RAMO, p.DSC_PLAN " +
             "from BROKER.BRK_T_RAMOS r, " +

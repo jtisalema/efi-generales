@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author dacopanCM on 25/08/17.
@@ -190,8 +191,8 @@ public class SiniestroService extends GenericService<BrkTSiniestro, BrkTSiniestr
         Integer cdPool = item.has("cdPool") ? item.get("cdPool").asInt() : null;
         ArrayNode sorted = (ArrayNode) item.get("sorted");
 
-        java.sql.Date fcDesde;
-        java.sql.Date fcHasta;
+        String fcDesde;
+        String fcHasta;
         List<Integer> cdAgente = null;
 
         if (cdPool != null) {
@@ -217,19 +218,22 @@ public class SiniestroService extends GenericService<BrkTSiniestro, BrkTSiniestr
         if (ObjectUtils.isEmpty(anio) || anio == 0) {
             anio = null;
         }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
         if ((ObjectUtils.isEmpty(item.get("fcDesde").asText())) || (ObjectUtils.isEmpty(item.get("fcHasta").asText()))) {
             var _desde = ZonedDateTime.now().minusYears(23).toLocalDate();
-            fcDesde = java.sql.Date.valueOf(_desde);
+            fcDesde = _desde.format(formatter);
 
             var _hasta = ZonedDateTime.now().toLocalDate();
-            fcHasta = java.sql.Date.valueOf(_hasta);
+            fcHasta = _hasta.format(formatter);
 
         } else {
             var _desde = ZonedDateTime.parse(item.get("fcDesde").asText()).toLocalDate();
-            fcDesde = java.sql.Date.valueOf(_desde);
+            fcDesde = _desde.format(formatter);
 
             var _hasta = ZonedDateTime.parse(item.get("fcHasta").asText()).toLocalDate();
-            fcHasta = java.sql.Date.valueOf(_hasta);
+            fcHasta = _hasta.format(formatter);
         }
         Pageable pageable = PageRequest.of(page, pageSize);
         String order = " ORDER BY ";
