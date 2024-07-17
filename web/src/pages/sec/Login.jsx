@@ -31,7 +31,31 @@ export const Login = () => {
   function checkLogin(hash) {
     let config = {};
     if (hash) {
-      config.headers = { "X-JEDAI": hash };
+      var texto = atob(hash);
+      var informacion = texto.split(":");
+      const data = { enki: informacion[0], perseo: informacion[1] };
+      setLoading(true);
+      //headers q lee el spring security (efi-sec)
+      let headers = {
+        authorization:
+          "Basic " + btoa(data.enki.trim() + ":" + data.perseo.trim()),
+      };
+      axios
+        .post(routes.base + "/enki", {}, { headers: headers })
+        .then((resp) => {
+          get_asociados(resp, true);
+        })
+        .catch((error) => {
+          let msg = alert.current.handle_error(error);
+          if (msg.indexOf("expirado") >= 0) {
+            history.push("/renovar/" + window.btoa(data.enki));
+          }
+          dispatch(do_login({ username: null, id: null }));
+        })
+        .finally(() => {
+          setLoading(false);
+          history.push("/");
+        });
     }
     // compruebo si previamente ya incio sesion
     axios
@@ -58,9 +82,9 @@ export const Login = () => {
     const data = newValues;
     setLoading(true);
     //headers q lee el spring security (efi-sec)
-    console.log("enki:"+data.enki.trim());
     let headers = {
-      authorization: "Basic " + btoa(data.enki.trim() + ":" + data.perseo),
+      authorization:
+        "Basic " + btoa(data.enki.trim() + ":" + data.perseo.trim()),
     };
 
     // envio de peticion
@@ -220,7 +244,7 @@ export const Login = () => {
                         </Button>
                       </div>
                       <div className="text-center">
-                        <span style={{ color: "white" }}>v1.0.2</span>
+                        <span style={{ color: "white" }}>v1.0.5</span>
                       </div>
                     </CardFooter>
                   </Form>

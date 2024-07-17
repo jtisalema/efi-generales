@@ -1,24 +1,34 @@
 {
-    "configurations": [
-        {
-            "type": "java",
-            "name": "Spring Boot-EfiWebApplication<efi-generales-main>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.tefisoft.efiweb.EfiWebApplication",
-            "projectName": "efi-generales-main",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-EfiWebApplication<efi-generales>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.tefisoft.efiweb.EfiWebApplication",
-            "projectName": "efi-generales",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        }
-    ]
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-EfiWebApplication<efi-generales-main>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.tefisoft.efiweb.EfiWebApplication",
+      "projectName": "efi-generales-main",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-EfiWebApplication<efi-generales>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.tefisoft.efiweb.EfiWebApplication",
+      "projectName": "efi-generales",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "name": "Chrome",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/src",
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${webRoot}/*"
+      }
+    }
+  ]
 }

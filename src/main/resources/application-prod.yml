@@ -25,18 +25,29 @@ spring:
     show-sql: false
 
 
+# spring.mail:
+#   host: smtp-relay.sendinblue.com
+#   username: comunicados@segurossuarez.com
+#   password: pWa6hsBvd8xkZU9M
+#   port: 587
+#   properties.mail:
+#     transport.protocol: smtp
+#     smtp:
+#       auth: true
+#       socketFactory.port: 587
+#       socketFactory.class: javax.net.ssl.SSLSocketFactory
+#       socketFactory.fallback: true
+#       ssl.enable: false
+#       starttls.enable: true
 spring.mail:
-  host: smtp-relay.sendinblue.com
-  username: comunicados@segurossuarez.com
-  password: pWa6hsBvd8xkZU9M
-  port: 587
-  properties.mail:
-    transport.protocol: smtp
-    smtp:
-      auth: true
-      socketFactory.port: 587
-      socketFactory.class: javax.net.ssl.SSLSocketFactory
-      socketFactory.fallback: true
-      ssl.enable: false
-      starttls.enable: true
+    host: smtp.office365.com
+    port: 587
+    username: notificaciones@segurossuarez.com
+    password: Segu2024!!
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
