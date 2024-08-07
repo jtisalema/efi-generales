@@ -55,7 +55,7 @@ class Siniestros extends Component {
             cdAseguradora: 0,
             numSiniestro: '',
             anio: '',
-            cdCompania: 1,
+            cdCompania: this.props.user.cdCompania,
             cdCliente: this.props.user.cdCliente,
             inclEjecutivo: false,
             dscObjeto: null,
@@ -335,15 +335,6 @@ class Siniestros extends Component {
                                                             Cell: row => <DocsDigitales alert={this.alert}
                                                                                         tipo={"siniestro"}
                                                                                         row={row.original}/>
-                                                        },
-                                                        {
-                                                            Header: "Reportes",
-                                                            width: 80,
-                                                            filterable: false,
-                                                            sortable: false,
-                                                            Cell: row => <Reportes
-                                                                siniestro={row.original} alert={this.alert.current}
-                                                                vam={true}/>
                                                         },
                                                         {
                                                             Header: "Estado",

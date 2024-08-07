@@ -55,7 +55,7 @@ class SiniestrosGEN extends Component {
             numSiniestro: '',
             anio: '',
             dscObjeto: null,
-            cdCompania: 1,
+            cdCompania: this.props.user.cdCompania,
             cdCliente: this.props.user.cdCliente,
             cdPool: 0,
             cdEjecutivo: 0,
@@ -340,15 +340,6 @@ class SiniestrosGEN extends Component {
                                                             Cell: row => <DocsDigitales alert={this.alert}
                                                                                         tipo={"siniestro"}
                                                                                         row={row.original}/>
-                                                        },
-                                                        {
-                                                            Header: "Reportes",
-                                                            width: 80,
-                                                            filterable: false,
-                                                            sortable: false,
-                                                            Cell: row => <Reportes
-                                                                siniestro={row.original} alert={this.alert.current}
-                                                                vam={false}/>
                                                         },
                                                         {
                                                             Header: "Estado",

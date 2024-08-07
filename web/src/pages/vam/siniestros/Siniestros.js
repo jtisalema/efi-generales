@@ -293,15 +293,6 @@ class Siniestros extends Component {
                                                                                         row={row.original}/>
                                                         },
                                                         {
-                                                            Header: "Reportes",
-                                                            width: 80,
-                                                            filterable: false,
-                                                            sortable: false,
-                                                            Cell: row => <Reporte
-                                                                siniestro={row.original}
-                                                                alert={this.alert.current}/>
-                                                        },
-                                                        {
                                                             Header: "Num Siniestro",
                                                             minResizeWidth: 10,
                                                             sortable: true,
