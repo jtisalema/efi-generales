@@ -1013,7 +1013,9 @@
                                                                                                                                             $
                                                                                                                                             <span
                                                                                                                                                 style="color: rgb(143, 142, 143); font-size: 15px; line-height: 200%;"
-                                                                                                                                                th:text="${#numbers.formatDecimal(valorAcreditado.path('valorPresentado').asDouble(),0,'COMMA',2,'POINT')}">[VALOR]</span>
+                                                                                                                                                th:text="${#numbers.formatDecimal((valorAcreditado.path('valorPresentado').asDouble() - valorAcreditado.path('gastosNoCubiertos').asDouble()), 0, 'COMMA', 2, 'POINT')}">
+                                                                                                                                                [VALOR]
+                                                                                                                                            </span>
                                                                                                                                         </span>
                                                                                                                                     </div>
 
@@ -1646,7 +1648,13 @@
                                                                                                         </div>
                                                                                                         <div
                                                                                                             style="line-height: 100%; text-align: center;">
-                                                                                                            <span style="color: rgb(51, 185, 230); font-size: 12px; line-height: 100%;">CLÁUSULA DE PRIVACIDAD DE DATOS: </span>
+                                                                                                            <span
+                                                                                                                style="color: rgb(51, 185, 230); font-size: 12px; line-height: 100%;">CLÁUSULA
+                                                                                                                DE
+                                                                                                                PRIVACIDAD
+                                                                                                                DE
+                                                                                                                DATOS:
+                                                                                                            </span>
                                                                                                         </div>
                                                                                                         <div
                                                                                                             style="line-height: 100%; text-align: center;">
@@ -1654,7 +1662,112 @@
                                                                                                         </div>
                                                                                                         <div
                                                                                                             style="line-height: 100%; text-align: justify;">
-                                                                                                            <span style="color: rgb(51, 185, 230); font-size: 12px; line-height: 100%;">Al contratar el servicio proporcionado por Seguros Suárez y basándonos en el interés legítimo de Seguros Suárez como Responsable de los Datos, usted autoriza el uso, almacenamiento, utilización, clasificación, modificación, actualización y transferencia de los datos para los fines mencionados en la <a href="https://www.segurossuarez.com/politica-de-privacidad/" target="_blank">Política de Privacidad</a> de Seguros Suárez y entiende que el negarse implica que Seguros Suárez no podrá ofrecer el servicio adecuado, por ello, acepta la necesidad de su tratamiento mientras mantenga una relación comercial u obligación contractual con Seguros Suárez o mientras lo requiera algún requisito legal, para más información lo puede realizar dirigiéndose al correo <a href="mailto:protecciondatos@segurossuarez.com">protecciondatos@segurossuarez.com</a>.<br/><br/>Las direcciones de e-mail facilitadas por nuestros clientes son utilizadas exclusivamente para el correo y en ningún caso son suministradas a terceros.<br/></span>
+                                                                                                            <span
+                                                                                                                style="color: rgb(51, 185, 230); font-size: 12px; line-height: 100%;">Al
+                                                                                                                contratar
+                                                                                                                el
+                                                                                                                servicio
+                                                                                                                proporcionado
+                                                                                                                por
+                                                                                                                Seguros
+                                                                                                                Suárez y
+                                                                                                                basándonos
+                                                                                                                en el
+                                                                                                                interés
+                                                                                                                legítimo
+                                                                                                                de
+                                                                                                                Seguros
+                                                                                                                Suárez
+                                                                                                                como
+                                                                                                                Responsable
+                                                                                                                de los
+                                                                                                                Datos,
+                                                                                                                usted
+                                                                                                                autoriza
+                                                                                                                el uso,
+                                                                                                                almacenamiento,
+                                                                                                                utilización,
+                                                                                                                clasificación,
+                                                                                                                modificación,
+                                                                                                                actualización
+                                                                                                                y
+                                                                                                                transferencia
+                                                                                                                de los
+                                                                                                                datos
+                                                                                                                para los
+                                                                                                                fines
+                                                                                                                mencionados
+                                                                                                                en la <a
+                                                                                                                    href="https://www.segurossuarez.com/politica-de-privacidad/"
+                                                                                                                    target="_blank">Política
+                                                                                                                    de
+                                                                                                                    Privacidad</a>
+                                                                                                                de
+                                                                                                                Seguros
+                                                                                                                Suárez y
+                                                                                                                entiende
+                                                                                                                que el
+                                                                                                                negarse
+                                                                                                                implica
+                                                                                                                que
+                                                                                                                Seguros
+                                                                                                                Suárez
+                                                                                                                no podrá
+                                                                                                                ofrecer
+                                                                                                                el
+                                                                                                                servicio
+                                                                                                                adecuado,
+                                                                                                                por
+                                                                                                                ello,
+                                                                                                                acepta
+                                                                                                                la
+                                                                                                                necesidad
+                                                                                                                de su
+                                                                                                                tratamiento
+                                                                                                                mientras
+                                                                                                                mantenga
+                                                                                                                una
+                                                                                                                relación
+                                                                                                                comercial
+                                                                                                                u
+                                                                                                                obligación
+                                                                                                                contractual
+                                                                                                                con
+                                                                                                                Seguros
+                                                                                                                Suárez o
+                                                                                                                mientras
+                                                                                                                lo
+                                                                                                                requiera
+                                                                                                                algún
+                                                                                                                requisito
+                                                                                                                legal,
+                                                                                                                para más
+                                                                                                                información
+                                                                                                                lo puede
+                                                                                                                realizar
+                                                                                                                dirigiéndose
+                                                                                                                al
+                                                                                                                correo
+                                                                                                                <a
+                                                                                                                    href="mailto:protecciondatos@segurossuarez.com">protecciondatos@segurossuarez.com</a>.<br /><br />Las
+                                                                                                                direcciones
+                                                                                                                de
+                                                                                                                e-mail
+                                                                                                                facilitadas
+                                                                                                                por
+                                                                                                                nuestros
+                                                                                                                clientes
+                                                                                                                son
+                                                                                                                utilizadas
+                                                                                                                exclusivamente
+                                                                                                                para el
+                                                                                                                correo y
+                                                                                                                en
+                                                                                                                ningún
+                                                                                                                caso son
+                                                                                                                suministradas
+                                                                                                                a
+                                                                                                                terceros.<br /></span>
                                                                                                         </div>
                                                                                                     </td>
                                                                                                 </tr>
