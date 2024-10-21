@@ -12,23 +12,23 @@ import {
     ModalBody,
     Row
 } from "reactstrap";
-import React, {useRef, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {routes} from "../gen/UtilsGeneral";
-import {DatosContratante} from "../gen/DatosContratante";
-import {DatosAsegurado} from "../vam/DatosAsegurado";
+import React, { useRef, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { routes } from "../gen/UtilsGeneral";
+import { DatosContratante } from "../gen/DatosContratante";
+import { DatosAsegurado } from "../vam/DatosAsegurado";
 import axios from "axios";
 import UqaiFormik from "../../components/UqaiFormik";
 import JedaiDropImg from "../../components/UqaiDropImg";
-import {UqaiField} from "../../components/UqaiField";
-import {getRandomF, image_profile_size} from "../../util/General";
-import {useSearchParam} from "../../hooks/useLocation";
-import {AvatarModal} from "./parts/AvatarModal";
+import { UqaiField } from "../../components/UqaiField";
+import { getRandomF, image_profile_size } from "../../util/General";
+import { useSearchParam } from "../../hooks/useLocation";
+import { AvatarModal } from "./parts/AvatarModal";
 import Alerts from "../../components/Alerts";
-import {useCurrentModule} from "../../hooks/useModules";
+import { useCurrentModule } from "../../hooks/useModules";
 import Pages from "../../layouts/Pages";
-import {UqaiModalHeader} from "../../components/UqaiModal";
-import {do_login} from "../sec/redux/actions";
+import { UqaiModalHeader } from "../../components/UqaiModal";
+import { do_login } from "../sec/redux/actions";
 
 export const Perfil = () => {
 
@@ -40,6 +40,10 @@ export const Perfil = () => {
     const [open, setOpen] = useState(false);
     const showPass = user.isEjecutivo;
     const dispatch = useDispatch()
+    // Usamos useState para que las variables conserven su valor entre renders
+    const [fechaAutorizacion, setFechaAutorizacion] = useState('');
+    const [ipAutorizacion, setIpAutorizacion] = useState('');
+    const [correoNotificacion, setCorreoNotificacion] = useState('');
 
     function onSubmit(newValues, actions) {
         let foto = newValues.foto;
@@ -52,7 +56,7 @@ export const Perfil = () => {
             setRnd(getRandomF());
             let usuario = JSON.parse(JSON.stringify(user));
             usuario.fcModifica = new Date();
-            dispatch(do_login({...usuario}))
+            dispatch(do_login({ ...usuario }))
         }).catch(error => {
             alert.current.handle_error(error);
         }).then(() => actions.setSubmitting(false))
@@ -63,10 +67,29 @@ export const Perfil = () => {
         setRnd(getRandomF());
     }
 
+    useEffect(() => {
+        let cedula = user.cedula;
+        console.log(user);
+        axios.get(`https://cotizador.segurossuarez.com/apiclientes/ConsentimientoTratamiento/obtenerUltimoEstadoPorCedula/${cedula}`, {
+            withCredentials: false
+        })
+            .then(resp => {
+                let consentimientoTratamiento = resp.data.resultado ?? '';
+                if (consentimientoTratamiento.estado == 'aceptado') {
+                    setFechaAutorizacion(consentimientoTratamiento.fechaAccion.replace('T', ' '));
+                    setIpAutorizacion(consentimientoTratamiento.direccionIP);
+                    setCorreoNotificacion(consentimientoTratamiento.correoElectronico);
+                }
+            })
+            .catch(error => {
+                alert('Error al consultar' + error);
+            });
+    });
+
     return (<Pages title={"Perfil"}>
         <section className="p-1 p-md-2 p-xl-4 flex-grow-1">
             <div className="container-fluid">
-                <Alerts ref={alert}/>
+                <Alerts ref={alert} />
                 <div className={"card shadow"}>
                     <CardHeader className="d-flex align-items-center border-bottom border-primary">
                         <h5 className="my-0 fw-bold">Mi Perfil</h5>
@@ -77,44 +100,72 @@ export const Perfil = () => {
                         </p>
                         <div className="container-fluid">
                             <div className={"row"}>
-                                {mod === 'vam' && <DatosAsegurado/>}
-                                {mod === 'gen' && <DatosContratante setCliente={setCliente} item={cliente}/>}
+                                {mod === 'vam' && <DatosAsegurado />}
+                                {mod === 'gen' && <DatosContratante setCliente={setCliente} item={cliente} />}
                                 <div className={"col-md-4"}>
                                     <UqaiFormik initialValues={user} onSubmit={onSubmit}
-                                                enableReinitialize={true} validateOnChange={false}>
-                                        {({values, submitForm, dirty}) => (<>
+                                        enableReinitialize={true} validateOnChange={false}>
+                                        {({ values, submitForm, dirty }) => (<>
                                             <Row>
                                                 <div className="form-group col-lg-12">
                                                     <Label
                                                         className={"form-label fw-bold text-secondary fs-6"}>Fotografía</Label>
                                                     <UqaiField name="foto"
-                                                               accept="image/png"
-                                                               data={`${routes.api}/user/img/${values.id}?vrd=${rnd}`}
-                                                               maxSize={image_profile_size}
-                                                               className="col-md-9 px-0"
-                                                               imgStyle={{maxHeight: "10rem"}}
-                                                               component={JedaiDropImg}/>
+                                                        accept="image/png"
+                                                        data={`${routes.api}/user/img/${values.id}?vrd=${rnd}`}
+                                                        maxSize={image_profile_size}
+                                                        className="col-md-9 px-0"
+                                                        imgStyle={{ maxHeight: "10rem" }}
+                                                        component={JedaiDropImg} />
                                                 </div>
                                                 <div className="form-group col-lg-12">
 
                                                     <button className={"btn btn-primary"}
-                                                            onClick={handleModal}>
+                                                        onClick={handleModal}>
                                                         Seleccionar Avatar
                                                     </button>
                                                     <AvatarModal open={open}
-                                                                 handleModal={handleModal} alert={alert}
-                                                                 cdAdicional={values?.id}
-                                                                 generarRamdom={() => setRnd(getRandomF())}/>
-                                                    <br/>
+                                                        handleModal={handleModal} alert={alert}
+                                                        cdAdicional={values?.id}
+                                                        generarRamdom={() => setRnd(getRandomF())} />
+                                                    <br />
                                                     {dirty && <Button color="primary" className="mb-3"
-                                                                      onClick={submitForm}>Guardar Foto</Button>}
+                                                        onClick={submitForm}>Guardar Foto</Button>}
                                                 </div>
                                             </Row>
                                         </>)}
                                     </UqaiFormik>
-                                    <br/>
-                                    {showPass && <CambiarPassword/>}
+                                    <br />
+                                    {showPass && <CambiarPassword />}
                                 </div>
+                            </div>
+                            <div className={"col-md-12 mt-3"}>
+                                {fechaAutorizacion !== '' && (
+                                    <>
+                                        <p class="text-secondary fw-bold fs-5">AUTORIZACIÓN DE TRATAMIENTO DE DATOS PERSONALES</p>
+                                        <div className={"row"}>
+                                            <div className="col-12 col-md-6">
+                                                <div className="row">
+                                                    <div className="col-6 text-right">
+                                                        <Label className="form-label fw-bold text-secondary fs-6">Fecha de autorización:&nbsp;</Label>
+                                                    </div>
+                                                    <div className="col-6"><span>{fechaAutorizacion}</span></div>
+                                                    <div className="col-6 text-right">
+                                                        <Label className="form-label fw-bold text-secondary fs-6">Ip autorización:&nbsp;</Label>
+                                                    </div>
+                                                    <div className="col-6"><span>{ipAutorizacion}</span></div>
+                                                    <div className="col-6 text-right">
+                                                        <Label className="form-label fw-bold text-secondary fs-6">Correo electrónico notificación:&nbsp;</Label>
+                                                    </div>
+                                                    <div className="col-6"><span>{correoNotificacion}</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p style={{ textAlign: 'justify' }}>
+                                            Si tiene alguna consulta adicional o desea más información acerca de cómo gestionamos sus datos, no dude en contactarnos a través de este correo: <a href="mailto:protecciondatos@segurossuarez.com">protecciondatos@segurossuarez.com</a> o visitar nuestra página web: <a href="https://www.segurossuarez.com/politica-de-privacidad/" target="_blank">https://www.segurossuarez.com/politica-de-privacidad/</a>.
+                                        </p>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </CardBody>
@@ -146,13 +197,13 @@ export const CambiarPassword = () => {
         });
     }
     return <>
-        <Alerts ref={alert}/>
+        <Alerts ref={alert} />
         <Button color="primary" onClick={() => setOpen(true)}>
-            <i className={"fa fa-key"}/> Cambiar Contraseña
+            <i className={"fa fa-key"} /> Cambiar Contraseña
         </Button>
         <Modal className="text-center modal-xl" isOpen={open} toggle={() => setOpen(false)}>
 
-            <UqaiModalHeader toggle={() => setOpen(false)} title="Cambio de Contraseña"/>
+            <UqaiModalHeader toggle={() => setOpen(false)} title="Cambio de Contraseña" />
             <Form onSubmit={onRequestAuth}>
                 <ModalBody className={"pt-2 mb-3"}>
                     <Row>
@@ -167,8 +218,8 @@ export const CambiarPassword = () => {
                                         </InputGroupText>
                                     </div>
                                     <Input className="form-control" type="password"
-                                           placeholder="Contraseña actual" required
-                                           name="current"/>
+                                        placeholder="Contraseña actual" required
+                                        name="current" />
                                 </InputGroup>
 
                                 <InputGroup className={"input-group no-border form-control-lg"}>
@@ -178,8 +229,8 @@ export const CambiarPassword = () => {
                                         </InputGroupText>
                                     </div>
                                     <Input className="form-control" type="password"
-                                           placeholder="Nueva Contraseña" required
-                                           name="passwd1"/>
+                                        placeholder="Nueva Contraseña" required
+                                        name="passwd1" />
                                 </InputGroup>
 
                                 <InputGroup className={"input-group no-border form-control-lg"}>
@@ -189,13 +240,13 @@ export const CambiarPassword = () => {
                                         </InputGroupText>
                                     </div>
                                     <Input className="form-control" type="password"
-                                           placeholder="Verificar contraseña" required
-                                           name="passwd2"/>
+                                        placeholder="Verificar contraseña" required
+                                        name="passwd2" />
                                 </InputGroup>
                             </div>
                             <div className="text-center">
                                 <Button color="primary" size="lg"
-                                        className="mb-3">
+                                    className="mb-3">
                                     Guardar
                                 </Button>
                             </div>
