@@ -194,25 +194,25 @@ const CamposAdicionales = ({ name, documento, isRequired, children }) => {
       {(isTipoFactura ||
         (tiposDocumentos.RECETA.tipos.includes(tipo) &&
           documento.reqFecha)) && (
-        <div className="form-group col mb-3 mt-4">
-          <label className="form-label fw-bold text-secondary fs-7">
-            {getTitle(`Fc. de ${isTipoFactura ? "factura" : "emisión"}`)}
-          </label>
-          <FieldWrapper
-            name={nameFecha}
-            placeholder="DD/MM/AAAA"
-            component={UqaiCalendario}
-            getValidatedDate={(value, hasError) =>
-              validate(value, nameFecha, undefined, hasError)
-            } // custom validation
-            validate={(v) => validate(v, nameFecha, undefined, undefined, true)} // formik validation
-            isValidDate={isValidDate}
-            maxValue={now}
-            readOnly={isDisabled}
-          />
-          {showNoRefund ? <NoRefoundMessage /> : null}
-        </div>
-      )}
+          <div className="form-group col mb-3 mt-4">
+            <label className="form-label fw-bold text-secondary fs-7">
+              {getTitle(`Fc. de ${isTipoFactura ? "factura" : "emisión"}`)}
+            </label>
+            <FieldWrapper
+              name={nameFecha}
+              placeholder="DD/MM/AAAA"
+              component={UqaiCalendario}
+              getValidatedDate={(value, hasError) =>
+                validate(value, nameFecha, undefined, hasError)
+              } // custom validation
+              validate={(v) => validate(v, nameFecha, undefined, undefined, true)} // formik validation
+              isValidDate={isValidDate}
+              maxValue={now}
+              readOnly={isDisabled}
+            />
+            {showNoRefund ? <NoRefoundMessage /> : null}
+          </div>
+        )}
       {isTipoFactura && (
         <>
           <div className="col mb-3">
@@ -277,13 +277,15 @@ export const TituloDocumento = ({ documento, isRequired }) => {
   useEffect(() => {
     setShowTooltip(!!documento?.ayuda);
   }, [documento]);
-
   return (
     <>
       <label className="title-document form-label fw-bold text-secondary fs-7">
         {documento.nmDocumento}
         {isRequired ?? documento?.obligatorio ? "*" : ":"}
       </label>
+      {documento.tipo === 'FACTURA' && (
+        <UqaiTooltip message={<><strong>Recuerda:</strong> La factura se autocompletará si fue emitida en los últimos 30 días.</>} />
+      )}
       <div className={showTooltip ? "d-inline" : "d-none"}>
         &nbsp;
         <UqaiTooltip message={documento.ayuda} />

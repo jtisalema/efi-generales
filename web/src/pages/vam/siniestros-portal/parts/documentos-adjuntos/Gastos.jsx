@@ -450,16 +450,16 @@ const Subdocumentos = ({
         >
           <div className="modal-body">
             {subdocumentosEstructuraFiltered.length > 0 ? (
-              <Documentos
-                title={`${idxGasto + 1}. ${values?.gastos?.at?.(idxGasto)?.nmDocumento}`}
-                preffixName={currentAuxiliarSubitemsName}
-                alert={alert}
-                aditionalOnDelete={aditionalOnDelete}
-                autoUpdateEstado={false}
-                autoUpdateArchivo={true}
-                documentos={subdocumentosEstructuraFiltered}
-                itemClass={getCols(subdocumentosEstructuraFiltered)}
-              />
+                <Documentos
+                  title={`${idxGasto + 1}. ${values?.gastos?.at?.(idxGasto)?.nmDocumento}`}
+                  preffixName={currentAuxiliarSubitemsName}
+                  alert={alert}
+                  aditionalOnDelete={aditionalOnDelete}
+                  autoUpdateEstado={false}
+                  autoUpdateArchivo={true}
+                  documentos={subdocumentosEstructuraFiltered}
+                  itemClass={getCols(subdocumentosEstructuraFiltered)}
+                />
             ) : (
               <h5 className={"py-4"}>
                 No se encontraron documentos activos para este grupo

@@ -64,7 +64,7 @@ export const Home = () => {
         setCedula(cedulaActual);
 
         // Hacer la llamada a la API solo después de establecer la cédula
-        if (cedulaActual && !cedula.endsWith('001')) {
+        if (cedulaActual && cedula.length != 13 && !cedula.endsWith('001')) {
             axios.get(`https://cotizador.segurossuarez.com/apiclientes/ConsentimientoTratamiento/obtenerUltimoEstadoPorCedula/${cedulaActual}`, {
                 withCredentials: false
             })
