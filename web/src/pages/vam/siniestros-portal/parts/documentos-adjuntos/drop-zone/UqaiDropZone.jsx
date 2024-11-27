@@ -111,7 +111,7 @@ export const UqaiDropZone = forwardRef(function UqaiDropZone({
         const isAutocompletado = documentoDigital?.detalleDocumento?.autocompletado;
         const isTipoFactura = isFactura(documentoDigital?.tipo);
         if (isTipoFactura && (isSriError || !isAutocompletado))
-            alert?.current?.show_error("No se encuentra el documento, por favor completar la información manualmente");
+            alert?.current?.show_error("No se encuentra el documento ya que la fecha de emisión supera los 30 días, por favor completar la información manualmente");
     }
 
     function savingFile({newValues, file}) {
